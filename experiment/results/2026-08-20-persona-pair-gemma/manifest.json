@@ -1,0 +1,20 @@
+{
+  "config": "experiment/config/persona-pair-gemma-repeated.json",
+  "config_sha256": "95620b61eecbdad470532cf7b73a9f495f997c3082fc1557d10c05228181fdd1",
+  "human_ratings": 0,
+  "published_files": {
+    "ratings-tidy.csv": "c6bc7a12742de4510dfa06fc1175e2a25035a06b53084554d163a8a1e6a01dd4",
+    "run-health.json": "a212aa95a77e8562a102c0ea3444231f3cc5ebcdb65f620f79d35f792eb2c8c4",
+    "sets.csv": "60799f58c30c21bf3e03c5e66526ff601d3c0b9c135fdb1524a01708b4a2e8b1",
+    "summary.json": "da168e08787d64e079b2e304b1dccdd07d44cadaadd6f067a321975841c1321e"
+  },
+  "rating_parser_commit": "cb57a8c0c48f1fe841905b8f0c3a1c61f38e5d92",
+  "rating_provenance": {
+    "llm:gemini-3.5-flash-low": 324
+  },
+  "raw_seal_sha256": "84998643112a6616786f7a34daa2f575e2e5aaae18bed7980439e6ef1247d578",
+  "review_source_commit": "cb57a8c0c48f1fe841905b8f0c3a1c61f38e5d92",
+  "review_source_tag": "experiment-harness-v0.3",
+  "schema_version": 1,
+  "study_stage": "smoke calibration; non-confirmatory"
+}
