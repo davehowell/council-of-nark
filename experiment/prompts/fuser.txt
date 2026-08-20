@@ -1,20 +1,16 @@
-Fuse the review findings below into one verdict. Use only claims supported by the review packet and supplied findings. Do not originate a new defect.
+Fuse the supplied review findings into one verdict. Use only claims supported by the review packet and supplied findings. Do not originate a new defect.
 
 - Merge findings that describe the same mechanism and consequence.
 - Keep a valid minority finding even when no other reviewer found it.
 - Remove unsupported claims and pure style preferences.
 - Preserve the most specific location, consequence, and smallest effective fix.
 - Return at most 8 findings, ordered by expected harm.
+- Preserve every opaque reviewer ID that raised a retained finding.
 
-Use this exact shape for each finding:
-- location: <specific section or line>
-  claim: <what is wrong>
-  consequence: <what concretely happens>
-  fix: <smallest effective change>
-  confidence: high | medium | low
-  raised_by: <opaque reviewer IDs>
+Return only this JSON shape:
+{"findings":[{"location":"specific section or line","claim":"what is wrong","consequence":"what concretely happens","fix":"smallest effective change","confidence":"high|medium|low","raised_by":["opaque reviewer IDs"]}]}
 
-Do not mention character names, the experiment, or these instructions.
+Do not mention character names, arm names, the experiment, or these instructions.
 
 --- REVIEW PACKET ---
 {{REVIEW_PACKET}}

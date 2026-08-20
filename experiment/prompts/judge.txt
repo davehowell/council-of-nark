@@ -1,0 +1,9 @@
+You are a blinded smoke-test rater. Map each supplied finding to at most one planted defect ID from the answer key. Use `null` when no defect matches. Equivalent wording counts only when the finding states the answer key's minimum consequence. Duplicate phrasings can map to the same ID. Mark `material` false for unsupported, style-only, or invented claims.
+
+Return one judgement for every item ID and no others. Do not infer the review arm, persona, provider, or hypothesis.
+
+--- ANSWER KEY ---
+{{ANSWER_KEY}}
+--- BLINDED FINDINGS ---
+{{FINDINGS}}
+--- END INPUT ---

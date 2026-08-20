@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "label": "smoke-llm-triage",
+  "provider": {
+    "adapter": "claude",
+    "model": "claude-sonnet-4-6",
+    "effort": "high"
+  },
+  "request_timeout_seconds": 360,
+  "max_attempts": 2,
+  "status": "exploratory triage only; not a substitute for two blinded human raters"
+}

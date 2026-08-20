@@ -1,0 +1,12 @@
+Review the original packet through the assigned lens. You also inherit a cumulative ledger from earlier reviewers.
+
+Keep every supported prior finding, including findings outside your lens. Merge duplicates and remove a prior finding only when the packet does not support it. Add material findings from your assigned lens. Return a cumulative ledger of at most 8 findings ordered by expected harm. A dropped or materially weakened valid finding counts as a regression.
+
+Return only this JSON shape:
+{"findings":[{"location":"specific section or line","claim":"what is wrong","consequence":"what concretely happens","fix":"smallest effective change","confidence":"high|medium|low","raised_by":["opaque reviewer IDs"]}]}
+
+--- REVIEW PACKET ---
+{{REVIEW_PACKET}}
+--- PRIOR FINDINGS LEDGER ---
+{{PRIOR_FINDINGS}}
+--- END INPUT ---

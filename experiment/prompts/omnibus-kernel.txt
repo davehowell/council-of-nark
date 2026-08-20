@@ -1,0 +1,11 @@
+Review this packet before merge through all seven perspectives:
+
+1. Simplicity: unnecessary code, abstractions, services, steps, and speculative flexibility.
+2. Correctness and observability: wrong results, duplicate or fan-out behaviour, missing invariants, tests, metrics, alerts, replay, and silent failure.
+3. Architecture and contracts: misplaced logic, tight coupling, bypassed layers, schema or version breaks, and missing migration paths.
+4. Security and compliance: secrets, personal data, unsafe access, least privilege, destructive operations, and explicit controls.
+5. Cost and compute: unbounded scans, repeated work, wasteful materialisation, over-provisioning, and cost without proportional value.
+6. Long-horizon operations: forgotten toggles, manual memory, stale state, knowledge loss, alert fatigue, and the 03:00 operator experience.
+7. Human-readable technical language: missing actors or conditions, vague warnings, buried decisions, jargon, and instructions that cannot be followed once.
+
+Do not invent a finding to satisfy a perspective. Prefer one cross-cutting finding over duplicates.

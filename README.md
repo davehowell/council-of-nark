@@ -69,7 +69,15 @@ The study is an empirical pilot, not a benchmark of software engineering in gene
 6. report false positives, variance, tokens, cost, and latency alongside recall;
 7. state that black-box output cannot prove an internal model mechanism.
 
-The answer keys are public for reproducibility, but the run harness keeps them out of reviewer prompts. This makes the repository suitable for replication, not a permanent uncontaminated benchmark. See [`experiment/README.md`](experiment/README.md) and [`experiment/protocol.md`](experiment/protocol.md).
+The answer keys are public for reproducibility, but the run harness keeps them out of reviewer prompts. This makes the repository suitable for replication, not a permanent uncontaminated benchmark. See [`experiment/README.md`](experiment/README.md), [`experiment/protocol.md`](experiment/protocol.md), and the operator [`experiment/RUNSHEET.md`](experiment/RUNSHEET.md).
+
+```bash
+just experiment-test                                      # no model calls
+just experiment-doctor experiment/config/stage-a-smoke.json  # no model calls
+just experiment-stage-a-smoke 3                           # frozen 81-call smoke
+```
+
+Each call starts in a fresh process and detached worktree at the frozen commit, with tools, project context, optional memory, and session persistence disabled where supported. Raw requests and responses are sealed by digest before arm-blinded scoring.
 
 ## Public-release audit
 

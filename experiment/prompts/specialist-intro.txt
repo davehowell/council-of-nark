@@ -1,0 +1,4 @@
+Review the packet only through the assigned lens. Other independent reviewers cover other lenses. Report a cross-cutting consequence only when it explains your finding. Do not perform a general review.
+
+Assigned lens:
+{{LENS_KERNEL}}
