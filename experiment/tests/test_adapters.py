@@ -39,6 +39,17 @@ class AdapterTests(unittest.TestCase):
         self.assertIsNone(error)
         self.assertEqual(VALID, parsed)
 
+    def test_extract_prefers_output_array_over_embedded_schema_property(self) -> None:
+        wrapper = {
+            "structured_output": VALID,
+            "json_schema": {
+                "properties": {"findings": {"type": "array"}}
+            },
+        }
+        parsed, error = extract(json.dumps(wrapper), "findings")
+        self.assertIsNone(error)
+        self.assertEqual(VALID, parsed)
+
     def test_rejects_unknown_fields(self) -> None:
         invalid = {"findings": [{**VALID["findings"][0], "severity": "major"}]}
         self.assertTrue(findings_response(invalid))
