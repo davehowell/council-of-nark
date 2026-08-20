@@ -63,14 +63,14 @@ def main() -> int:
         "isolation": {
             "git_worktree": "one clean detached worktree per model call",
             "process": "one fresh process per model call",
-            "session_persistence": false,
-            "tools": false,
-            "project_context": false,
+            "session_persistence": False,
+            "tools": False,
+            "project_context": False,
             "provider_side_state": "unobservable; recorded as a validity limitation"
         },
         "public_audit": {
             "command": "python3 scripts/public_audit.py",
-            "passed": true,
+            "passed": True,
             "stdout": audit.stdout.strip(),
             "stderr": audit.stderr.strip(),
         },
