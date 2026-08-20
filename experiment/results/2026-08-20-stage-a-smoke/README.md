@@ -45,17 +45,21 @@ These are descriptive differences over three sets. No confidence interval or sig
 
 Fusion removed enough false positives to improve F1 in every multi-reviewer arm. It retained every detected true defect in M0, but dropped valid findings in M1 and M2. This supports testing fusion as a separate component rather than crediting the whole panel.
 
-## Calibration decision
+This historical smoke counted every unmatched raw finding as a false positive. It did not cluster semantically duplicate false claims, so raw-union precision is biased downward and fusion gain is overstated. The corrected harness clusters false claims in later runs.
 
-The smoke does not support advancing directly to the 10-repeat pilot:
+## Calibration interpretation
 
-- S0 already achieved 0.812 mean F1, so the weak baseline has limited headroom.
-- S1 recall was 0.792, below the preregistered 0.85 ceiling trigger but high enough to warrant harder variants and clean controls.
-- M1 raw recall approached the ceiling while precision collapsed, making restraint and fusion behaviour central outcomes.
-- The functional specialist panel did not beat matched repeated omnibus sampling after fusion.
-- Fictional wrappers did not show a consistent benefit: S2 was worse than S1, while M2 was slightly above M1 and below M0.
+This was a plumbing smoke, not a go/no-go decision about the council:
 
-Next: add frozen semantic variants, ablations, and clean controls; obtain two independent human ratings; then preregister effect thresholds before any claim-bearing run. Do not tune packets toward a preferred arm.
+- S0 already achieved 0.812 mean F1 and perfect recall on the webhook packet, showing limited headroom for this model/task pairing.
+- One sample per packet cannot distinguish a prompt effect from decoding variation.
+- M1 raw recall reached 0.958, above M0's 0.792, while its precision was lower. That is consistent with specialists exposing more different issues and more noise; it is not captured by fused F1 alone.
+- The functional specialist panel did not beat matched repeated omnibus sampling after fusion in this draw.
+- Fictional wrappers were inconsistent: S2 was below S1, while M2 was slightly above M1 and below M0.
+
+S1 and M0 had identical packet-level F1 values but did not always find the same defects. On the revenue packet, S1 found `RD-04` and missed `RD-06`; M0 did the reverse. Equal F1 describes equal counts, not equivalent reviews.
+
+Next: repeat the unchanged smoke with explicit low-reasoning Gemma to restore prompt headroom. If that run has useful spread, measure within-arm variance with repeated randomised blocks. Harder or real scenarios come only after the cheaper-model test.
 
 ## Rating limitation
 

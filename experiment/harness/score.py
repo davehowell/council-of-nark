@@ -93,7 +93,7 @@ def main() -> int:
         output_set = plan_sets[set_id]
         valid = answer_ids(root, output_set["packet"])
         detected: set[str] = set()
-        false_positives = 0
+        false_clusters: set[str] = set()
         for item_id in blinded_set["item_ids"]:
             rating = ratings[item_id]
             defect = rating["defect_id"].strip().upper()
@@ -101,12 +101,18 @@ def main() -> int:
             if material not in {"true", "false"}:
                 raise SystemExit(f"Invalid material value for {item_id}")
             if defect in {"", "NONE", "NULL"} or material == "false":
-                false_positives += 1
+                cluster = " ".join(
+                    (rating.get("false_positive_cluster") or "").casefold().split()
+                )
+                # Legacy smoke ratings predate clustering. Preserve their published
+                # counting rule by treating each unclustered item as unique.
+                false_clusters.add(cluster or f"legacy-item:{item_id}")
             elif defect not in valid:
                 raise SystemExit(f"Invalid defect ID {defect!r} for packet {output_set['packet']}")
             else:
                 detected.add(defect)
         tp = len(detected)
+        false_positives = len(false_clusters)
         predicted = tp + false_positives
         precision = tp / predicted if predicted else 0.0
         recall = tp / len(valid) if valid else 0.0
@@ -119,7 +125,9 @@ def main() -> int:
             **metadata,
             "group": group_name(metadata),
             "true_positives": tp,
+            "detected_defect_ids": "|".join(sorted(detected)),
             "false_positives": false_positives,
+            "false_positive_clusters": "|".join(sorted(false_clusters)),
             "possible_defects": len(valid),
             "precision": precision,
             "recall": recall,
@@ -178,15 +186,46 @@ def main() -> int:
                 }
             )
 
+    overlaps = []
+    stage_sets: dict[tuple[str, int, str], tuple[str, set[str]]] = {}
+    for row in rows:
+        if row.get("design") != "stage_a" or row.get("kind") not in {"final", "fused"}:
+            continue
+        stage_sets[(row["packet"], row["repeat"], row["arm"])] = (
+            row["set_id"], detected_by_set[row["set_id"]]
+        )
+    for packet in sorted({key[0] for key in stage_sets}):
+        repeats = sorted({key[1] for key in stage_sets if key[0] == packet})
+        for repeat in repeats:
+            for left, right in (("S1", "S2"), ("M0", "M1"), ("M1", "M2")):
+                left_value = stage_sets.get((packet, repeat, left))
+                right_value = stage_sets.get((packet, repeat, right))
+                if not left_value or not right_value:
+                    continue
+                a, b = left_value[1], right_value[1]
+                union = a | b
+                overlaps.append(
+                    {
+                        "packet": packet,
+                        "repeat": repeat,
+                        "left": left,
+                        "right": right,
+                        "jaccard": len(a & b) / len(union) if union else 1.0,
+                        "left_only": sorted(a - b),
+                        "right_only": sorted(b - a),
+                    }
+                )
+
     analysis = run / "analysis" / args.label
     analysis.mkdir(parents=True, exist_ok=True)
-    write_json(analysis / "summary.json", {"groups": summary, "fusion": fusion})
+    report = {"groups": summary, "fusion": fusion, "overlaps": overlaps}
+    write_json(analysis / "summary.json", report)
     fields = sorted({key for row in rows for key in row})
     with (analysis / "sets.csv").open("w", newline="", encoding="utf-8") as handle:
-        writer = csv.DictWriter(handle, fieldnames=fields)
+        writer = csv.DictWriter(handle, fieldnames=fields, lineterminator="\n")
         writer.writeheader()
         writer.writerows(rows)
-    print(json.dumps({"groups": summary, "fusion": fusion}, indent=2, sort_keys=True))
+    print(json.dumps(report, indent=2, sort_keys=True))
     return 0
 
 

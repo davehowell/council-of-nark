@@ -9,7 +9,7 @@ Use this runsheet when one person must operate the study. The `just` recipes do 
 3. Check out the frozen commit on a clean working tree.
 4. Run `just audit`.
 5. Run `just experiment-test`.
-6. Run `just experiment-doctor experiment/config/stage-a-smoke.json`.
+6. Run `just experiment-doctor experiment/config/stage-a-smoke-gemma.json`.
 
 The doctor checks executables, model identifiers, prompt assembly, wrapper length, call counts, and answer-key exclusion. It makes no model calls.
 
@@ -18,13 +18,13 @@ The doctor checks executables, model identifiers, prompt assembly, wrapper lengt
 Make one frozen call before the larger run:
 
 ```bash
-just experiment-adapter-check
+just experiment-adapter-check-gemma
 ```
 
-Verify that its run reports one successful call. Then run:
+Verify that its run reports one successful call from `gemma-4-31b-it` with thinking disabled. Then run:
 
 ```bash
-just experiment-stage-a-smoke 3
+just experiment-stage-a-smoke-gemma 4
 ```
 
 The command prints a run path when it finishes. Save that path as `RUN`. The recipe:
@@ -55,7 +55,7 @@ Two raters independently follow `$RUN/blinded/RUNSHEET.md`. Each rater copies `r
 For smoke-test triage only, an arm-blinded LLM rater is available:
 
 ```bash
-just experiment-judge "$RUN" 2
+just experiment-judge "$RUN" 2 experiment/config/judge-smoke-gemini-low.json
 ```
 
 This output is exploratory. It does not replace two blinded human raters for a claim-bearing run. If the default rater reaches a provider limit, resume only the missing sets with the documented cross-provider fallback:

@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "label": "smoke-llm-triage-gemini-low",
+  "provider": {
+    "adapter": "agy",
+    "model": "gemini-3.5-flash-low",
+    "effort": "low"
+  },
+  "request_timeout_seconds": 720,
+  "max_attempts": 2,
+  "status": "exploratory arm-blinded smoke triage only; not a substitute for two blinded human raters"
+}

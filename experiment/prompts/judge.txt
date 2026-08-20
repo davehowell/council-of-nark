@@ -1,9 +1,11 @@
 You are a blinded smoke-test rater. Map each supplied finding to at most one planted defect ID from the answer key. Use `null` when no defect matches. Equivalent wording counts only when the finding states the answer key's minimum consequence. Duplicate phrasings can map to the same ID. Mark `material` false for unsupported, style-only, or invented claims.
 
+For every finding with no matching defect ID, assign a short `false_positive_cluster` that describes its claimed mechanism. Give semantically duplicate false claims in this output set the same cluster. Use `null` for a finding that maps to a planted defect. Clusters de-duplicate claims, not wording.
+
 Return one judgement for every item ID and no others. Do not infer the review arm, persona, provider, or hypothesis.
 
 Return only this JSON shape:
-{"judgements":[{"item_id":"opaque item ID","defect_id":"matching ID or null","material":true,"confidence":"high|medium|low","rationale":"one short reason"}]}
+{"judgements":[{"item_id":"opaque item ID","defect_id":"matching ID or null","false_positive_cluster":"short mechanism or null","material":true,"confidence":"high|medium|low","rationale":"one short reason"}]}
 
 --- ANSWER KEY ---
 {{ANSWER_KEY}}

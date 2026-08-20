@@ -21,6 +21,8 @@ The study measures model output. It cannot infer which internal features, activa
 - [`schema/`](schema/): strict response contracts.
 - [`harness/`](harness/): standard-library Python runner, adapters, blinding, sealing, rating, and scoring code.
 - [`HARDNESS.md`](HARDNESS.md): scenario difficulty dimensions, smoke calibration triggers, and confirmatory mutation rules.
+- [`METRICS.md`](METRICS.md): F1, semantic union, overlap, and comparability definitions.
+- [`CONTAMINATION_REVIEW.md`](CONTAMINATION_REVIEW.md): post-smoke review of context boundaries, scoring, scheduling, and remaining threats.
 - [`PREREGISTRATION.md`](PREREGISTRATION.md): commit-before-run hypothesis, threshold, sample, rating, and exclusion template.
 - [`RUNSHEET.md`](RUNSHEET.md): the operator and human-rating procedure.
 
@@ -34,7 +36,7 @@ Each reviewer receives only `review-packet.md`. The harness rejects a request co
 
 The three base packets are too few for broad claims. Repeated sampling estimates model variance, not task diversity.
 
-The first successful Stage A calibration is published under [`results/2026-08-20-stage-a-smoke/`](results/2026-08-20-stage-a-smoke/). Its descriptive results do not support advancing directly to the pilot: matched repeated omnibus sampling beat the functional specialists after fusion, fictional-wrapper effects were inconsistent, and the weak baseline had limited headroom. Harder frozen variants, clean controls, and human ratings come next.
+The first successful Stage A calibration is published under [`results/2026-08-20-stage-a-smoke/`](results/2026-08-20-stage-a-smoke/). It proved the plumbing and exposed limited headroom with a strong model. Its one-sample descriptive scores are not a decision about council value. The next calibration repeats the unchanged design with explicit low-reasoning Gemma before any scenario redesign or pilot.
 
 ## Freeze rules
 
@@ -52,7 +54,7 @@ A clean process prevents local context leakage. It cannot prove that a provider 
 
 ## Scoring
 
-A finding maps to zero or one planted defect. Duplicate phrasings of the same defect count once. Unmatched material claims are false positives.
+A finding maps to zero or one planted defect. Semantic duplicates of the same true or false claim count once. Unmatched claims form blinded false-positive clusters before scoring.
 
 The primary metric is macro F1 over planted defects, weighted equally by packet. Also report precision, recall, p10, worst case, variance, token/cost efficiency, raw-union coverage, fusion retention, malformed responses, and latency.
 
@@ -64,13 +66,14 @@ Preflight does not call a model:
 
 ```bash
 just experiment-test
-just experiment-doctor experiment/config/stage-a-smoke.json
+just experiment-doctor experiment/config/stage-a-smoke-gemma.json
 ```
 
-After the harness and assets are committed on a clean tree, run the complete Stage A smoke:
+After the harness and assets are committed on a clean tree, verify explicit model selection and run the low-reasoning Stage A smoke:
 
 ```bash
-just experiment-stage-a-smoke 3
+just experiment-adapter-check-gemma
+just experiment-stage-a-smoke-gemma 4
 ```
 
 The Stage A smoke makes 81 calls: 3 packets × (S0/S1/S2 at one call each + M0/M1/M2 at seven reviewers and one fuser each). The topology smoke makes 144 calls across all six role orders. The provider-pair smoke makes 18 calls.
@@ -87,4 +90,4 @@ See [`RUNSHEET.md`](RUNSHEET.md) for blinded ratings and scoring. A smoke-only a
 
 ## Model-state limitation
 
-Fresh local sessions prevent this harness, earlier council calls, local memory files, and the current worktree from entering model context. They do not prove that a provider has no server-side personalisation, caching, abuse classifiers, or other hidden state. Stage A uses a pinned Anthropic snapshot so an OpenAI controller does not also serve as the primary respondent. Stage B treats provider as an experimental factor and reports hidden-system differences as a limitation.
+Fresh local sessions prevent this harness, earlier council calls, local memory files, and the current worktree from entering model context. They do not prove that a provider has no server-side personalisation, caching, abuse classifiers, or other hidden state. The first Stage A smoke used a pinned Anthropic snapshot; the headroom calibration explicitly selects Gemma through Pi rather than inheriting Pi's powerful default. Stage B treats provider as an experimental factor and reports hidden-system differences as a limitation.

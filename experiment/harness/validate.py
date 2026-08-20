@@ -54,7 +54,14 @@ def judgement_response(value: Any, expected_ids: set[str]) -> list[str]:
         if not isinstance(row, dict):
             errors.append(f"judgements[{index}] is not an object")
             continue
-        required = {"item_id", "defect_id", "material", "confidence", "rationale"}
+        required = {
+            "item_id",
+            "defect_id",
+            "false_positive_cluster",
+            "material",
+            "confidence",
+            "rationale",
+        }
         if set(row) != required:
             errors.append(f"judgements[{index}] fields do not match schema")
             continue
@@ -64,6 +71,13 @@ def judgement_response(value: Any, expected_ids: set[str]) -> list[str]:
         seen.add(item_id)
         if row["defect_id"] is not None and not isinstance(row["defect_id"], str):
             errors.append(f"judgements[{index}].defect_id is invalid")
+        cluster = row["false_positive_cluster"]
+        if cluster is not None and (not isinstance(cluster, str) or not cluster.strip()):
+            errors.append(f"judgements[{index}].false_positive_cluster is invalid")
+        if row["defect_id"] is None and cluster is None:
+            errors.append(f"judgements[{index}] needs a false-positive cluster")
+        if row["defect_id"] is not None and cluster is not None:
+            errors.append(f"judgements[{index}] cannot have both defect ID and false-positive cluster")
         if not isinstance(row["material"], bool):
             errors.append(f"judgements[{index}].material is invalid")
         if row["confidence"] not in CONFIDENCE:
