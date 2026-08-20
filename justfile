@@ -32,61 +32,65 @@ slides-verify:
     cd presentations && bunx --bun slidev export part-2/slides.md --format png --output /tmp/council-experiment-slides
     @echo "Rendered /tmp/council-slides and /tmp/council-experiment-slides"
 
-# Run harness unit tests without making model calls.
+# Run Go harness unit and isolation tests without making model calls.
 experiment-test:
-    python3 -m unittest discover -s experiment/tests -v
+    go test ./experiment/harness/...
 
-# Validate config, prompt assembly, model IDs, and answer-key isolation without model calls.
+# Prove Seatbelt permits scratch writes while denying repository reads.
+experiment-sandbox-check:
+    go run ./experiment/harness/cmd/council-exp sandbox-check
+
+# Validate macOS, Seatbelt, config, prompts, model IDs, and key isolation without model calls.
 experiment-doctor config="experiment/config/stage-a-smoke.json":
-    python3 -m experiment.harness.doctor "{{config}}"
+    go run ./experiment/harness/cmd/council-exp doctor "{{config}}"
 
 # Freeze committed assets and create a deterministic plan; print the run path.
 experiment-create config="experiment/config/stage-a-smoke.json":
     #!/usr/bin/env bash
     set -euo pipefail
-    run="$(python3 -m experiment.harness.freeze --config "{{config}}")"
-    python3 -m experiment.harness.plan "$run" >&2
+    run="$(go run ./experiment/harness/cmd/council-exp freeze --config "{{config}}")"
+    go run ./experiment/harness/cmd/council-exp plan "$run" >&2
     printf '%s\n' "$run"
 
 # Execute or resume a planned run.
 experiment-run run jobs="3":
-    python3 -m experiment.harness.run "{{run}}" --jobs "{{jobs}}"
+    go run ./experiment/harness/cmd/council-exp run --jobs "{{jobs}}" "{{run}}"
 
 # Summarize status, usage, cost, and latency without unblinding.
 experiment-summary run:
-    python3 -m experiment.harness.summarize "{{run}}"
+    go run ./experiment/harness/cmd/council-exp summarize "{{run}}"
 
 # Seal raw requests and responses by SHA-256 digest.
 experiment-seal run:
-    python3 -m experiment.harness.seal "{{run}}"
+    go run ./experiment/harness/cmd/council-exp seal "{{run}}"
 
 # Verify a sealed run.
 experiment-verify run:
-    python3 -m experiment.harness.verify "{{run}}"
+    go run ./experiment/harness/cmd/council-exp verify "{{run}}"
 
 # Create the arm-blinded human-rating bundle and runsheet.
 experiment-bundle run:
-    python3 -m experiment.harness.bundle "{{run}}"
+    go run ./experiment/harness/cmd/council-exp bundle "{{run}}"
 
 # Run exploratory arm-blinded LLM triage for a smoke test.
 experiment-judge run jobs="2" config="experiment/config/judge-smoke.json":
-    python3 -m experiment.harness.judge "{{run}}" --jobs "{{jobs}}" --config "{{config}}"
+    go run ./experiment/harness/cmd/council-exp judge --jobs "{{jobs}}" --config "{{config}}" "{{run}}"
 
 # Score one adjudicated or exploratory blinded ratings CSV.
 experiment-score run ratings label="adjudicated":
-    python3 -m experiment.harness.score "{{run}}" "{{ratings}}" --label "{{label}}"
+    go run ./experiment/harness/cmd/council-exp score --label "{{label}}" "{{run}}" "{{ratings}}"
 
 # Freeze, plan, run, summarize, seal, verify, and blind any config.
 experiment-complete config jobs="3":
     #!/usr/bin/env bash
     set -euo pipefail
-    run="$(python3 -m experiment.harness.freeze --config "{{config}}")"
-    python3 -m experiment.harness.plan "$run"
-    python3 -m experiment.harness.run "$run" --jobs "{{jobs}}"
-    python3 -m experiment.harness.summarize "$run"
-    python3 -m experiment.harness.seal "$run"
-    python3 -m experiment.harness.verify "$run"
-    python3 -m experiment.harness.bundle "$run"
+    run="$(go run ./experiment/harness/cmd/council-exp freeze --config "{{config}}")"
+    go run ./experiment/harness/cmd/council-exp plan "$run"
+    go run ./experiment/harness/cmd/council-exp run --jobs "{{jobs}}" "$run"
+    go run ./experiment/harness/cmd/council-exp summarize "$run"
+    go run ./experiment/harness/cmd/council-exp seal "$run"
+    go run ./experiment/harness/cmd/council-exp verify "$run"
+    go run ./experiment/harness/cmd/council-exp bundle "$run"
     printf '\nRUN=%s\n' "$run"
 
 # Make one frozen model call to verify the Claude adapter before a larger run.

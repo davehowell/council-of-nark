@@ -1,34 +1,77 @@
-# Harness design
+# Go harness design
 
-The harness uses Python's standard library. Model CLIs remain external so authentication stays in each user's existing credential store.
+The maintained harness is implemented in Go's standard library and supports macOS only. Provider CLIs remain external so authentication stays in existing credential stores. Historical Python implementations remain reproducible from their tagged source commits; they are not active on `main`.
 
 ## Lifecycle
 
-1. `doctor.py` validates a config, prompt assembly, wrapper length, model identifiers, call counts, and answer-key exclusion without model calls.
-2. `freeze.py` requires a clean tree, records `HEAD`, and hashes every tracked experiment input.
-3. `plan.py` builds opaque call and output-set IDs from the config seed.
-4. `run.py` schedules dependencies and starts every call in a fresh process and detached worktree at the frozen commit.
-5. `summarize.py` reports status, usage, cost, findings, and latency without scoring.
-6. `seal.py` hashes and makes raw run files read-only. `verify.py` recomputes those digests.
-7. `bundle.py` shuffles findings into a bundle that hides arm, wrapper, model, and provider.
-8. `judge.py` can produce exploratory arm-blinded smoke triage. It resumes completed sets and retries only failed provider processes.
-9. `score.py` consumes one adjudicated rating per finding and reports set/group metrics.
+The single `council-exp` command provides these stages:
+
+1. `doctor` validates macOS, Seatbelt, config, prompt assembly, wrapper length, model identifiers, call counts, and answer-key exclusion without model calls.
+2. `freeze` requires a clean tree, reruns the public audit, records `HEAD`, hashes every tracked input, and records external CLI entrypoint digests/versions.
+3. `plan` builds opaque call/output-set IDs and a deterministic hash-ordered schedule.
+4. `run` schedules dependencies and starts every call in a fresh process from a detached worktree at the frozen commit.
+5. `summarize` reports status, usage, cost, findings, and latency without scoring.
+6. `seal` hashes and makes raw run files read-only; `verify` recomputes those digests.
+7. `bundle` shuffles findings into a rating bundle that hides arm, wrapper, model, and provider.
+8. `judge` can produce exploratory arm-blinded smoke triage. It requires a clean committed harness and records the derived-stage commit.
+9. `score` consumes one adjudicated rating per finding and reports set/group metrics.
+
+Use `just` rather than calling the binary directly. `go run` builds outside the worktree and no persistent harness binary is required.
+
+## Mandatory Seatbelt boundary
+
+Every non-mock provider child runs through `/usr/bin/sandbox-exec` with a generated deny-by-default profile:
+
+- prompt assembly occurs in a fresh detached worktree;
+- the child process starts in a different empty directory;
+- the child cannot read the repository, worktree, answer keys, run records, or real home directory;
+- `HOME`, cache, config, temporary, and current-working directories are fresh per attempt;
+- only a small adapter-specific credential allowlist is copied into the ephemeral Pi home;
+- writes are limited to ephemeral scratch and `/dev/null`;
+- executable/runtime paths are read-only;
+- provider transport may use outbound networking;
+- model tools, sessions, context files, extensions, skills, and project trust are disabled through adapter flags;
+- ephemeral state is deleted after each attempt.
+
+Run the executable probe explicitly:
+
+```bash
+just experiment-sandbox-check
+```
+
+It must prove that a scratch write succeeds and a repository read fails. `doctor` and `freeze` rerun the same probe. There is no unsandboxed fallback and the harness refuses non-macOS hosts or root.
+
+Seatbelt is deprecated by Apple even though it remains present on supported macOS versions. If Apple removes it, the harness fails closed until a replacement threat model is implemented.
+
+## Network and tools are separate capabilities
+
+The provider CLI needs network access to submit the prompt. That does not grant the model a local shell or web tool: all current respondent and rater commands disable tools.
+
+Seatbelt cannot observe or disable a provider-side search tool. A future internet-enabled study must therefore be a separate declared arm with provider-side search disabled/enabled explicitly. For real-project tasks, prefer frozen offline documentation/search corpora or a controlled proxy rather than unrestricted web search that can locate the matching upstream patch.
+
+## Dedicated macOS account
+
+For stronger UID/ACL separation, create one standard non-admin macOS account for experiment execution and run the entire harness there. Set:
+
+```bash
+export COUNCIL_EXPERIMENT_USER=experiment-account-name
+```
+
+The harness then refuses another account. It does not create users, alter Directory Services, copy credentials between accounts, or use `sudo`. A new account per call adds substantial privileged lifecycle state while the per-attempt empty HOME and Seatbelt profile already provide call-level separation; it is not part of the maintained protocol.
 
 ## Adapters
 
-- **Claude:** `--safe-mode`, no tools, no session persistence, replacement system prompt, strict JSON Schema.
-- **agy/Gemini:** fresh print process, pinned model and effort, sandbox, slash commands disabled, strict JSON Schema.
-- **Pi models:** no session, tools, extensions, skills, templates, themes, context files, or project trust; replacement system prompt. The adapter parses assistant-role events only because Pi JSON streams also echo user input.
-- **mock:** deterministic empty response for plumbing tests.
+- **Claude:** safe mode, no tools, no session persistence, replacement system prompt, strict JSON Schema.
+- **agy/Gemini:** fresh print process, pinned model/effort, CLI sandbox, slash commands disabled, strict JSON Schema.
+- **Pi models:** no session, tools, extensions, skills, templates, themes, context files, or project trust; replacement system prompt. Pi is launched through the pinned Node executable and its assistant-role events are parsed without inspecting echoed user content.
+- **mock:** deterministic empty response for plumbing tests; no child process.
 
-The runner passes prompts as process arguments and closes stdin. It sends no file tools to the model. Provider CLIs can still have unobservable server-side behaviour, and the agy CLI does not expose every isolation control that Claude and Pi expose.
+External CLI entrypoints and versions are frozen because provider clients are part of the trusted computing base. Provider-side personalisation, hidden system prompts, caching, and server-side tooling remain unobservable validity limitations.
 
 ## Retry rule
 
-The runner retries only a non-zero process or transport failure, up to the config's `max_attempts`, with configured linear backoff. Pi assistant error events are promoted to retryable failures even when the local Pi process exits zero. A zero-exit malformed substantive response is not repaired or rerolled; it is sealed and scores zero. Retries are infrastructure attempts, not additional samples. The optional smoke rater applies the same rule and preserves completed set ratings when resumed.
+Only non-zero process/transport failures are retried, with configured linear backoff. Pi assistant error events are promoted to retryable failures even if Pi exits zero. A zero-exit malformed substantive response is sealed and scores zero. Retries are infrastructure attempts, not additional samples.
 
 ## Data boundaries
 
-`request.json` records the exact system prompt, user prompt, schema, model, source commit, and digests. It explicitly records `answer_key_in_context: false`. Prompt assembly also rejects answer-key headings, planted IDs, and long answer-key claims.
-
-Answer keys enter only the blinded rating stage. The raw run and the derived rating bundle have separate integrity boundaries. Derived files can be regenerated from the sealed raw run.
+`request.json` records the exact prompts, schema, model, source commit, isolation declaration, and digests. Prompt assembly rejects answer-key headings, planted IDs, and long key claims. Answer keys enter only the blinded rating stage. Raw and derived stages have separate integrity boundaries.

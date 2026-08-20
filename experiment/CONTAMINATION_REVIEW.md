@@ -6,7 +6,7 @@ This review was performed after the first plumbing smoke and before the cheaper-
 
 The implemented boundaries are sound for local context contamination:
 
-- every respondent starts in a fresh process and clean detached worktree at the frozen commit;
+- the Go controller assembles each prompt in a fresh detached worktree at the frozen commit; the provider child starts elsewhere under Seatbelt and cannot read the worktree;
 - reviewer prompts contain the packet but not the answer-key file, planted IDs, arm name, hypothesis, or other outputs;
 - prompt assembly rejects answer-key headings, IDs, and long verbatim key claims;
 - Claude runs in safe mode with tools and session persistence disabled;
@@ -69,6 +69,12 @@ Pi JSON mode emits user and assistant events. The first Pi parser searched the c
 agy returns both `structured_output` and `json_schema`. A generic recursive extractor accepted any object containing a `judgements` key, so it could select the schema's `properties.judgements` object instead of the model's judgement array.
 
 **Correction:** a response root is eligible only when the requested root value is an array. Parser-only failures can be recovered mechanically from captured structured output after schema validation, without another model call or changed judgement.
+
+### 9. A clean worktree was still visible to the provider process
+
+The earlier controller disabled model tools and context loading, but its provider child used the detached worktree as its current directory. Correct adapter flags made accidental loading unlikely, not impossible. A changed or compromised CLI could still inspect public answer keys, Git metadata, neighbouring project files, or user configuration.
+
+**Correction:** the active harness is now Go/macOS-only and fails closed unless a Seatbelt probe passes. Prompt assembly still uses the verified worktree, but the child receives an empty cwd and ephemeral home under a deny-by-default profile. Repository/worktree reads fail, writes are scratch-only, and external CLI entrypoint digests are frozen. Provider transport networking remains permitted; server-side tools/state remain unobservable.
 
 ## Checks that did not reveal contamination
 
