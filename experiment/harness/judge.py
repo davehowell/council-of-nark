@@ -8,13 +8,28 @@ from pathlib import Path
 from typing import Any
 
 from .adapters import invoke
-from .common import load_json, opaque_id, resolve_run, utc_now, write_json
+from .common import load_json, opaque_id, resolve_run, slug_timestamp, source_commit, utc_now, write_json
 from .prompting import replace
 from .run import DetachedWorktree
+
+FIELDS = ["rater", "item_id", "defect_id", "material", "confidence", "notes"]
 
 
 def read_jsonl(path: Path) -> list[dict[str, Any]]:
     return [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines() if line]
+
+
+def existing_ratings(path: Path) -> dict[str, dict[str, Any]]:
+    if not path.exists():
+        return {}
+    ratings: dict[str, dict[str, Any]] = {}
+    with path.open(newline="", encoding="utf-8") as handle:
+        for row in csv.DictReader(handle):
+            item_id = row["item_id"]
+            if item_id in ratings:
+                raise SystemExit(f"Duplicate existing LLM rating: {item_id}")
+            ratings[item_id] = row
+    return ratings
 
 
 def rate_set(
@@ -30,14 +45,11 @@ def rate_set(
     judge_id = "j-" + opaque_id(config["label"], set_id)
     destination = run / "blinded" / "llm-triage" / set_id
     destination.mkdir(parents=True, exist_ok=True)
+    previous = load_json(destination / "record.json") if (destination / "record.json").exists() else None
     with DetachedWorktree(run, judge_id, freeze["source_commit"]) as worktree:
         template = (worktree / "experiment/prompts/judge.txt").read_text(encoding="utf-8")
         answer = (
-            worktree
-            / "experiment"
-            / "scenarios"
-            / output_set["packet"]
-            / "answer-key.md"
+            worktree / "experiment" / "scenarios" / output_set["packet"] / "answer-key.md"
         ).read_text(encoding="utf-8")
         public_items = [
             {"item_id": item["item_id"], "finding": item["finding"]} for item in items
@@ -52,33 +64,64 @@ def rate_set(
             "Do not use tools, memories, project context, or other sessions. Return only schema-valid JSON."
         )
         schema = load_json(worktree / "experiment/schema/judgements.schema.json")
-        result = invoke(
-            cwd=worktree,
-            provider=config["provider"],
-            prompt=prompt,
-            system=system,
-            schema=schema,
-            schema_relative="experiment/schema/judgements.schema.json",
-            timeout_seconds=config["request_timeout_seconds"],
-            expected_root="judgements",
-            expected_ids={item["item_id"] for item in items},
-        )
-        (destination / "stdout.txt").write_text(result.stdout, encoding="utf-8")
-        (destination / "stderr.txt").write_text(result.stderr, encoding="utf-8")
+        expected_ids = {item["item_id"] for item in items}
+        attempts = []
+        result = None
+        batch = slug_timestamp()
+        for attempt in range(1, config["max_attempts"] + 1):
+            result = invoke(
+                cwd=worktree,
+                provider=config["provider"],
+                prompt=prompt,
+                system=system,
+                schema=schema,
+                schema_relative="experiment/schema/judgements.schema.json",
+                timeout_seconds=config["request_timeout_seconds"],
+                expected_root="judgements",
+                expected_ids=expected_ids,
+            )
+            attempt_dir = destination / "attempts" / f"{batch}-{attempt}"
+            attempt_dir.mkdir(parents=True, exist_ok=True)
+            (attempt_dir / "stdout.txt").write_text(result.stdout, encoding="utf-8")
+            (attempt_dir / "stderr.txt").write_text(result.stderr, encoding="utf-8")
+            write_json(
+                attempt_dir / "metadata.json",
+                {
+                    "attempt": attempt,
+                    "returncode": result.returncode,
+                    "parse_error": result.parse_error,
+                    "latency_seconds": result.latency_seconds,
+                    "usage": result.usage,
+                },
+            )
+            attempts.append(
+                {
+                    "attempt": attempt,
+                    "returncode": result.returncode,
+                    "parse_error": result.parse_error,
+                    "latency_seconds": result.latency_seconds,
+                    "usage": result.usage,
+                }
+            )
+            if result.returncode == 0:
+                break
+        assert result is not None
+        status = "success" if result.returncode == 0 and result.parsed is not None else "error"
         write_json(
             destination / "record.json",
             {
                 "set_id": set_id,
                 "packet": output_set["packet"],
                 "provider": config["provider"],
-                "status": "success" if result.returncode == 0 and result.parsed else "error",
-                "returncode": result.returncode,
-                "parse_error": result.parse_error,
-                "latency_seconds": result.latency_seconds,
-                "usage": result.usage,
+                "status": status,
+                "attempts": attempts,
+                "parsed_response": result.parsed,
                 "completed_at": utc_now(),
                 "arm_blinded": True,
                 "status_note": config["status"],
+                "review_source_commit": freeze["source_commit"],
+                "judge_harness_commit": source_commit(),
+                "previous_record": previous,
             },
         )
         return set_id, result.parsed
@@ -105,12 +148,37 @@ def main() -> int:
     for item in items:
         by_set.setdefault(item["set_id"], []).append(item)
 
-    ratings: list[dict[str, Any]] = []
+    path = run / "blinded" / "ratings-llm.csv"
+    ratings = existing_ratings(path)
+    known_item_ids = {item["item_id"] for item in items}
+    unknown = set(ratings) - known_item_ids
+    if unknown:
+        raise SystemExit(f"Existing ratings contain unknown item IDs: {sorted(unknown)}")
+
+    pending = []
+    for output_set in plan["output_sets"]:
+        set_items = by_set.get(output_set["set_id"], [])
+        expected = {item["item_id"] for item in set_items}
+        if not expected or expected.issubset(ratings):
+            continue
+        # A partially rated set is rerated as one blinded unit.
+        for item_id in expected:
+            ratings.pop(item_id, None)
+        pending.append(output_set)
+    print(f"Resuming with {len(ratings)} existing ratings; {len(pending)} sets pending.")
+
     errors = []
     with ThreadPoolExecutor(max_workers=args.jobs) as pool:
         futures = {
-            pool.submit(rate_set, run, output_set, by_set.get(output_set["set_id"], []), freeze, config): output_set
-            for output_set in plan["output_sets"]
+            pool.submit(
+                rate_set,
+                run,
+                output_set,
+                by_set.get(output_set["set_id"], []),
+                freeze,
+                config,
+            ): output_set
+            for output_set in pending
         }
         for future in as_completed(futures):
             output_set = futures[future]
@@ -120,27 +188,26 @@ def main() -> int:
                 print(f"{set_id} rating error", flush=True)
                 continue
             for judgement in response["judgements"]:
-                ratings.append(
-                    {
-                        "rater": f"llm:{config['provider']['model']}",
-                        "item_id": judgement["item_id"],
-                        "defect_id": judgement["defect_id"],
-                        "material": judgement["material"],
-                        "confidence": judgement["confidence"],
-                        "notes": judgement["rationale"],
-                    }
-                )
+                ratings[judgement["item_id"]] = {
+                    "rater": f"llm:{config['provider']['model']}",
+                    "item_id": judgement["item_id"],
+                    "defect_id": judgement["defect_id"],
+                    "material": judgement["material"],
+                    "confidence": judgement["confidence"],
+                    "notes": judgement["rationale"],
+                }
             print(f"{set_id} rated", flush=True)
 
-    path = run / "blinded" / "ratings-llm.csv"
     with path.open("w", newline="", encoding="utf-8") as handle:
-        fields = ["rater", "item_id", "defect_id", "material", "confidence", "notes"]
-        writer = csv.DictWriter(handle, fieldnames=fields)
+        writer = csv.DictWriter(handle, fieldnames=FIELDS)
         writer.writeheader()
-        writer.writerows(ratings)
+        writer.writerows(ratings[item_id] for item_id in sorted(ratings))
+    missing = known_item_ids - set(ratings)
     print(f"Wrote {len(ratings)} exploratory ratings to {path.relative_to(run)}")
-    if errors:
-        print(f"Unrated sets: {', '.join(errors)}")
+    if errors or missing:
+        if errors:
+            print(f"Unrated sets: {', '.join(errors)}")
+        print(f"Unrated items remaining: {len(missing)}")
         return 1
     return 0
 

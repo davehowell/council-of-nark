@@ -11,7 +11,7 @@ The harness uses Python's standard library. Model CLIs remain external so authen
 5. `summarize.py` reports status, usage, cost, findings, and latency without scoring.
 6. `seal.py` hashes and makes raw run files read-only. `verify.py` recomputes those digests.
 7. `bundle.py` shuffles findings into a bundle that hides arm, wrapper, model, and provider.
-8. `judge.py` can produce exploratory arm-blinded smoke triage.
+8. `judge.py` can produce exploratory arm-blinded smoke triage. It resumes completed sets and retries only failed provider processes.
 9. `score.py` consumes one adjudicated rating per finding and reports set/group metrics.
 
 ## Adapters
@@ -25,7 +25,7 @@ The runner passes prompts as process arguments and closes stdin. It sends no fil
 
 ## Retry rule
 
-The runner retries only a non-zero process or transport failure, up to the config's `max_attempts`. A zero-exit malformed substantive response is not repaired or rerolled; it is sealed and scores zero. Retries are infrastructure attempts, not additional samples.
+The runner retries only a non-zero process or transport failure, up to the config's `max_attempts`. A zero-exit malformed substantive response is not repaired or rerolled; it is sealed and scores zero. Retries are infrastructure attempts, not additional samples. The optional smoke rater applies the same rule and preserves completed set ratings when resumed.
 
 ## Data boundaries
 
