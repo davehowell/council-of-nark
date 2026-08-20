@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "label": "smoke-llm-triage-gemini-low",
+  "label": "smoke-llm-triage-gemini-low-pi-v2",
   "provider": {
-    "adapter": "agy",
-    "model": "gemini-3.5-flash-low",
+    "adapter": "pi",
+    "model": "google/gemini-3.5-flash",
     "effort": "low"
   },
   "request_timeout_seconds": 720,

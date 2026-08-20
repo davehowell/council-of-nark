@@ -59,7 +59,7 @@ Run `just slides-talk` or `just slides-experiment` to serve a deck. See [`presen
 
 ## Experiments
 
-The supported experiment runner targets **macOS only**. Linux, Windows, containers, and other sandbox implementations are intentionally out of scope; adapting the protocol is left to replicators, who must document any isolation differences.
+The supported experiment runner targets **macOS only** and requires Go 1.22+ plus `/usr/bin/sandbox-exec`. Linux, Windows, containers, and other sandbox implementations are intentionally out of scope; adapting the protocol is left to replicators, who must document any isolation differences.
 
 The study is an empirical pilot, not a benchmark of software engineering in general. It uses synthetic, frozen review packets with planted defects and clean facts. The core controls are:
 
@@ -75,11 +75,12 @@ The answer keys are public for reproducibility, but the run harness keeps them o
 
 ```bash
 just experiment-test                                      # no model calls
+just experiment-sandbox-check                              # no model calls
 just experiment-doctor experiment/config/stage-a-smoke.json  # no model calls
 just experiment-stage-a-smoke 3                           # frozen 81-call smoke
 ```
 
-Each call starts in a fresh process and detached worktree at the frozen commit, with tools, project context, optional memory, and session persistence disabled where supported. Raw requests and responses are sealed by digest before arm-blinded scoring.
+Each prompt is assembled in a fresh detached worktree. The provider child then starts in an empty directory and ephemeral home under a deny-by-default macOS Seatbelt profile, without repository/worktree access, tools, project context, optional memory, or session persistence. Raw requests and responses are sealed by digest before arm-blinded scoring.
 
 The first 81-call Stage A plumbing smoke and its mixed calibration results are published in [`experiment/results/2026-08-20-stage-a-smoke/`](experiment/results/2026-08-20-stage-a-smoke/). The low-reasoning Gemma rerun and 30-pair persona calibration are also under [`experiment/results/`](experiment/results/). They are explicitly non-confirmatory and use LLM triage; the repository does not present those scores as proof that the council works or is worthless.
 

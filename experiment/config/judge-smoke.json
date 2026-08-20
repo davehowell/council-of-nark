@@ -2,8 +2,8 @@
   "schema_version": 1,
   "label": "smoke-llm-triage",
   "provider": {
-    "adapter": "claude",
-    "model": "claude-sonnet-4-6",
+    "adapter": "pi",
+    "model": "anthropic/claude-sonnet-4-6",
     "effort": "high"
   },
   "request_timeout_seconds": 720,

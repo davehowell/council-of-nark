@@ -7,16 +7,16 @@
   "arms": ["S0"],
   "repetitions": 1,
   "provider": {
-    "adapter": "claude",
-    "model": "claude-haiku-4-5-20251001",
+    "adapter": "pi",
+    "model": "anthropic/claude-haiku-4-5-20251001",
     "effort": "low"
   },
   "max_concurrency": 1,
   "request_timeout_seconds": 300,
   "max_attempts": 2,
   "decoding": {
-    "temperature": "provider default; Claude Code does not expose this setting",
-    "structured_output": true,
+    "temperature": "provider default; Pi does not expose this setting",
+    "structured_output": "prompt-enforced; Pi has no JSON Schema flag",
     "maximum_findings": 8
   }
 }

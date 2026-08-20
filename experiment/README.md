@@ -23,10 +23,11 @@ The study measures model output. It cannot infer which internal features, activa
 - [`scenarios/`](scenarios/): three synthetic packets and their planted-defect keys.
 - [`config/`](config/): pinned smoke, pilot, topology, provider-pair, and judge configurations.
 - [`schema/`](schema/): strict response contracts.
-- [`harness/`](harness/): standard-library Python runner, adapters, blinding, sealing, rating, and scoring code.
+- [`harness/`](harness/): standard-library Go runner, macOS Seatbelt profiles, adapters, blinding, sealing, rating, and scoring code.
 - [`HARDNESS.md`](HARDNESS.md): scenario difficulty dimensions, smoke calibration triggers, and confirmatory mutation rules.
 - [`METRICS.md`](METRICS.md): F1, semantic union, overlap, and comparability definitions.
 - [`CONTAMINATION_REVIEW.md`](CONTAMINATION_REVIEW.md): post-smoke review of context boundaries, scoring, scheduling, and remaining threats.
+- [`ISOLATION.md`](ISOLATION.md): macOS Seatbelt, network, dedicated-account, and real-project threat model.
 - [`LAB_NOTEBOOK.md`](LAB_NOTEBOOK.md): chronological engineering decisions, failures, repairs, results, and pivots.
 - [`PREREGISTRATION.md`](PREREGISTRATION.md): commit-before-run hypothesis, threshold, sample, rating, and exclusion template.
 - [`RUNSHEET.md`](RUNSHEET.md): the operator and human-rating procedure.
@@ -53,8 +54,8 @@ Before a claim-bearing run:
 2. run the public-release audit;
 3. generate a manifest with the Git commit and SHA-256 digest of every input;
 4. randomise run order in blocks;
-5. start each call in a fresh process and clean detached worktree with sessions, tools, project context, and optional memory disabled;
-6. capture raw request, raw response, model metadata, usage, latency, errors, and retries;
+5. assemble each prompt in a clean detached worktree, then start the provider in a fresh Seatbelt-confined process with an empty cwd and ephemeral home; deny the child any repository/worktree access;
+6. capture raw request, raw response, model metadata, external CLI digests, Seatbelt profile digest, usage, latency, errors, and retries;
 7. make the completed run immutable by digest and verify it before analysis.
 
 A clean process prevents local context leakage. It cannot prove that a provider has no unobserved server-side state. Record that limitation.
@@ -73,6 +74,7 @@ Preflight does not call a model:
 
 ```bash
 just experiment-test
+just experiment-sandbox-check
 just experiment-doctor experiment/config/stage-a-smoke-gemma.json
 ```
 
@@ -97,7 +99,7 @@ Use the generic recipe for another frozen config:
 just experiment-complete experiment/config/provider-pair-smoke.json 3
 ```
 
-Every model call runs in a fresh process from a fresh detached worktree at the recorded commit. The adapters disable tools, sessions, extensions, skills, and project context where the CLI exposes those switches. The runner keeps answer keys out of review and fusion prompts. It stores raw attempts under ignored `experiment/runs/`, then seals the raw file set by SHA-256 digest.
+Every prompt is assembled from a fresh detached worktree at the recorded commit. The model process then runs from an empty directory and ephemeral home under a deny-by-default Seatbelt profile; it cannot read that worktree or repository. Adapters disable tools, sessions, extensions, skills, and project context. Provider transport networking remains available, while model web/shell tools remain disabled. The runner stores raw attempts under ignored `experiment/runs/`, then seals the raw file set by SHA-256 digest.
 
 See [`RUNSHEET.md`](RUNSHEET.md) for blinded ratings and scoring. A smoke-only arm-blinded LLM triage recipe is available, but confirmatory scoring requires two independent human raters.
 

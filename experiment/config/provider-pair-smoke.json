@@ -13,13 +13,13 @@
   "repetitions": 1,
   "providers": [
     {
-      "adapter": "claude",
-      "model": "claude-haiku-4-5-20251001",
+      "adapter": "pi",
+      "model": "anthropic/claude-haiku-4-5-20251001",
       "effort": "low"
     },
     {
-      "adapter": "agy",
-      "model": "gemini-3.6-flash-high",
+      "adapter": "pi",
+      "model": "google/gemini-3.6-flash",
       "effort": "high"
     },
     {
@@ -32,8 +32,8 @@
   "request_timeout_seconds": 360,
   "max_attempts": 2,
   "decoding": {
-    "temperature": "provider CLI default; not uniformly exposed",
-    "structured_output": true,
+    "temperature": "provider default; Pi does not expose this setting",
+    "structured_output": "prompt-enforced; Pi has no JSON Schema flag",
     "maximum_findings": 8
   }
 }

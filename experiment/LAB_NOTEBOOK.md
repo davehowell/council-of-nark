@@ -69,6 +69,16 @@ This is the chronological engineering record. It preserves failed runs and the r
 - Prefer an exported pre-fix source tree with Git history removed for future open-source tasks. Treat the eventual patch and tests as evidence, not the only valid answer.
 - Evaluate the remaining fictional/functional role pairs as one preregistered family rather than selectively running only promising personas.
 
+## 2026-08-20 12:23–13:00 — Go and Seatbelt migration
+
+- Replaced the active Python harness with a standard-library Go command. Historical Python runs remain reproducible from their source tags.
+- Added a mandatory deny-by-default macOS Seatbelt profile, empty child cwd, per-attempt ephemeral home/cache/temp, repository-read denial probe, external CLI digest freeze, and fail-closed macOS/root checks.
+- Completed a 9/9 local mock lifecycle and reproduced the published Gemma score groups/overlaps with the Go scorer (apart from the deliberately new deterministic bootstrap resampling sequence).
+- Completed live isolated checks through Pi for Gemma, Google/Gemini rating, and Anthropic/Haiku.
+- Direct agy testing exposed an interactive keychain dependency under an ephemeral home; the prompts were cancelled without creating/resetting a keychain. Direct Claude CLI likewise could not use shared login state without its real home.
+- Decision: do not weaken isolation to accommodate those clients. Reject direct agy/Claude before launch and route explicitly pinned Anthropic, Google, OpenAI, and Gemma models through Pi's sterile auth/model-registry copy. Do not copy Pi settings, skills, history, or sessions.
+- Network remains available only to the trusted provider client transport. Current model tools remain disabled; provider-side search is still unobservable and must be a separately declared arm.
+
 ## Notebook rule
 
 Append material decisions before or immediately after their run. Record source commit/tag, config, exclusions, failures, repairs, interpretation, and next decision. Correct factual errors explicitly; do not silently rewrite earlier reasoning.
