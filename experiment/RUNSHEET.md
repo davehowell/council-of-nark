@@ -58,7 +58,13 @@ For smoke-test triage only, an arm-blinded LLM rater is available:
 just experiment-judge "$RUN" 2
 ```
 
-This output is exploratory. It does not replace two blinded human raters for a claim-bearing run.
+This output is exploratory. It does not replace two blinded human raters for a claim-bearing run. If the default rater reaches a provider limit, resume only the missing sets with the documented cross-provider fallback:
+
+```bash
+just experiment-judge "$RUN" 1 experiment/config/judge-smoke-openai.json
+```
+
+The rating CSV records the model for each item. Report mixed-rater use as a smoke-stage limitation.
 
 ## 5. Adjudicate and score
 

@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "label": "smoke-llm-triage-openai-fallback",
+  "provider": {
+    "adapter": "pi",
+    "model": "openai-codex/gpt-5.4-mini",
+    "effort": "low"
+  },
+  "request_timeout_seconds": 720,
+  "max_attempts": 2,
+  "status": "exploratory arm-blinded fallback triage only; mixed rater models; not a substitute for two blinded human raters"
+}
