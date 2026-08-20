@@ -26,7 +26,7 @@ Every non-mock provider child runs through `/usr/bin/sandbox-exec` with a genera
 - the child process starts in a different empty directory;
 - the child cannot read the repository, worktree, answer keys, run records, or real home directory;
 - `HOME`, cache, config, temporary, and current-working directories are fresh per attempt;
-- only a small adapter-specific credential allowlist is copied into the ephemeral Pi home;
+- only a small adapter-specific credential allowlist is copied into the ephemeral home; conversation/history stores are never copied;
 - writes are limited to ephemeral scratch and `/dev/null`;
 - executable/runtime paths are read-only;
 - provider transport may use outbound networking;

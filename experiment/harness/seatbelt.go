@@ -86,11 +86,13 @@ func prepareEphemeralHome(home, adapter string) (map[string]string, error) {
 	if err != nil {
 		return nil, err
 	}
-	if adapter == "pi" {
-		for _, rel := range []string{".pi/agent/auth.json", ".pi/agent/models-store.json", ".pi/agent/settings.json", ".pi/settings.json"} {
-			if err := copyIfPresent(filepath.Join(original, rel), filepath.Join(home, rel)); err != nil {
-				return nil, err
-			}
+	credentialFiles := map[string][]string{
+		"pi":  {".pi/agent/auth.json", ".pi/agent/models-store.json", ".pi/agent/settings.json", ".pi/settings.json"},
+		"agy": {".gemini/antigravity-cli/antigravity-oauth-token"},
+	}
+	for _, rel := range credentialFiles[adapter] {
+		if err := copyIfPresent(filepath.Join(original, rel), filepath.Join(home, rel)); err != nil {
+			return nil, err
 		}
 	}
 	env := map[string]string{}
