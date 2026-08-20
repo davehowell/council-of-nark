@@ -107,16 +107,15 @@ func (h *Harness) checkModels(config Config, skip bool) []string {
 		if p.Adapter == "mock" {
 			continue
 		}
+		if p.Adapter == "agy" {
+			errors = append(errors, "agy is disabled: OAuth/keychain state conflicts with strict ephemeral-home isolation; use Pi with an explicit Google model")
+			continue
+		}
 		if _, err := exec.LookPath(p.Adapter); err != nil {
 			errors = append(errors, "missing executable: "+p.Adapter)
 			continue
 		}
 		switch p.Adapter {
-		case "agy":
-			out, err := runLookup("agy", "models")
-			if err != nil || !strings.Contains(out, p.Model) {
-				errors = append(errors, "agy model is not listed: "+p.Model)
-			}
 		case "pi", "claude":
 			out, err := runLookup("pi", "--no-extensions", "--list-models", p.Model)
 			registry := p.Model

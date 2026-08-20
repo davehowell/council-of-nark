@@ -48,14 +48,7 @@ func commandFor(provider Provider, prompt, system string, schema map[string]any)
 		args = []string{bin, "--print", "--safe-mode", "--disable-slash-commands", "--no-chrome", "--no-session-persistence", "--permission-mode", "dontAsk", "--tools", "", "--model", provider.Model, "--effort", effort, "--system-prompt", system, "--json-schema", schemaText, "--output-format", "json", prompt}
 		executables = []string{bin}
 	case "agy":
-		bin, err := executable("agy")
-		if err != nil {
-			return adapterCommand{}, err
-		}
-		// agy model IDs already encode the effort tier (for example, -flash-low).
-		// Current agy rejects a separate --effort for these models.
-		args = []string{bin, "--print", prompt, "--model", provider.Model, "--output-format", "json", "--json-schema", schemaText, "--disable-slash-commands", "--sandbox"}
-		executables = []string{bin}
+		return adapterCommand{}, fmt.Errorf("agy is disabled in the strict harness: its OAuth/keychain state is incompatible with an ephemeral HOME; use an explicitly pinned Pi Gemini model")
 	case "pi":
 		piPath, err := exec.LookPath("pi")
 		if err != nil {

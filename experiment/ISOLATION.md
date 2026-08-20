@@ -9,7 +9,7 @@ Hold local context approximately constant between conditions and prevent a respo
 - macOS kernel and Seatbelt implementation;
 - Go toolchain used to build the committed harness;
 - Git used by the controller before the model process starts;
-- selected provider CLI, runtime, credential mechanism, and remote provider;
+- selected provider CLI, runtime, credential mechanism, and remote provider; OAuth clients that require shared keychain/home state are rejected;
 - committed prompt, schema, config, rating, and scoring assets.
 
 The freeze records provider CLI versions and SHA-256 entrypoint digests. It cannot hash or inspect remote provider code.
@@ -59,6 +59,8 @@ Deleting `.git` after a normal clone is insufficient if refs, worktrees, caches,
 The maintained harness refuses root. A standard non-admin dedicated macOS account is recommended for claim-bearing runs and can be asserted with `COUNCIL_EXPERIMENT_USER`.
 
 The harness does not create one account per call. Doing so requires privileged Directory Services mutations, credential distribution, ownership changes, and cleanup, adding more state than it removes. Per-call Seatbelt profiles and ephemeral homes are the maintained call-level boundary.
+
+agy is deliberately unsupported: when given an ephemeral home, its OAuth flow attempts to locate or create a login keychain. Rather than relax isolation or permit UI, the harness fails before starting agy. Gemini experiments use a pinned Google model through Pi's sterile credential copy.
 
 ## Unsupported platforms
 

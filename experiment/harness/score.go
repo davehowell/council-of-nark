@@ -101,7 +101,7 @@ func groupName(metadata map[string]any) string {
 	case "topology":
 		return stringValue(metadata["topology"]) + ":" + stringValue(metadata["kind"])
 	default:
-		return stringValue(metadata["adapter"]) + ":" + stringValue(metadata["wrapper"])
+		return fmt.Sprintf("provider-%d:%s:%s:%s", intValue(metadata["provider_index"]), stringValue(metadata["adapter"]), stringValue(metadata["model"]), stringValue(metadata["wrapper"]))
 	}
 }
 func setDifference(a, b stringSet) []string {

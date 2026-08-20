@@ -18,8 +18,8 @@
       "effort": "low"
     },
     {
-      "adapter": "agy",
-      "model": "gemini-3.6-flash-high",
+      "adapter": "pi",
+      "model": "google/gemini-3.6-flash",
       "effort": "high"
     },
     {

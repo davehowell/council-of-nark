@@ -2,7 +2,6 @@ package harness
 
 import (
 	"bytes"
-	"encoding/json"
 	"fmt"
 	"os"
 	"os/exec"
@@ -79,17 +78,6 @@ func copyIfPresent(source, destination string) error {
 	}
 	return copyFile(source, destination, 0o600)
 }
-func agyDisplayModel(model string) string {
-	parts := strings.Split(model, "-")
-	if len(parts) >= 4 && parts[0] == "gemini" {
-		family := strings.Title(parts[len(parts)-2]) // #nosec G101 -- display text only
-		tier := strings.Title(parts[len(parts)-1])
-		version := strings.Join(parts[1:len(parts)-2], ".")
-		return fmt.Sprintf("Gemini %s %s (%s)", version, family, tier)
-	}
-	return model
-}
-
 func prepareEphemeralHome(home string, provider Provider) (map[string]string, error) {
 	if err := os.MkdirAll(home, 0o700); err != nil {
 		return nil, err
@@ -99,18 +87,10 @@ func prepareEphemeralHome(home string, provider Provider) (map[string]string, er
 		return nil, err
 	}
 	credentialFiles := map[string][]string{
-		"pi":  {".pi/agent/auth.json", ".pi/agent/models-store.json", ".pi/agent/settings.json", ".pi/settings.json"},
-		"agy": {".gemini/antigravity-cli/antigravity-oauth-token"},
+		"pi": {".pi/agent/auth.json", ".pi/agent/models-store.json", ".pi/agent/settings.json", ".pi/settings.json"},
 	}
 	for _, rel := range credentialFiles[provider.Adapter] {
 		if err := copyIfPresent(filepath.Join(original, rel), filepath.Join(home, rel)); err != nil {
-			return nil, err
-		}
-	}
-	if provider.Adapter == "agy" {
-		settings := map[string]any{"enableTelemetry": false, "model": agyDisplayModel(provider.Model), "permissions": map[string]any{"allow": []string{}}, "trustedWorkspaces": []string{}}
-		data, _ := json.Marshal(settings)
-		if err := atomicWrite(filepath.Join(home, ".gemini/antigravity-cli/settings.json"), append(data, '\n'), 0o600); err != nil {
 			return nil, err
 		}
 	}
@@ -171,7 +151,7 @@ func makeSandbox(base string, provider Provider, executables, runtimeRoots []str
 	env["TMPDIR"] = temp
 	env["PATH"] = "/usr/bin:/bin"
 	profile := filepath.Join(root, "profile.sb")
-	if err := atomicWrite(profile, []byte(profileText(root, executables, runtimeRoots, provider.Adapter == "agy")), 0o600); err != nil {
+	if err := atomicWrite(profile, []byte(profileText(root, executables, runtimeRoots, false)), 0o600); err != nil {
 		return sandboxContext{}, err
 	}
 	return sandboxContext{Root: root, Home: home, Temp: temp, CWD: cwd, Profile: profile, Environment: envList(env)}, nil
