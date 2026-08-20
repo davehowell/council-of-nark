@@ -52,7 +52,9 @@ func commandFor(provider Provider, prompt, system string, schema map[string]any)
 		if err != nil {
 			return adapterCommand{}, err
 		}
-		args = []string{bin, "--print", prompt, "--model", provider.Model, "--effort", effort, "--output-format", "json", "--json-schema", schemaText, "--disable-slash-commands", "--sandbox"}
+		// agy model IDs already encode the effort tier (for example, -flash-low).
+		// Current agy rejects a separate --effort for these models.
+		args = []string{bin, "--print", prompt, "--model", provider.Model, "--output-format", "json", "--json-schema", schemaText, "--disable-slash-commands", "--sandbox"}
 		executables = []string{bin}
 	case "pi":
 		piPath, err := exec.LookPath("pi")

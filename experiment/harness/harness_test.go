@@ -89,6 +89,20 @@ func TestPiAssistantParserIgnoresEchoedPrompt(t *testing.T) {
 		t.Fatalf("unexpected parse: %v %s", value, errText)
 	}
 }
+func TestAgyModelEncodesEffort(t *testing.T) {
+	command, err := commandFor(Provider{Adapter: "agy", Model: "gemini-3.5-flash-low", Effort: "low"}, "prompt", "system", map[string]any{"type": "object"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	joined := strings.Join(command.Args, " ")
+	if strings.Contains(joined, "--effort") {
+		t.Fatal("agy effort must not be passed separately from its model ID")
+	}
+	if !strings.Contains(joined, "--model gemini-3.5-flash-low") {
+		t.Fatal("agy model was not pinned")
+	}
+}
+
 func TestGemmaCommandPinsIsolation(t *testing.T) {
 	command, err := commandFor(Provider{Adapter: "pi", Model: "gemma-4-31b-it", Effort: "off"}, "prompt", "system", map[string]any{"$schema": "ignored", "type": "object"})
 	if err != nil {
