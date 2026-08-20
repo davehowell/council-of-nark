@@ -79,7 +79,7 @@ just experiment-stage-a-smoke 3                           # frozen 81-call smoke
 
 Each call starts in a fresh process and detached worktree at the frozen commit, with tools, project context, optional memory, and session persistence disabled where supported. Raw requests and responses are sealed by digest before arm-blinded scoring.
 
-The first 81-call Stage A plumbing smoke and its mixed calibration results are published in [`experiment/results/2026-08-20-stage-a-smoke/`](experiment/results/2026-08-20-stage-a-smoke/). It is explicitly non-confirmatory and uses LLM triage; the repository does not present those scores as proof that the council works or is worthless.
+The first 81-call Stage A plumbing smoke and its mixed calibration results are published in [`experiment/results/2026-08-20-stage-a-smoke/`](experiment/results/2026-08-20-stage-a-smoke/). The low-reasoning Gemma rerun and 30-pair persona calibration are also under [`experiment/results/`](experiment/results/). They are explicitly non-confirmatory and use LLM triage; the repository does not present those scores as proof that the council works or is worthless.
 
 ## Public-release audit
 

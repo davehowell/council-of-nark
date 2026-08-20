@@ -1,0 +1,20 @@
+{
+  "config": "experiment/config/stage-a-smoke-gemma.json",
+  "config_sha256": "940445ea036295abf8539bd6722b4360a51e76b324f42019215ef2c261b0f262",
+  "human_ratings": 0,
+  "published_files": {
+    "ratings-tidy.csv": "5e0ffb1a49ef0cd012e13b2980d5cff938b48757e6aaa7a0500c8f27f82837b9",
+    "run-health.json": "73096b070fdc6f3c143f99740b6ccdddab71dbe1b54859e400dcca28c4ceb76a",
+    "sets.csv": "8ce0760d3fe1bc6a6568dc1fa95bfa5c45a81b466680929242224cfd45cf2dd5",
+    "summary.json": "b84014eaa747747cf3f59696b7cb1ce6592cc2911346e3feb56c571164bc3f13"
+  },
+  "rating_parser_commit": "347467e5a39d7a140b8c297bfb3e2beeecb9b0b9",
+  "rating_provenance": {
+    "llm:gemini-3.5-flash-low": 419
+  },
+  "raw_seal_sha256": "452a95b7f2f41a76b71f2abe20c8d1b46617497fea84d1f0a4d85f0101153692",
+  "review_source_commit": "27d80c652cf208649e637266bd4c5dc925214016",
+  "review_source_tag": "experiment-harness-v0.2.1",
+  "schema_version": 1,
+  "study_stage": "smoke calibration; non-confirmatory"
+}

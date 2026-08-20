@@ -1,0 +1,16 @@
+{
+  "providers": {
+    "pi:gemma-4-31b-it": {
+      "calls": 60,
+      "cost_usd": 0.0,
+      "input_tokens": 51314,
+      "mean_latency_seconds": 15.550663770785711,
+      "output_tokens": 29868,
+      "total_latency_seconds": 933.0398262471426
+    }
+  },
+  "statuses": {
+    "success": 60
+  },
+  "total_findings_before_set_union": 324
+}

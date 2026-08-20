@@ -36,7 +36,9 @@ Each reviewer receives only `review-packet.md`. The harness rejects a request co
 
 The three base packets are too few for broad claims. Repeated sampling estimates model variance, not task diversity.
 
-The first successful Stage A calibration is published under [`results/2026-08-20-stage-a-smoke/`](results/2026-08-20-stage-a-smoke/). It proved the plumbing and exposed limited headroom with a strong model. Its one-sample descriptive scores are not a decision about council value. The next calibration repeats the unchanged design with explicit low-reasoning Gemma before any scenario redesign or pilot.
+The first successful Stage A calibration is published under [`results/2026-08-20-stage-a-smoke/`](results/2026-08-20-stage-a-smoke/). It proved the plumbing and exposed limited headroom with a strong model. Its one-sample descriptive scores are not a decision about council value.
+
+The unchanged low-reasoning Gemma rerun is under [`results/2026-08-20-stage-a-smoke-gemma/`](results/2026-08-20-stage-a-smoke-gemma/). Specialists increased raw recall and conditions found different defect IDs, although S0 remained high. A focused 30-pair correctness test under [`results/2026-08-20-persona-pair-gemma/`](results/2026-08-20-persona-pair-gemma/) found that the K-2SO wrapper reduced mean F1 for this model and task set. These remain calibration results, not a general verdict on personas or councils.
 
 ## Freeze rules
 
