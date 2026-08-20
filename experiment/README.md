@@ -2,6 +2,10 @@
 
 This directory contains the protocol and frozen source material for a staged empirical study of the Council of Nark.
 
+## Platform support
+
+The maintained runner supports **macOS only**. Its isolation design uses macOS Seatbelt and is not silently weakened on another operating system. Linux, Windows, container, and VM ports are left as an exercise for replicators; publish the changed threat model and rerun the isolation probes when adapting it.
+
 ## Research questions
 
 1. Do independent functional specialists find more planted defects than the same number of repeated omnibus reviews?
@@ -23,6 +27,7 @@ The study measures model output. It cannot infer which internal features, activa
 - [`HARDNESS.md`](HARDNESS.md): scenario difficulty dimensions, smoke calibration triggers, and confirmatory mutation rules.
 - [`METRICS.md`](METRICS.md): F1, semantic union, overlap, and comparability definitions.
 - [`CONTAMINATION_REVIEW.md`](CONTAMINATION_REVIEW.md): post-smoke review of context boundaries, scoring, scheduling, and remaining threats.
+- [`LAB_NOTEBOOK.md`](LAB_NOTEBOOK.md): chronological engineering decisions, failures, repairs, results, and pivots.
 - [`PREREGISTRATION.md`](PREREGISTRATION.md): commit-before-run hypothesis, threshold, sample, rating, and exclusion template.
 - [`RUNSHEET.md`](RUNSHEET.md): the operator and human-rating procedure.
 

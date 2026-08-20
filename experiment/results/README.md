@@ -4,6 +4,7 @@ Selected result snapshots belong here only after raw material and derived report
 
 A published snapshot should include:
 
+- an inline TP/FP/FN, precision, recall, F1, and macro-mean key in its Markdown report, including an explicit not-applicable note for failed runs;
 - frozen source commit and config digest;
 - run seal digest manifest;
 - status, model, usage, latency, and malformed-response summary;
