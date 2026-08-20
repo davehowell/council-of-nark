@@ -113,6 +113,10 @@ experiment-stage-a-smoke-gemma jobs="2":
 experiment-persona-pair-gemma jobs="2":
     @just experiment-complete experiment/config/persona-pair-gemma-repeated.json "{{jobs}}"
 
+# Run the fresh 480-call eight-role functional/fictional Gemma factorial.
+experiment-persona-factorial-gemma jobs="2":
+    @just experiment-complete experiment/config/persona-factorial-gemma.json "{{jobs}}"
+
 # Exercise the complete harness with a deterministic local adapter and no model calls.
 experiment-mock:
     @just experiment-complete experiment/config/mock-smoke.json 2

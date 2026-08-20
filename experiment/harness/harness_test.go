@@ -29,7 +29,7 @@ func TestPlanCounts(t *testing.T) {
 	cases := []struct {
 		name        string
 		calls, sets int
-	}{{"stage-a-smoke.json", 81, 27}, {"topology-smoke.json", 144, 108}, {"provider-pair-smoke.json", 18, 18}, {"persona-pair-gemma-repeated.json", 60, 60}}
+	}{{"stage-a-smoke.json", 81, 27}, {"topology-smoke.json", 144, 108}, {"provider-pair-smoke.json", 18, 18}, {"persona-pair-gemma-repeated.json", 60, 60}, {"persona-factorial-gemma.json", 480, 480}}
 	for _, tc := range cases {
 		t.Run(tc.name, func(t *testing.T) {
 			plan, err := BuildPlan(configAt(t, tc.name))
@@ -42,6 +42,29 @@ func TestPlanCounts(t *testing.T) {
 		})
 	}
 }
+func TestPersonaFactorialBalancesEveryRole(t *testing.T) {
+	plan, err := BuildPlan(configAt(t, "persona-factorial-gemma.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	counts := map[string]map[string]int{}
+	for _, set := range plan.OutputSets {
+		role, wrapper := stringValue(set.Metadata["role"]), stringValue(set.Metadata["wrapper"])
+		if counts[role] == nil {
+			counts[role] = map[string]int{}
+		}
+		counts[role][wrapper]++
+	}
+	if len(counts) != 8 {
+		t.Fatalf("got %d roles", len(counts))
+	}
+	for role, wrappers := range counts {
+		if wrappers["functional"] != 30 || wrappers["fictional"] != 30 {
+			t.Fatalf("%s: %#v", role, wrappers)
+		}
+	}
+}
+
 func TestPlanOrderDeterministic(t *testing.T) {
 	config := configAt(t, "stage-a-smoke.json")
 	a, _ := BuildPlan(config)

@@ -151,7 +151,30 @@ func buildProviderPair(b *builder) error {
 				for _, wrapper := range c.Wrappers {
 					prefix := []any{"provider_pair", packet, repeat, providerIndex, wrapper}
 					review := b.call(semanticParts(prefix, "review"), packet, provider, map[string]any{"kind": "specialist", "wrapper": wrapper, "role": c.Role}, nil, "")
-					b.outputSet(semanticParts(prefix, "final"), packet, []string{review.CallID}, []string{review.CallID}, map[string]any{"design": "provider_pair", "provider_index": providerIndex, "adapter": provider.Adapter, "model": provider.Model, "wrapper": wrapper, "repeat": repeat, "kind": "final"})
+					b.outputSet(semanticParts(prefix, "final"), packet, []string{review.CallID}, []string{review.CallID}, map[string]any{"design": "provider_pair", "provider_index": providerIndex, "adapter": provider.Adapter, "model": provider.Model, "wrapper": wrapper, "role": c.Role, "repeat": repeat, "kind": "final"})
+				}
+			}
+		}
+	}
+	return nil
+}
+
+func buildPersonaFactorial(b *builder) error {
+	c := b.config
+	for _, packet := range c.Packets {
+		for repeat := 0; repeat < c.Repetitions; repeat++ {
+			for _, role := range c.Roles {
+				for _, wrapper := range c.Wrappers {
+					prefix := []any{"persona_factorial", packet, repeat, role, wrapper}
+					spec := map[string]any{"kind": "specialist", "wrapper": wrapper, "role": role}
+					if role == "omnibus" {
+						spec = map[string]any{"kind": "omnibus", "wrapper": wrapper}
+					}
+					review := b.call(semanticParts(prefix, "review"), packet, c.Provider, spec, nil, "")
+					b.outputSet(semanticParts(prefix, "final"), packet, []string{review.CallID}, []string{review.CallID}, map[string]any{
+						"design": "persona_factorial", "provider_index": 0, "adapter": c.Provider.Adapter,
+						"model": c.Provider.Model, "wrapper": wrapper, "role": role, "repeat": repeat, "kind": "final",
+					})
 				}
 			}
 		}
@@ -169,6 +192,8 @@ func BuildPlan(config Config) (Plan, error) {
 		err = buildTopology(b)
 	case "provider_pair":
 		err = buildProviderPair(b)
+	case "persona_factorial":
+		err = buildPersonaFactorial(b)
 	default:
 		err = fmt.Errorf("unknown design %s", config.Design)
 	}

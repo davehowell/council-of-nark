@@ -26,6 +26,7 @@ The study measures model output. It cannot infer which internal features, activa
 - [`harness/`](harness/): standard-library Go runner, macOS Seatbelt profiles, adapters, blinding, sealing, rating, and scoring code.
 - [`HARDNESS.md`](HARDNESS.md): scenario difficulty dimensions, smoke calibration triggers, and confirmatory mutation rules.
 - [`METRICS.md`](METRICS.md): F1, semantic union, overlap, and comparability definitions.
+- [`PERSONA_FACTORIAL.md`](PERSONA_FACTORIAL.md): balanced eight-role functional/fictional follow-up, estimands, multiplicity, and decision rule.
 - [`CONTAMINATION_REVIEW.md`](CONTAMINATION_REVIEW.md): post-smoke review of context boundaries, scoring, scheduling, and remaining threats.
 - [`ISOLATION.md`](ISOLATION.md): macOS Seatbelt, network, dedicated-account, and real-project threat model.
 - [`LAB_NOTEBOOK.md`](LAB_NOTEBOOK.md): chronological engineering decisions, failures, repairs, results, and pivots.
@@ -85,7 +86,7 @@ just experiment-adapter-check-gemma
 just experiment-stage-a-smoke-gemma 2
 ```
 
-The Stage A smoke makes 81 calls: 3 packets × (S0/S1/S2 at one call each + M0/M1/M2 at seven reviewers and one fuser each). The focused Gemma persona-pair recipe makes 60 calls: 3 packets × 10 repeats × functional/fictional correctness wrapper. The topology smoke makes 144 calls across all six role orders. The cross-provider pair smoke makes 18 calls.
+The Stage A smoke makes 81 calls: 3 packets × (S0/S1/S2 at one call each + M0/M1/M2 at seven reviewers and one fuser each). The focused Gemma correctness pair makes 60 calls. The preregistration-ready eight-role persona factorial makes 480 calls: 8 roles × 3 packets × 10 repeats × 2 wrappers. The topology smoke makes 144 calls across all six role orders. The cross-provider pair smoke makes 18 calls.
 
 If the cheap smoke restores useful spread, estimate one wrapper effect against sampling noise before redesigning scenarios:
 
