@@ -215,6 +215,15 @@ def blocked_record(run: Path, call: dict[str, Any], failed: list[str]) -> None:
     )
 
 
+def ordered_pending_call_ids(run: Path, plan: dict[str, Any]) -> list[str]:
+    """Return unfinished calls in the seeded order recorded by plan.json."""
+    return [
+        call["call_id"]
+        for call in plan["calls"]
+        if (read_call_record(run, call["call_id"]) or {}).get("status") not in TERMINAL_STATUSES
+    ]
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Execute a frozen experiment plan")
     parser.add_argument("run")
@@ -229,18 +238,16 @@ def main() -> int:
     plan = load_json(run / "plan.json")
     verify_manifest(freeze)
     call_map = {call["call_id"]: call for call in plan["calls"]}
-    pending = {
-        call_id
-        for call_id in call_map
-        if (read_call_record(run, call_id) or {}).get("status") not in TERMINAL_STATUSES
-    }
+    # Preserve the seeded order stored in plan.json. A set would make execution
+    # order depend on Python hash iteration and reintroduce an avoidable time confound.
+    pending = ordered_pending_call_ids(run, plan)
     jobs = args.jobs or config["max_concurrency"]
     running: dict[Future[dict[str, Any]], str] = {}
 
     with ThreadPoolExecutor(max_workers=jobs) as pool:
         while pending or running:
             made_progress = False
-            for call_id in list(pending):
+            for call_id in pending.copy():
                 if len(running) >= jobs:
                     break
                 call = call_map[call_id]

@@ -88,9 +88,19 @@ def main() -> int:
 
     with (blinded / "rating-template.csv").open("w", newline="", encoding="utf-8") as handle:
         writer = csv.writer(handle)
-        writer.writerow(["rater", "item_id", "defect_id", "material", "confidence", "notes"])
+        writer.writerow(
+            [
+                "rater",
+                "item_id",
+                "defect_id",
+                "false_positive_cluster",
+                "material",
+                "confidence",
+                "notes",
+            ]
+        )
         for row in item_rows:
-            writer.writerow(["", row["item_id"], "", "", "", ""])
+            writer.writerow(["", row["item_id"], "", "", "", "", ""])
 
     (blinded / "RUNSHEET.md").write_text(
         "# Blinded rating runsheet\n\n"
@@ -98,11 +108,12 @@ def main() -> int:
         "2. Open `findings.jsonl` and the answer key for each item's `packet`.\n"
         "3. Enter one row per item in a copy of `rating-template.csv`.\n"
         "4. Set `defect_id` to one matching planted ID, or `NONE`.\n"
-        "5. Set `material` to `true` only when the packet supports the claim and its consequence.\n"
-        "6. Use `confidence` = `high`, `medium`, or `low`; explain ambiguous matches in `notes`.\n"
-        "7. Work independently. Do not compare ratings until both raters finish.\n"
-        "8. Resolve disagreements without revealing arm, model, or provider metadata.\n"
-        "9. Save the adjudicated file and run the scoring recipe.\n\n"
+        "5. For `NONE`, assign a short `false_positive_cluster`; reuse it for the same claimed mechanism in this set.\n"
+        "6. Set `material` to `true` only when the packet supports the claim and its consequence.\n"
+        "7. Use `confidence` = `high`, `medium`, or `low`; explain ambiguous matches in `notes`.\n"
+        "8. Work independently. Do not compare ratings until both raters finish.\n"
+        "9. Resolve disagreements without revealing arm, model, or provider metadata.\n"
+        "10. Save the adjudicated file and run the scoring recipe.\n\n"
         "Different wording can map to the same defect. An unmatched material claim is a false positive. "
         "A style preference with no planted mechanism maps to `NONE`.\n",
         encoding="utf-8",

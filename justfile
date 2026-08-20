@@ -93,9 +93,17 @@ experiment-complete config jobs="3":
 experiment-adapter-check:
     @just experiment-complete experiment/config/adapter-check.json 1
 
-# Run the 81-call Stage A smoke test.
+# Verify explicit Pi/Gemma selection and prompt-enforced JSON with one frozen call.
+experiment-adapter-check-gemma:
+    @just experiment-complete experiment/config/adapter-check-gemma.json 1
+
+# Run the original 81-call Haiku Stage A smoke test.
 experiment-stage-a-smoke jobs="3":
     @just experiment-complete experiment/config/stage-a-smoke.json "{{jobs}}"
+
+# Run the 81-call low-reasoning Gemma Stage A smoke test.
+experiment-stage-a-smoke-gemma jobs="4":
+    @just experiment-complete experiment/config/stage-a-smoke-gemma.json "{{jobs}}"
 
 # Exercise the complete harness with a deterministic local adapter and no model calls.
 experiment-mock:

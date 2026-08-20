@@ -1,6 +1,8 @@
 # Scenario hardness and calibration
 
-Hardness means the probability that a review condition finds a planted mechanism without producing unsupported claims. It is not the length of the packet or the obscurity of a technology name.
+Hardness means the probability that a review condition finds a planted mechanism without producing unsupported claims. It is not the length of the packet or the obscurity of a technology name. Hardness is relative to model capability: a packet that separates small models can be a ceiling test for a frontier model.
+
+Use the least-capable model that can reliably follow the response contract when calibrating prompt effects. If every arm is near the ceiling, lower model capability before adding contrived defects. Preserve a spread of easy, medium, and hard components once task variants are introduced.
 
 ## Hardness dimensions
 

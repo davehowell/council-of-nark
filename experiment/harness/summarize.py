@@ -11,9 +11,18 @@ from .common import load_json, read_call_record, resolve_run, write_json
 
 def token_counts(usage: dict[str, Any]) -> tuple[int, int, float]:
     source = usage.get("usage") if isinstance(usage.get("usage"), dict) else usage
-    input_tokens = int(source.get("input_tokens", source.get("inputTokens", 0)) or 0)
-    output_tokens = int(source.get("output_tokens", source.get("outputTokens", 0)) or 0)
+    input_tokens = int(
+        source.get("input_tokens", source.get("inputTokens", source.get("input", 0))) or 0
+    )
+    output_tokens = int(
+        source.get("output_tokens", source.get("outputTokens", source.get("output", 0))) or 0
+    )
+    # Pi reports reasoning separately from visible output. Include it in the
+    # billable/generated token total used for cross-adapter efficiency.
+    output_tokens += int(source.get("reasoning", 0) or 0)
     cost = float(usage.get("total_cost_usd", usage.get("cost_usd", 0)) or 0)
+    if not cost and isinstance(source.get("cost"), dict):
+        cost = float(source["cost"].get("total", 0) or 0)
     if not (input_tokens or output_tokens) and isinstance(usage.get("modelUsage"), dict):
         for model in usage["modelUsage"].values():
             if isinstance(model, dict):

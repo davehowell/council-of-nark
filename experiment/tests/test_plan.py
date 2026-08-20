@@ -1,9 +1,12 @@
 from __future__ import annotations
 
+from pathlib import Path
+import tempfile
 import unittest
 
 from experiment.harness.common import ROOT, load_json
 from experiment.harness.plan import build
+from experiment.harness.run import ordered_pending_call_ids
 
 
 class PlanTests(unittest.TestCase):
@@ -14,6 +17,22 @@ class PlanTests(unittest.TestCase):
         self.assertEqual(27, len(plan["output_sets"]))
         ids = [call["call_id"] for call in plan["calls"]]
         self.assertEqual(len(ids), len(set(ids)))
+
+    def test_gemma_smoke_pins_model_and_disables_thinking(self) -> None:
+        config = load_json(ROOT / "experiment/config/stage-a-smoke-gemma.json")
+        plan = build(config)
+        self.assertEqual(81, len(plan["calls"]))
+        self.assertEqual(
+            {("pi", "gemma-4-31b-it", "off")},
+            {
+                (
+                    call["provider"]["adapter"],
+                    call["provider"]["model"],
+                    call["provider"]["effort"],
+                )
+                for call in plan["calls"]
+            },
+        )
 
     def test_topology_smoke_counts_and_dependencies(self) -> None:
         config = load_json(ROOT / "experiment/config/topology-smoke.json")
@@ -29,6 +48,14 @@ class PlanTests(unittest.TestCase):
         plan = build(config)
         self.assertEqual(18, len(plan["calls"]))
         self.assertEqual(18, len(plan["output_sets"]))
+
+    def test_pending_calls_preserve_seeded_plan_order(self) -> None:
+        plan = {"calls": [{"call_id": "c-third"}, {"call_id": "c-first"}, {"call_id": "c-second"}]}
+        with tempfile.TemporaryDirectory() as directory:
+            self.assertEqual(
+                ["c-third", "c-first", "c-second"],
+                ordered_pending_call_ids(Path(directory), plan),
+            )
 
 
 if __name__ == "__main__":

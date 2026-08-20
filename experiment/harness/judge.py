@@ -12,7 +12,15 @@ from .common import ROOT, load_json, opaque_id, resolve_run, slug_timestamp, sou
 from .prompting import replace
 from .run import DetachedWorktree
 
-FIELDS = ["rater", "item_id", "defect_id", "material", "confidence", "notes"]
+FIELDS = [
+    "rater",
+    "item_id",
+    "defect_id",
+    "false_positive_cluster",
+    "material",
+    "confidence",
+    "notes",
+]
 
 
 def read_jsonl(path: Path) -> list[dict[str, Any]]:
@@ -195,6 +203,7 @@ def main() -> int:
                     "rater": f"llm:{config['provider']['model']}",
                     "item_id": judgement["item_id"],
                     "defect_id": judgement["defect_id"],
+                    "false_positive_cluster": judgement["false_positive_cluster"],
                     "material": judgement["material"],
                     "confidence": judgement["confidence"],
                     "notes": judgement["rationale"],

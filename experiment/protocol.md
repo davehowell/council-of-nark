@@ -169,11 +169,13 @@ Retries are infrastructure events, not new samples. Predefine whether a refused 
 
 ## 7. Scoring
 
-Map each finding to zero or one planted defect ID. A finding that maps to no defect is a false positive. Two phrasings of the same defect count once.
+Map each finding to zero or one planted defect ID. A finding that maps to no defect enters a blinded semantic false-positive cluster. Two phrasings of the same true or false claim count once.
 
 ### Primary metric
 
 - **Macro F1 over planted defects**, calculated per packet/run and averaged with each packet weighted equally.
+- For role specialisation (`M1 − M0`), compare the semantically de-duplicated raw unions first. This measures what the panel found before a capable fuser can flatten differences.
+- For practical shipped output, compare fused verdicts and report fusion retention separately.
 
 ### Secondary metrics
 
@@ -230,7 +232,7 @@ Run a power simulation from the pilot before choosing the final repeat count. Th
 
 Use effect sizes and 95% bootstrap confidence intervals. Replace the thresholds below after the smoke test, before the confirmatory run.
 
-- **Role diversity supported:** M1 beats M0 on macro F1 and p10, with no material precision collapse.
+- **Role diversity supported:** M1's de-duplicated raw union beats M0 on macro F1, recall, and p10 with no material precision collapse. Fused output is the practical secondary check.
 - **Pop-culture wrapper supported:** M2 beats M1 by the preregistered smallest effect of interest and improves true findings per token. Characterful wording alone is failure.
 - **Pop-culture wrapper wasteful:** M2 is equivalent or worse than M1 and uses more tokens or produces more malformed/noisy output.
 - **Fusion supported:** fused F1 exceeds raw-union F1 through enough false-positive removal to offset fusion loss.

@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "design": "stage_a",
+  "label": "adapter-check-gemma",
+  "seed": "council-adapter-check-gemma-v1",
+  "packets": ["01-revenue-dashboard"],
+  "arms": ["S0"],
+  "repetitions": 1,
+  "provider": {
+    "adapter": "pi",
+    "model": "gemma-4-31b-it",
+    "effort": "off"
+  },
+  "max_concurrency": 1,
+  "request_timeout_seconds": 300,
+  "max_attempts": 2,
+  "decoding": {
+    "temperature": "provider default; Pi does not expose this setting",
+    "structured_output": "prompt-enforced; Pi has no JSON Schema flag",
+    "maximum_findings": 8
+  }
+}

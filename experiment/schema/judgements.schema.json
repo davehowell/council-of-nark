@@ -10,10 +10,11 @@
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["item_id", "defect_id", "material", "confidence", "rationale"],
+        "required": ["item_id", "defect_id", "false_positive_cluster", "material", "confidence", "rationale"],
         "properties": {
           "item_id": {"type": "string"},
           "defect_id": {"type": ["string", "null"]},
+          "false_positive_cluster": {"type": ["string", "null"]},
           "material": {"type": "boolean"},
           "confidence": {"enum": ["high", "medium", "low"]},
           "rationale": {"type": "string"}

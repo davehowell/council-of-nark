@@ -4,7 +4,8 @@ import json
 import unittest
 
 from experiment.harness.adapters import command_for, extract
-from experiment.harness.validate import findings_response
+from experiment.harness.summarize import token_counts
+from experiment.harness.validate import findings_response, judgement_response
 
 
 VALID = {
@@ -48,6 +49,34 @@ class AdapterTests(unittest.TestCase):
         schema_argument = command[command.index("--json-schema") + 1]
         self.assertNotIn("$schema", schema_argument)
         self.assertIn('"type":"object"', schema_argument)
+
+    def test_pi_usage_includes_reasoning_and_nested_cost(self) -> None:
+        usage = {
+            "usage": {
+                "input": 100,
+                "output": 20,
+                "reasoning": 5,
+                "cost": {"total": 0.0125},
+            }
+        }
+        self.assertEqual((100, 25, 0.0125), token_counts(usage))
+
+    def test_false_findings_require_a_semantic_cluster(self) -> None:
+        response = {
+            "judgements": [
+                {
+                    "item_id": "i-one",
+                    "defect_id": None,
+                    "false_positive_cluster": "invented cache outage",
+                    "material": False,
+                    "confidence": "high",
+                    "rationale": "No packet support.",
+                }
+            ]
+        }
+        self.assertEqual([], judgement_response(response, {"i-one"}))
+        response["judgements"][0]["false_positive_cluster"] = None
+        self.assertTrue(judgement_response(response, {"i-one"}))
 
 
 if __name__ == "__main__":
