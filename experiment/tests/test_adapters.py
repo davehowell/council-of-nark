@@ -9,6 +9,7 @@ from experiment.harness.adapters import (
     extract_pi_assistant,
     pi_provider_error,
 )
+from experiment.harness.common import ROOT
 from experiment.harness.summarize import token_counts
 from experiment.harness.validate import findings_response, judgement_response
 
@@ -122,6 +123,15 @@ class AdapterTests(unittest.TestCase):
             }
         }
         self.assertEqual((100, 25, 0.0125), token_counts(usage))
+
+    def test_provider_schemas_type_every_enum(self) -> None:
+        for name in ("findings.schema.json", "judgements.schema.json"):
+            schema = json.loads((ROOT / "experiment/schema" / name).read_text(encoding="utf-8"))
+            confidence = schema["properties"][
+                "findings" if name.startswith("findings") else "judgements"
+            ]["items"]["properties"]["confidence"]
+            self.assertEqual("string", confidence["type"])
+            self.assertEqual(["high", "medium", "low"], confidence["enum"])
 
     def test_false_findings_require_a_semantic_cluster(self) -> None:
         response = {
