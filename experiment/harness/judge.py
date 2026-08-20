@@ -8,7 +8,7 @@ from pathlib import Path
 from typing import Any
 
 from .adapters import invoke
-from .common import load_json, opaque_id, resolve_run, slug_timestamp, source_commit, utc_now, write_json
+from .common import ROOT, load_json, opaque_id, resolve_run, slug_timestamp, source_commit, utc_now, write_json
 from .prompting import replace
 from .run import DetachedWorktree
 
@@ -47,7 +47,10 @@ def rate_set(
     destination.mkdir(parents=True, exist_ok=True)
     previous = load_json(destination / "record.json") if (destination / "record.json").exists() else None
     with DetachedWorktree(run, judge_id, freeze["source_commit"]) as worktree:
-        template = (worktree / "experiment/prompts/judge.txt").read_text(encoding="utf-8")
+        # Rating is a derived stage with its own recorded harness commit. Load its
+        # prompt/schema from that commit while keeping the packet key at the frozen
+        # review-source commit.
+        template = (ROOT / "experiment/prompts/judge.txt").read_text(encoding="utf-8")
         answer = (
             worktree / "experiment" / "scenarios" / output_set["packet"] / "answer-key.md"
         ).read_text(encoding="utf-8")
@@ -63,7 +66,7 @@ def rate_set(
             "You are an isolated blinded evaluation rater. Use only the supplied answer key and findings. "
             "Do not use tools, memories, project context, or other sessions. Return only schema-valid JSON."
         )
-        schema = load_json(worktree / "experiment/schema/judgements.schema.json")
+        schema = load_json(ROOT / "experiment/schema/judgements.schema.json")
         expected_ids = {item["item_id"] for item in items}
         attempts = []
         result = None
