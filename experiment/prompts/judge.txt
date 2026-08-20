@@ -2,6 +2,9 @@ You are a blinded smoke-test rater. Map each supplied finding to at most one pla
 
 Return one judgement for every item ID and no others. Do not infer the review arm, persona, provider, or hypothesis.
 
+Return only this JSON shape:
+{"judgements":[{"item_id":"opaque item ID","defect_id":"matching ID or null","material":true,"confidence":"high|medium|low","rationale":"one short reason"}]}
+
 --- ANSWER KEY ---
 {{ANSWER_KEY}}
 --- BLINDED FINDINGS ---

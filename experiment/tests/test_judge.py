@@ -5,6 +5,7 @@ from pathlib import Path
 import tempfile
 import unittest
 
+from experiment.harness.common import ROOT
 from experiment.harness.judge import existing_ratings
 
 
@@ -31,6 +32,11 @@ class JudgeResumeTests(unittest.TestCase):
             rows = existing_ratings(path)
             self.assertEqual({"i-one"}, set(rows))
             self.assertEqual("RD-01", rows["i-one"]["defect_id"])
+
+    def test_judge_prompt_contains_contract_for_adapters_without_schema_flags(self) -> None:
+        prompt = (ROOT / "experiment/prompts/judge.txt").read_text(encoding="utf-8")
+        self.assertIn('{"judgements"', prompt)
+        self.assertIn('"confidence":"high|medium|low"', prompt)
 
 
 if __name__ == "__main__":
