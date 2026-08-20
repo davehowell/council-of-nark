@@ -412,10 +412,11 @@ func (h *Harness) Score(runArgument, ratingsArgument, label string) error {
 	}
 	pairIndex := map[string]map[string]map[string]any{}
 	for _, row := range rows {
-		if stringValue(row["design"]) != "provider_pair" {
+		design := stringValue(row["design"])
+		if design != "provider_pair" && design != "persona_factorial" {
 			continue
 		}
-		key := pairKey(row["packet"], row["repeat"], row["provider_index"])
+		key := pairKey(row["packet"], row["repeat"], row["provider_index"], row["role"])
 		if pairIndex[key] == nil {
 			pairIndex[key] = map[string]map[string]any{}
 		}
@@ -428,23 +429,40 @@ func (h *Harness) Score(runArgument, ratingsArgument, label string) error {
 			continue
 		}
 		a, b := detectedBySet[stringValue(functional["set_id"])], detectedBySet[stringValue(fictional["set_id"])]
-		pairedRows = append(pairedRows, map[string]any{"packet": functional["packet"], "repeat": functional["repeat"], "provider_index": functional["provider_index"], "f1_delta_fictional_minus_functional": floatValue(fictional["f1"]) - floatValue(functional["f1"]), "precision_delta": floatValue(fictional["precision"]) - floatValue(functional["precision"]), "recall_delta": floatValue(fictional["recall"]) - floatValue(functional["recall"]), "jaccard": setJaccard(a, b), "functional_only": setDifference(a, b), "fictional_only": setDifference(b, a)})
+		pairedRows = append(pairedRows, map[string]any{
+			"packet": functional["packet"], "role": functional["role"], "repeat": functional["repeat"],
+			"provider_index":                      functional["provider_index"],
+			"f1_delta_fictional_minus_functional": floatValue(fictional["f1"]) - floatValue(functional["f1"]),
+			"precision_delta":                     floatValue(fictional["precision"]) - floatValue(functional["precision"]),
+			"recall_delta":                        floatValue(fictional["recall"]) - floatValue(functional["recall"]),
+			"jaccard":                             setJaccard(a, b), "functional_only": setDifference(a, b), "fictional_only": setDifference(b, a),
+		})
 	}
 	pairedSummary := map[string]any{}
 	if len(pairedRows) > 0 {
-		packetNames := []string{"all"}
-		seen := stringSet{}
+		strata := []string{"all"}
+		packetsSeen, rolesSeen := stringSet{}, stringSet{}
 		for _, row := range pairedRows {
-			seen[stringValue(row["packet"])] = true
+			packetsSeen[stringValue(row["packet"])] = true
+			rolesSeen[stringValue(row["role"])] = true
 		}
-		for packet := range seen {
+		packetNames, roleNames := []string{}, []string{}
+		for packet := range packetsSeen {
 			packetNames = append(packetNames, packet)
 		}
-		sort.Strings(packetNames[1:])
-		for _, packet := range packetNames {
+		for role := range rolesSeen {
+			if role != "" {
+				roleNames = append(roleNames, "role:"+role)
+			}
+		}
+		sort.Strings(packetNames)
+		sort.Strings(roleNames)
+		strata = append(strata, packetNames...)
+		strata = append(strata, roleNames...)
+		for _, stratum := range strata {
 			selected := []map[string]any{}
 			for _, row := range pairedRows {
-				if packet == "all" || stringValue(row["packet"]) == packet {
+				if stratum == "all" || stringValue(row["packet"]) == stratum || "role:"+stringValue(row["role"]) == stratum {
 					selected = append(selected, row)
 				}
 			}
@@ -462,7 +480,7 @@ func (h *Harness) Score(runArgument, ratingsArgument, label string) error {
 					ties++
 				}
 			}
-			pairedSummary[packet] = map[string]any{"n_pairs": len(selected), "mean_f1_delta_fictional_minus_functional": mean(deltas), "bootstrap_95_ci_sampling_only": bootstrapMeanCI(deltas, plan.Seed+":"+packet+":paired-f1", 10000), "fictional_wins": fictionalWins, "ties": ties, "functional_wins": functionalWins, "mean_jaccard": mean(jaccards)}
+			pairedSummary[stratum] = map[string]any{"n_pairs": len(selected), "mean_f1_delta_fictional_minus_functional": mean(deltas), "bootstrap_95_ci_sampling_only": bootstrapMeanCI(deltas, plan.Seed+":"+stratum+":paired-f1", 10000), "fictional_wins": fictionalWins, "ties": ties, "functional_wins": functionalWins, "mean_jaccard": mean(jaccards)}
 		}
 	}
 	analysis := filepath.Join(run, "analysis", label)
