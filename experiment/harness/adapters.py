@@ -63,7 +63,11 @@ def command_for(
     adapter = provider["adapter"]
     model = provider["model"]
     effort = provider.get("effort", "low")
-    schema_text = json.dumps(schema, separators=(",", ":"))
+    # Claude Code's structured-output validator accepts the supported schema subset
+    # but rejects the draft-2020 meta-schema URI. Keep `$schema` in the frozen file
+    # and omit only that annotation from the CLI argument.
+    cli_schema = {key: value for key, value in schema.items() if key != "$schema"}
+    schema_text = json.dumps(cli_schema, separators=(",", ":"))
     if adapter == "claude":
         command = [
             "claude",
@@ -100,7 +104,7 @@ def command_for(
             "--output-format",
             "json",
             "--json-schema",
-            schema_relative,
+            schema_text,
             "--disable-slash-commands",
             "--sandbox",
         ]
