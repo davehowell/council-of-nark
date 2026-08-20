@@ -6,6 +6,7 @@ import csv
 import json
 import math
 from pathlib import Path
+import random
 from statistics import mean
 from typing import Any
 
@@ -34,6 +35,21 @@ def percentile(values: list[float], q: float) -> float | None:
     ordered = sorted(values)
     index = max(0, math.ceil(q * len(ordered)) - 1)
     return ordered[index]
+
+
+def bootstrap_mean_ci(
+    values: list[float], seed: str, samples: int = 10_000
+) -> list[float] | None:
+    if not values:
+        return None
+    if len(values) == 1:
+        return [values[0], values[0]]
+    rng = random.Random(seed)
+    means = sorted(
+        mean(rng.choice(values) for _ in values)
+        for _ in range(samples)
+    )
+    return [means[int(0.025 * samples)], means[int(0.975 * samples) - 1]]
 
 
 def set_usage(run: Path, call_ids: list[str]) -> tuple[int, int, float, float]:
@@ -216,9 +232,60 @@ def main() -> int:
                     }
                 )
 
+    paired_rows = []
+    pair_index: dict[tuple[str, int, int], dict[str, dict[str, Any]]] = defaultdict(dict)
+    for row in rows:
+        if row.get("design") == "provider_pair":
+            key = (row["packet"], row["repeat"], row["provider_index"])
+            pair_index[key][row["wrapper"]] = row
+    for key, pair in pair_index.items():
+        if "functional" not in pair or "fictional" not in pair:
+            continue
+        functional, fictional = pair["functional"], pair["fictional"]
+        a = detected_by_set[functional["set_id"]]
+        b = detected_by_set[fictional["set_id"]]
+        union = a | b
+        paired_rows.append(
+            {
+                "packet": key[0],
+                "repeat": key[1],
+                "provider_index": key[2],
+                "f1_delta_fictional_minus_functional": fictional["f1"] - functional["f1"],
+                "precision_delta": fictional["precision"] - functional["precision"],
+                "recall_delta": fictional["recall"] - functional["recall"],
+                "jaccard": len(a & b) / len(union) if union else 1.0,
+                "functional_only": sorted(a - b),
+                "fictional_only": sorted(b - a),
+            }
+        )
+
+    paired_summary: dict[str, Any] = {}
+    if paired_rows:
+        for packet in ["all", *sorted({row["packet"] for row in paired_rows})]:
+            selected = paired_rows if packet == "all" else [
+                row for row in paired_rows if row["packet"] == packet
+            ]
+            deltas = [row["f1_delta_fictional_minus_functional"] for row in selected]
+            paired_summary[packet] = {
+                "n_pairs": len(selected),
+                "mean_f1_delta_fictional_minus_functional": mean(deltas),
+                "bootstrap_95_ci_sampling_only": bootstrap_mean_ci(
+                    deltas, f"{plan['seed']}:{packet}:paired-f1"
+                ),
+                "fictional_wins": sum(delta > 1e-12 for delta in deltas),
+                "ties": sum(abs(delta) <= 1e-12 for delta in deltas),
+                "functional_wins": sum(delta < -1e-12 for delta in deltas),
+                "mean_jaccard": mean(row["jaccard"] for row in selected),
+            }
+
     analysis = run / "analysis" / args.label
     analysis.mkdir(parents=True, exist_ok=True)
-    report = {"groups": summary, "fusion": fusion, "overlaps": overlaps}
+    report = {
+        "groups": summary,
+        "fusion": fusion,
+        "overlaps": overlaps,
+        "paired_persona": {"summary": paired_summary, "pairs": paired_rows},
+    }
     write_json(analysis / "summary.json", report)
     fields = sorted({key for row in rows for key in row})
     with (analysis / "sets.csv").open("w", newline="", encoding="utf-8") as handle:

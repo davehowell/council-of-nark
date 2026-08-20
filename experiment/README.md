@@ -76,7 +76,13 @@ just experiment-adapter-check-gemma
 just experiment-stage-a-smoke-gemma 2
 ```
 
-The Stage A smoke makes 81 calls: 3 packets × (S0/S1/S2 at one call each + M0/M1/M2 at seven reviewers and one fuser each). The topology smoke makes 144 calls across all six role orders. The provider-pair smoke makes 18 calls.
+The Stage A smoke makes 81 calls: 3 packets × (S0/S1/S2 at one call each + M0/M1/M2 at seven reviewers and one fuser each). The focused Gemma persona-pair recipe makes 60 calls: 3 packets × 10 repeats × functional/fictional correctness wrapper. The topology smoke makes 144 calls across all six role orders. The cross-provider pair smoke makes 18 calls.
+
+If the cheap smoke restores useful spread, estimate one wrapper effect against sampling noise before redesigning scenarios:
+
+```bash
+just experiment-persona-pair-gemma 2
+```
 
 Use the generic recipe for another frozen config:
 

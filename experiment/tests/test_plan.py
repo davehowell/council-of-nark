@@ -49,6 +49,12 @@ class PlanTests(unittest.TestCase):
         self.assertEqual(18, len(plan["calls"]))
         self.assertEqual(18, len(plan["output_sets"]))
 
+    def test_repeated_gemma_persona_pair_has_thirty_pairs(self) -> None:
+        config = load_json(ROOT / "experiment/config/persona-pair-gemma-repeated.json")
+        plan = build(config)
+        self.assertEqual(60, len(plan["calls"]))
+        self.assertEqual(60, len(plan["output_sets"]))
+
     def test_pending_calls_preserve_seeded_plan_order(self) -> None:
         plan = {"calls": [{"call_id": "c-third"}, {"call_id": "c-first"}, {"call_id": "c-second"}]}
         with tempfile.TemporaryDirectory() as directory:

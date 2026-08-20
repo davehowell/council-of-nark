@@ -105,6 +105,10 @@ experiment-stage-a-smoke jobs="3":
 experiment-stage-a-smoke-gemma jobs="2":
     @just experiment-complete experiment/config/stage-a-smoke-gemma.json "{{jobs}}"
 
+# Run 10 paired functional/fictional correctness samples per packet on Gemma.
+experiment-persona-pair-gemma jobs="2":
+    @just experiment-complete experiment/config/persona-pair-gemma-repeated.json "{{jobs}}"
+
 # Exercise the complete harness with a deterministic local adapter and no model calls.
 experiment-mock:
     @just experiment-complete experiment/config/mock-smoke.json 2

@@ -27,6 +27,8 @@ Equal F1 means equal balance of TP, FP, and FN counts. It does not mean two cond
 
 In the first smoke, S1 and fused M0 had identical packet-level F1 values. On the revenue packet, S1 found `RD-04` but missed `RD-06`; M0 found `RD-06` but missed `RD-04`. F1 correctly called their counts equal while hiding that qualitative difference.
 
+A paired bootstrap over repeated calls to the same three packets estimates sampling variation only. It does not provide a task-generalisation interval because renamed/mutated task variants are absent.
+
 Publish these alongside F1:
 
 - detected defect IDs and per-defect frequency;
