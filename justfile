@@ -69,8 +69,8 @@ experiment-bundle run:
     python3 -m experiment.harness.bundle "{{run}}"
 
 # Run exploratory arm-blinded LLM triage for a smoke test.
-experiment-judge run jobs="2":
-    python3 -m experiment.harness.judge "{{run}}" --jobs "{{jobs}}"
+experiment-judge run jobs="2" config="experiment/config/judge-smoke.json":
+    python3 -m experiment.harness.judge "{{run}}" --jobs "{{jobs}}" --config "{{config}}"
 
 # Score one adjudicated or exploratory blinded ratings CSV.
 experiment-score run ratings label="adjudicated":
