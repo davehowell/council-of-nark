@@ -76,6 +76,12 @@ The earlier controller disabled model tools and context loading, but its provide
 
 **Correction:** the active harness is now Go/macOS-only and fails closed unless a Seatbelt probe passes. Prompt assembly still uses the verified worktree, but the child receives an empty cwd and ephemeral home under a deny-by-default profile. Repository/worktree reads fail, writes are scratch-only, and external CLI entrypoint digests are frozen. Provider transport networking remains permitted; server-side tools/state remain unobservable.
 
+### 10. Shared CLI login state conflicted with ephemeral homes
+
+Strict agy testing attempted to locate or create a login keychain when its normal home was absent. Direct Claude CLI could not see its existing login state. Relaxing the home boundary would restore hidden history, settings, project trust, and credential-store coupling.
+
+**Correction:** fail before launching either shared-login client. Current Anthropic, Google, OpenAI, and Gemma calls all use explicitly pinned provider/model IDs through Pi. Only Pi auth and model-registry files enter the ephemeral home; Pi settings, skills, history, sessions, context, and themes do not. A live Seatbelt check succeeded for Gemma, Google/Gemini, and Anthropic calls.
+
 ## Checks that did not reveal contamination
 
 - M1 and M2 use byte-identical lens kernels; only paired wrappers differ.

@@ -87,7 +87,7 @@ func prepareEphemeralHome(home string, provider Provider) (map[string]string, er
 		return nil, err
 	}
 	credentialFiles := map[string][]string{
-		"pi": {".pi/agent/auth.json", ".pi/agent/models-store.json", ".pi/agent/settings.json", ".pi/settings.json"},
+		"pi": {".pi/agent/auth.json", ".pi/agent/models-store.json"},
 	}
 	for _, rel := range credentialFiles[provider.Adapter] {
 		if err := copyIfPresent(filepath.Join(original, rel), filepath.Join(home, rel)); err != nil {

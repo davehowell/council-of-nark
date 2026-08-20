@@ -1,6 +1,7 @@
 package harness
 
 import (
+	"os"
 	"path/filepath"
 	"reflect"
 	"strings"
@@ -120,6 +121,18 @@ func TestBootstrapDeterministic(t *testing.T) {
 		t.Fatal("bootstrap changed")
 	}
 }
+func TestPiEphemeralHomeExcludesSettingsAndSkills(t *testing.T) {
+	home := t.TempDir()
+	if _, err := prepareEphemeralHome(home, Provider{Adapter: "pi"}); err != nil {
+		t.Fatal(err)
+	}
+	for _, rel := range []string{".pi/agent/settings.json", ".pi/settings.json", ".pi/agent/skills"} {
+		if _, err := os.Stat(filepath.Join(home, rel)); !os.IsNotExist(err) {
+			t.Fatalf("unexpected Pi state copied: %s", rel)
+		}
+	}
+}
+
 func TestClaudeTempVariablesPointAtEphemeralScratch(t *testing.T) {
 	home := t.TempDir()
 	env, err := prepareEphemeralHome(home, Provider{Adapter: "claude"})
