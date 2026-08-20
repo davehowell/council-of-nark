@@ -42,13 +42,16 @@ func uniquePaths(values []string) []string {
 	return out
 }
 
-func profileText(scratch string, executables, runtimeRoots []string) string {
+func profileText(scratch string, executables, runtimeRoots []string, localListener bool) string {
 	readSubpaths := []string{"/System", "/usr/lib", "/usr/share", "/Library/Apple", "/private/etc", "/private/var/db/timezone", "/dev", scratch}
 	readSubpaths = append(readSubpaths, runtimeRoots...)
 	readSubpaths = uniquePaths(readSubpaths)
 	var b strings.Builder
 	b.WriteString("(version 1)\n(deny default)\n")
 	b.WriteString("(allow file-read-metadata)\n(allow sysctl-read)\n(allow mach-lookup)\n(allow network-outbound)\n(allow system-socket)\n(allow process*)\n")
+	if localListener {
+		b.WriteString("(allow network-bind (local ip))\n(allow network-inbound (local ip))\n")
+	}
 	b.WriteString("(allow file-read*\n  (literal \"/\")\n")
 	for _, p := range readSubpaths {
 		b.WriteString("  (subpath " + seatbeltQuote(p) + ")\n")
@@ -147,7 +150,7 @@ func makeSandbox(base, adapter string, executables, runtimeRoots []string) (sand
 	env["TMPDIR"] = temp
 	env["PATH"] = "/usr/bin:/bin"
 	profile := filepath.Join(root, "profile.sb")
-	if err := atomicWrite(profile, []byte(profileText(root, executables, runtimeRoots)), 0o600); err != nil {
+	if err := atomicWrite(profile, []byte(profileText(root, executables, runtimeRoots, adapter == "agy")), 0o600); err != nil {
 		return sandboxContext{}, err
 	}
 	return sandboxContext{Root: root, Home: home, Temp: temp, CWD: cwd, Profile: profile, Environment: envList(env)}, nil

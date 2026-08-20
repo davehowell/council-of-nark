@@ -118,7 +118,7 @@ func TestSeatbeltProbe(t *testing.T) {
 }
 func TestProfileDoesNotAllowRepository(t *testing.T) {
 	h := testHarness(t)
-	profile := profileText("/private/tmp/isolated", []string{"/bin/echo"}, nil)
+	profile := profileText("/private/tmp/isolated", []string{"/bin/echo"}, nil, false)
 	if strings.Contains(profile, h.Root) || strings.Contains(profile, filepath.Dir(h.Root)) {
 		t.Fatal("profile exposes repository")
 	}
