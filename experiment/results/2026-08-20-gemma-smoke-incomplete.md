@@ -10,6 +10,20 @@
 - Dependency-blocked fusers: 3
 - Inference status: none; the complete run is discarded before rating or scoring
 
+## Metric key
+
+| Metric | Meaning |
+|---|---|
+| TP — true positive | One unique planted defect correctly identified. |
+| FP — false positive | One unique unsupported claim after semantic de-duplication. |
+| FN — false negative | One planted defect the output missed. |
+| Precision | `TP / (TP + FP)`: how much of the review was supported. |
+| Recall | `TP / (TP + FN)`: how much of the planted defect set was found. |
+| F1 | `2TP / (2TP + FP + FN)`: harmonic balance of precision and recall. |
+| Macro mean | Calculate the metric per output set, then weight each set equally. |
+
+These metrics are not applicable because the incomplete run was excluded before rating or scoring.
+
 Pi's JSON mode echoed the user prompt, including its example response object. When Google returned a quota error inside an assistant event while Pi exited zero, the generic stream parser could find the prompt's example JSON and label the call malformed instead of retrying an infrastructure failure.
 
 The correction parses only assistant-role text, promotes assistant error events to non-zero retryable status, adds backoff, lowers concurrency, and freezes a new seeded run. The partial run remains sealed locally and will not be patched, combined with another run, or counted as an experimental sample.

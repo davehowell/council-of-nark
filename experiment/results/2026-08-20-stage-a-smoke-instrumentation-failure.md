@@ -9,6 +9,20 @@
 - Dependency-blocked calls: 9 fusers
 - Inference status: none; this run contains no experimental observations
 
+## Metric key
+
+| Metric | Meaning |
+|---|---|
+| TP — true positive | One unique planted defect correctly identified. |
+| FP — false positive | One unique unsupported claim after semantic de-duplication. |
+| FN — false negative | One planted defect the output missed. |
+| Precision | `TP / (TP + FP)`: how much of the review was supported. |
+| Recall | `TP / (TP + FN)`: how much of the planted defect set was found. |
+| F1 | `2TP / (2TP + FP + FN)`: harmonic balance of precision and recall. |
+| Macro mean | Calculate the metric per output set, then weight each set equally. |
+
+These metrics are not applicable to this run because no inference response passed instrumentation.
+
 ## Failure
 
 Claude Code rejected the structured-output schema before sending a model request:

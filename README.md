@@ -59,6 +59,8 @@ Run `just slides-talk` or `just slides-experiment` to serve a deck. See [`presen
 
 ## Experiments
 
+The supported experiment runner targets **macOS only**. Linux, Windows, containers, and other sandbox implementations are intentionally out of scope; adapting the protocol is left to replicators, who must document any isolation differences.
+
 The study is an empirical pilot, not a benchmark of software engineering in general. It uses synthetic, frozen review packets with planted defects and clean facts. The core controls are:
 
 1. match call counts before crediting specialist roles;

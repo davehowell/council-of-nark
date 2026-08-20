@@ -2,6 +2,20 @@
 
 This focused run compares the same correctness/observability kernel with either a functional wrapper or a K-2SO wrapper. It uses ten paired repeats on each of the three base packets.
 
+## Metric key
+
+| Metric | Meaning |
+|---|---|
+| TP — true positive | One unique planted defect correctly identified. |
+| FP — false positive | One unique unsupported claim after semantic de-duplication. |
+| FN — false negative | One planted defect the output missed. |
+| Precision | `TP / (TP + FP)`: how much of the review was supported. |
+| Recall | `TP / (TP + FN)`: how much of the planted defect set was found. |
+| F1 | `2TP / (2TP + FP + FN)`: harmonic balance of precision and recall. |
+| Macro mean | Calculate the metric per output set, then weight each set equally. |
+
+F1 does not measure severity, remedy quality, or whether two conditions found the same defects.
+
 ## Run
 
 - Source: `cb57a8c0c48f1fe841905b8f0c3a1c61f38e5d92` (`experiment-harness-v0.3`)

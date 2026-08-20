@@ -2,6 +2,20 @@
 
 This repeats the unchanged six-arm plumbing smoke with an explicitly selected lower-capability model. It is one sample per `(packet × arm)` and uses LLM triage, so it remains non-confirmatory.
 
+## Metric key
+
+| Metric | Meaning |
+|---|---|
+| TP — true positive | One unique planted defect correctly identified. |
+| FP — false positive | One unique unsupported claim after semantic de-duplication. |
+| FN — false negative | One planted defect the output missed. |
+| Precision | `TP / (TP + FP)`: how much of the review was supported. |
+| Recall | `TP / (TP + FN)`: how much of the planted defect set was found. |
+| F1 | `2TP / (2TP + FP + FN)`: harmonic balance of precision and recall. |
+| Macro mean | Calculate the metric per output set, then weight each set equally. |
+
+F1 does not measure severity, remedy quality, or whether two conditions found the same defects.
+
 ## Run
 
 - Review source: `27d80c652cf208649e637266bd4c5dc925214016` (`experiment-harness-v0.2.1`)
