@@ -16,7 +16,7 @@
           "defect_id": {"type": ["string", "null"]},
           "false_positive_cluster": {"type": ["string", "null"]},
           "material": {"type": "boolean"},
-          "confidence": {"enum": ["high", "medium", "low"]},
+          "confidence": {"type": "string", "enum": ["high", "medium", "low"]},
           "rationale": {"type": "string"}
         }
       }

@@ -17,7 +17,7 @@
           "claim": {"type": "string", "minLength": 1},
           "consequence": {"type": "string", "minLength": 1},
           "fix": {"type": "string", "minLength": 1},
-          "confidence": {"enum": ["high", "medium", "low"]},
+          "confidence": {"type": "string", "enum": ["high", "medium", "low"]},
           "raised_by": {
             "type": "array",
             "items": {"type": "string", "minLength": 1},
