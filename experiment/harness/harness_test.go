@@ -118,6 +118,21 @@ func TestBootstrapDeterministic(t *testing.T) {
 		t.Fatal("bootstrap changed")
 	}
 }
+func TestClaudeTempVariablesPointAtEphemeralScratch(t *testing.T) {
+	home := t.TempDir()
+	env, err := prepareEphemeralHome(home, Provider{Adapter: "claude"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	// makeSandbox sets all four to its per-attempt temp directory; the home preparation
+	// must not import any of them from the controller environment.
+	for _, key := range []string{"TMPDIR", "XDG_RUNTIME_DIR", "BUN_TMPDIR", "CLAUDE_CODE_TMPDIR"} {
+		if _, exists := env[key]; exists {
+			t.Fatalf("%s leaked from controller", key)
+		}
+	}
+}
+
 func TestSeatbeltProbe(t *testing.T) {
 	if err := testHarness(t).sandboxProbe(false); err != nil {
 		t.Fatal(err)

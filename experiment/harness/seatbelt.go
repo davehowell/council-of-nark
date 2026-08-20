@@ -149,6 +149,9 @@ func makeSandbox(base string, provider Provider, executables, runtimeRoots []str
 		return sandboxContext{}, err
 	}
 	env["TMPDIR"] = temp
+	env["XDG_RUNTIME_DIR"] = temp
+	env["BUN_TMPDIR"] = temp
+	env["CLAUDE_CODE_TMPDIR"] = temp
 	env["PATH"] = "/usr/bin:/bin"
 	profile := filepath.Join(root, "profile.sb")
 	if err := atomicWrite(profile, []byte(profileText(root, executables, runtimeRoots, false)), 0o600); err != nil {
