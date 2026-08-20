@@ -73,7 +73,7 @@ After the harness and assets are committed on a clean tree, verify explicit mode
 
 ```bash
 just experiment-adapter-check-gemma
-just experiment-stage-a-smoke-gemma 4
+just experiment-stage-a-smoke-gemma 2
 ```
 
 The Stage A smoke makes 81 calls: 3 packets × (S0/S1/S2 at one call each + M0/M1/M2 at seven reviewers and one fuser each). The topology smoke makes 144 calls across all six role orders. The provider-pair smoke makes 18 calls.

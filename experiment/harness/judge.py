@@ -5,6 +5,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 import csv
 import json
 from pathlib import Path
+import time
 from typing import Any
 
 from .adapters import invoke
@@ -116,6 +117,8 @@ def rate_set(
             )
             if result.returncode == 0:
                 break
+            if attempt < config["max_attempts"]:
+                time.sleep(float(config.get("retry_backoff_seconds", 5)) * attempt)
         assert result is not None
         status = "success" if result.returncode == 0 and result.parsed is not None else "error"
         write_json(

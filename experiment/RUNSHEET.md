@@ -24,7 +24,7 @@ just experiment-adapter-check-gemma
 Verify that its run reports one successful call from `gemma-4-31b-it` with thinking disabled. Then run:
 
 ```bash
-just experiment-stage-a-smoke-gemma 4
+just experiment-stage-a-smoke-gemma 2
 ```
 
 The command prints a run path when it finishes. Save that path as `RUN`. The recipe:

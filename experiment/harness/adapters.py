@@ -212,6 +212,69 @@ def extract(text: str, expected_root: str) -> tuple[Any | None, str | None]:
     return None, f"No JSON object with root key {expected_root!r} found"
 
 
+def ndjson_events(text: str) -> list[dict[str, Any]]:
+    events: list[dict[str, Any]] = []
+    for line in text.splitlines():
+        try:
+            value = json.loads(line)
+        except json.JSONDecodeError:
+            continue
+        if isinstance(value, dict):
+            events.append(value)
+    return events
+
+
+def message_text(message: Any) -> list[str]:
+    if not isinstance(message, dict) or message.get("role") != "assistant":
+        return []
+    content = message.get("content")
+    if not isinstance(content, list):
+        return []
+    return [
+        block["text"]
+        for block in content
+        if isinstance(block, dict) and block.get("type") == "text" and isinstance(block.get("text"), str)
+    ]
+
+
+def extract_pi_assistant(text: str, expected_root: str) -> tuple[Any | None, str | None]:
+    """Parse only Pi assistant events; never inspect echoed user prompt content."""
+    completed: list[str] = []
+    deltas: list[str] = []
+    for value in ndjson_events(text):
+        if value.get("type") in {"message_end", "turn_end"}:
+            completed.extend(message_text(value.get("message")))
+        if value.get("type") == "agent_end" and isinstance(value.get("messages"), list):
+            for message in value["messages"]:
+                completed.extend(message_text(message))
+        event = value.get("assistantMessageEvent") or value.get("event")
+        if isinstance(event, dict):
+            if event.get("type") == "text_end" and isinstance(event.get("content"), str):
+                completed.append(event["content"])
+            elif event.get("type") == "text_delta":
+                delta = event.get("delta") or event.get("text")
+                if isinstance(delta, str):
+                    deltas.append(delta)
+    if deltas:
+        completed.append("".join(deltas))
+    for candidate in reversed(completed):
+        for value in reversed(raw_json_values(candidate)):
+            if isinstance(value, dict) and expected_root in value:
+                return value, None
+    return None, f"No assistant JSON object with root key {expected_root!r} found"
+
+
+def pi_provider_error(text: str) -> str | None:
+    for value in ndjson_events(text):
+        message = value.get("message")
+        if isinstance(message, dict) and message.get("role") == "assistant":
+            if message.get("stopReason") == "error" or message.get("errorMessage"):
+                return str(message.get("errorMessage") or "Pi provider error")
+        if value.get("type") == "error":
+            return str(value.get("error") or value.get("message") or "Pi provider error")
+    return None
+
+
 def usage_from(text: str) -> dict[str, Any]:
     result: dict[str, Any] = {}
     values = raw_json_values(text)
@@ -264,7 +327,19 @@ def invoke(
             stderr += f"\nTimed out after {timeout_seconds} seconds."
             returncode = 124
     latency = time.monotonic() - started
-    parsed, parse_error = extract(stdout, expected_root)
+    if provider["adapter"] == "pi":
+        provider_error = pi_provider_error(stdout)
+        if provider_error:
+            # Pi can report a provider failure in JSON while its process exits zero.
+            # Promote it to a retryable infrastructure status.
+            if returncode == 0:
+                returncode = 75
+            stderr += "\nPi provider error: " + provider_error
+            parsed, parse_error = None, provider_error
+        else:
+            parsed, parse_error = extract_pi_assistant(stdout, expected_root)
+    else:
+        parsed, parse_error = extract(stdout, expected_root)
     if parsed is not None:
         errors = (
             findings_response(parsed)

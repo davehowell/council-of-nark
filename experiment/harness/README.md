@@ -18,14 +18,14 @@ The harness uses Python's standard library. Model CLIs remain external so authen
 
 - **Claude:** `--safe-mode`, no tools, no session persistence, replacement system prompt, strict JSON Schema.
 - **agy/Gemini:** fresh print process, pinned model and effort, sandbox, slash commands disabled, strict JSON Schema.
-- **Pi/OpenAI:** no session, tools, extensions, skills, templates, themes, context files, or project trust; replacement system prompt.
+- **Pi models:** no session, tools, extensions, skills, templates, themes, context files, or project trust; replacement system prompt. The adapter parses assistant-role events only because Pi JSON streams also echo user input.
 - **mock:** deterministic empty response for plumbing tests.
 
 The runner passes prompts as process arguments and closes stdin. It sends no file tools to the model. Provider CLIs can still have unobservable server-side behaviour, and the agy CLI does not expose every isolation control that Claude and Pi expose.
 
 ## Retry rule
 
-The runner retries only a non-zero process or transport failure, up to the config's `max_attempts`. A zero-exit malformed substantive response is not repaired or rerolled; it is sealed and scores zero. Retries are infrastructure attempts, not additional samples. The optional smoke rater applies the same rule and preserves completed set ratings when resumed.
+The runner retries only a non-zero process or transport failure, up to the config's `max_attempts`, with configured linear backoff. Pi assistant error events are promoted to retryable failures even when the local Pi process exits zero. A zero-exit malformed substantive response is not repaired or rerolled; it is sealed and scores zero. Retries are infrastructure attempts, not additional samples. The optional smoke rater applies the same rule and preserves completed set ratings when resumed.
 
 ## Data boundaries
 

@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "design": "stage_a",
-  "label": "stage-a-smoke-gemma",
-  "seed": "council-stage-a-smoke-gemma-v1",
+  "label": "stage-a-smoke-gemma-v2",
+  "seed": "council-stage-a-smoke-gemma-v2",
   "packets": [
     "01-revenue-dashboard",
     "02-key-rotation",
@@ -15,9 +15,10 @@
     "model": "gemma-4-31b-it",
     "effort": "off"
   },
-  "max_concurrency": 4,
+  "max_concurrency": 2,
   "request_timeout_seconds": 300,
-  "max_attempts": 2,
+  "max_attempts": 3,
+  "retry_backoff_seconds": 30,
   "decoding": {
     "temperature": "provider default; Pi does not expose this setting",
     "structured_output": "prompt-enforced; Pi has no JSON Schema flag",
