@@ -1,0 +1,16 @@
+{
+  "providers": {
+    "claude:claude-haiku-4-5-20251001": {
+      "calls": 81,
+      "cost_usd": 4.801148100000001,
+      "input_tokens": 143658,
+      "mean_latency_seconds": 100.08352333386888,
+      "output_tokens": 849024,
+      "total_latency_seconds": 8106.76539004338
+    }
+  },
+  "statuses": {
+    "success": 81
+  },
+  "total_findings_before_set_union": 550
+}

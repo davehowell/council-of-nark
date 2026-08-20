@@ -34,6 +34,8 @@ Each reviewer receives only `review-packet.md`. The harness rejects a request co
 
 The three base packets are too few for broad claims. Repeated sampling estimates model variance, not task diversity.
 
+The first successful Stage A calibration is published under [`results/2026-08-20-stage-a-smoke/`](results/2026-08-20-stage-a-smoke/). Its descriptive results do not support advancing directly to the pilot: matched repeated omnibus sampling beat the functional specialists after fusion, fictional-wrapper effects were inconsistent, and the weak baseline had limited headroom. Harder frozen variants, clean controls, and human ratings come next.
+
 ## Freeze rules
 
 Before a claim-bearing run:
