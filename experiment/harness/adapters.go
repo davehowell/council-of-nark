@@ -14,17 +14,6 @@ import (
 
 type adapterCommand struct{ Args, Display, Executables, RuntimeRoots []string }
 
-func executable(name string) (string, error) {
-	path, err := exec.LookPath(name)
-	if err != nil {
-		return "", err
-	}
-	real, err := filepath.EvalSymlinks(path)
-	if err == nil {
-		return real, nil
-	}
-	return path, nil
-}
 func compactJSON(value any) string { data, _ := json.Marshal(value); return string(data) }
 func commandFor(provider Provider, prompt, system string, schema map[string]any) (adapterCommand, error) {
 	cliSchema := map[string]any{}
@@ -41,12 +30,7 @@ func commandFor(provider Provider, prompt, system string, schema map[string]any)
 	var args, executables, roots []string
 	switch provider.Adapter {
 	case "claude":
-		bin, err := executable("claude")
-		if err != nil {
-			return adapterCommand{}, err
-		}
-		args = []string{bin, "--print", "--safe-mode", "--disable-slash-commands", "--no-chrome", "--no-session-persistence", "--permission-mode", "dontAsk", "--tools", "", "--model", provider.Model, "--effort", effort, "--system-prompt", system, "--json-schema", schemaText, "--output-format", "json", prompt}
-		executables = []string{bin}
+		return adapterCommand{}, fmt.Errorf("direct Claude CLI is disabled in the strict harness: login state is incompatible with an ephemeral HOME; use an explicitly pinned Anthropic model through Pi")
 	case "agy":
 		return adapterCommand{}, fmt.Errorf("agy is disabled in the strict harness: its OAuth/keychain state is incompatible with an ephemeral HOME; use an explicitly pinned Pi Gemini model")
 	case "pi":

@@ -89,10 +89,12 @@ func TestPiAssistantParserIgnoresEchoedPrompt(t *testing.T) {
 		t.Fatalf("unexpected parse: %v %s", value, errText)
 	}
 }
-func TestAgyFailsClosedBeforeOAuthOrKeychainAccess(t *testing.T) {
-	_, err := commandFor(Provider{Adapter: "agy", Model: "gemini-3.5-flash-low", Effort: "low"}, "prompt", "system", map[string]any{"type": "object"})
-	if err == nil || !strings.Contains(err.Error(), "disabled") {
-		t.Fatalf("unexpected error: %v", err)
+func TestSharedLoginAdaptersFailClosed(t *testing.T) {
+	for _, adapter := range []string{"agy", "claude"} {
+		_, err := commandFor(Provider{Adapter: adapter, Model: "explicit", Effort: "low"}, "prompt", "system", map[string]any{"type": "object"})
+		if err == nil || !strings.Contains(err.Error(), "disabled") {
+			t.Fatalf("%s: %v", adapter, err)
+		}
 	}
 }
 

@@ -61,7 +61,7 @@ The harness then refuses another account. It does not create users, alter Direct
 
 ## Adapters
 
-- **Claude:** safe mode, no tools, no session persistence, replacement system prompt, strict JSON Schema.
+- **Direct Claude CLI:** disabled in the strict harness because its shared login state is unavailable from an ephemeral home. Anthropic runs use an explicitly pinned model through Pi.
 - **agy/Gemini:** disabled in the strict harness. Its OAuth/keychain state is incompatible with a per-attempt ephemeral home and can trigger interactive keychain prompts. Gemini runs use an explicitly pinned Google model through Pi instead.
 - **Pi models:** no session, tools, extensions, skills, templates, themes, context files, or project trust; replacement system prompt. Pi is launched through the pinned Node executable and its assistant-role events are parsed without inspecting echoed user content.
 - **mock:** deterministic empty response for plumbing tests; no child process.

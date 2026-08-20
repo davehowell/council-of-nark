@@ -107,8 +107,8 @@ func (h *Harness) checkModels(config Config, skip bool) []string {
 		if p.Adapter == "mock" {
 			continue
 		}
-		if p.Adapter == "agy" {
-			errors = append(errors, "agy is disabled: OAuth/keychain state conflicts with strict ephemeral-home isolation; use Pi with an explicit Google model")
+		if p.Adapter == "agy" || p.Adapter == "claude" {
+			errors = append(errors, p.Adapter+" is disabled: shared login/keychain state conflicts with strict ephemeral-home isolation; use Pi with an explicit provider/model")
 			continue
 		}
 		if _, err := exec.LookPath(p.Adapter); err != nil {

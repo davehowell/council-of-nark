@@ -60,7 +60,7 @@ The maintained harness refuses root. A standard non-admin dedicated macOS accoun
 
 The harness does not create one account per call. Doing so requires privileged Directory Services mutations, credential distribution, ownership changes, and cleanup, adding more state than it removes. Per-call Seatbelt profiles and ephemeral homes are the maintained call-level boundary.
 
-agy is deliberately unsupported: when given an ephemeral home, its OAuth flow attempts to locate or create a login keychain. Rather than relax isolation or permit UI, the harness fails before starting agy. Gemini experiments use a pinned Google model through Pi's sterile credential copy.
+agy is deliberately unsupported: when given an ephemeral home, its OAuth flow attempts to locate or create a login keychain. Direct Claude CLI login state is likewise unavailable without the real home/keychain context. Rather than relax isolation or permit UI, the harness fails before starting either client. Gemini and Anthropic experiments use pinned provider models through Pi's sterile credential copy.
 
 ## Unsupported platforms
 

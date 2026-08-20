@@ -93,7 +93,7 @@ experiment-complete config jobs="3":
     go run ./experiment/harness/cmd/council-exp bundle "$run"
     printf '\nRUN=%s\n' "$run"
 
-# Make one frozen model call to verify the Claude adapter before a larger run.
+# Make one frozen Anthropic/Haiku call through isolated Pi before a larger run.
 experiment-adapter-check:
     @just experiment-complete experiment/config/adapter-check.json 1
 
