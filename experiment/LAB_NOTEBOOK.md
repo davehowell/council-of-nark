@@ -79,6 +79,11 @@ This is the chronological engineering record. It preserves failed runs and the r
 - Decision: do not weaken isolation to accommodate those clients. Reject direct agy/Claude before launch and route explicitly pinned Anthropic, Google, OpenAI, and Gemma models through Pi's sterile auth/model-registry copy. Do not copy Pi settings, skills, history, or sessions.
 - Network remains available only to the trusted provider client transport. Current model tools remain disabled; provider-side search is still unobservable and must be a separately declared arm.
 
+## 2026-08-20 13:08 — preserve the engineering narrative
+
+- Added Part 3, *The Experiment Fought Back*, as a living presentation of instrumentation failures, discarded runs, scoring repairs, negative findings, and isolation hardening.
+- Decision: published talks should show the failed paths and why the methodology changed, not reconstruct a falsely linear success story.
+
 ## Notebook rule
 
 Append material decisions before or immediately after their run. Record source commit/tag, config, exclusions, failures, repairs, interpretation, and next decision. Correct factual errors explicitly; do not silently rewrite earlier reasoning.

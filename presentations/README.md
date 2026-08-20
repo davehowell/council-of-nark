@@ -8,6 +8,10 @@
 
 [`part-2/slides.md`](part-2/slides.md) turns the idea into separate tests of role specialisation, character wrappers, fusion, providers, and fan-out versus informed chains. The exported deck is [`part-2/put-the-council-on-trial.pdf`](part-2/put-the-council-on-trial.pdf).
 
+## Part 3: The Experiment Fought Back
+
+[`part-3/slides.md`](part-3/slides.md) preserves the engineering story: instrumentation failure, ceiling effects, contamination audit, discarded partial run, derived-stage parser repairs, negative persona evidence, and the Go/Seatbelt migration. The exported deck is [`part-3/the-experiment-fought-back.pdf`](part-3/the-experiment-fought-back.pdf).
+
 ## Run and export
 
 The repository pins Slidev dependencies in this directory.
@@ -16,6 +20,7 @@ The repository pins Slidev dependencies in this directory.
 just slides-install
 just slides-talk
 just slides-experiment
+just slides-trials
 just slides-export
 just slides-verify
 ```
