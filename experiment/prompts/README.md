@@ -1,19 +1,30 @@
-# Controlled prompt drafts
+# Controlled prompts
 
-These prompts are ready for the smoke test. They are not preregistered or frozen until the smoke test confirms that the schemas and difficulty work.
+The harness assembles prompts mechanically from small frozen components.
 
-- `s0-generic.txt` — weak generic single reviewer.
-- `s1-omnibus.txt` — functional omnibus reviewer and the repeated-review prompt for M0.
-- `s2-omnibus-glados.txt` — same omnibus checklist with a compact fictional wrapper.
-- `specialist-template.txt` — assembly template for M1/M2 and Stage B.
-- `specialist-kernels.md` — the seven controlled kernels and paired wrappers.
-- `fuser.txt` — common persona-free fuser for M0/M1/M2 and the topology test.
+- `system.txt`: common isolation and JSON-only system instruction.
+- `review-contract.txt`: common evidence, output-cap, schema, and packet contract.
+- `generic-kernel.txt`: S0 generic baseline.
+- `omnibus-kernel.txt`: byte-identical seven-lens kernel for S1, S2, and M0.
+- `omnibus-wrappers.json`: paired functional and GLaDOS wrappers for S1/S2.
+- `specialists.json`: seven byte-identical functional kernels with paired functional/fictional wrappers for M1/M2 and provider replication.
+- `specialist-intro.txt`: common narrow-lens instruction.
+- `chain-contract.txt`: cumulative inherited-ledger contract for informed chains.
+- `fuser.txt`: common persona-free fusion contract.
+- `judge.txt`: arm-blinded smoke-triage prompt. Human ratings remain definitive for claim-bearing runs.
 
-Replace `{{REVIEW_PACKET}}`, `{{LENS_KERNEL}}`, `{{STYLE_WRAPPER}}`, and `{{REVIEW_FINDINGS}}` mechanically. Do not include any `answer-key.md` file in model context.
+`experiment/harness/prompting.py` is the only prompt assembler. It fails if a reviewer prompt contains a planted defect ID, answer-key heading, or a long answer-key claim verbatim.
 
-Before the confirmatory run:
+## Fairness checks
 
-1. Pin model snapshot IDs and decoding parameters.
-2. Measure the actual token counts with each provider tokenizer.
-3. Shorten paired wrappers until functional and fictional specialist prompts are within the preregistered tolerance.
-4. Hash the final prompt files and record the hashes with the run manifest.
+`just experiment-doctor <config>` assembles every planned prompt and checks that:
+
+1. no answer-key content enters reviewer or fuser context;
+2. each specialist pair differs only in its wrapper;
+3. paired wrappers are within 10% by whitespace-token count;
+4. the model identifiers are available locally;
+5. the deterministic call count matches the design.
+
+Whitespace-token count is a preflight proxy. Record provider-reported input tokens during smoke and revise wrapper wording before preregistration if provider tokenisation breaches the tolerance.
+
+Every response must match `experiment/schema/findings.schema.json`. A malformed response is preserved and scores zero; the harness does not repair substantive output.

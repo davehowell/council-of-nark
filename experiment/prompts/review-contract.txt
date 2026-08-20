@@ -1,0 +1,10 @@
+Use only facts in the packet. Do not invent a finding to fill space. Report at most 8 material findings.
+
+Return only this JSON shape:
+{"findings":[{"location":"specific section or line","claim":"what is wrong","consequence":"what concretely happens","fix":"smallest effective change","confidence":"high|medium|low"}]}
+
+Use an empty `findings` array when there is no material defect. Do not rewrite the artifact.
+
+--- REVIEW PACKET ---
+{{REVIEW_PACKET}}
+--- END PACKET ---

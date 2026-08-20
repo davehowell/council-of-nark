@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Blinded smoke-test judgements",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["judgements"],
+  "properties": {
+    "judgements": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["item_id", "defect_id", "material", "confidence", "rationale"],
+        "properties": {
+          "item_id": {"type": "string"},
+          "defect_id": {"type": ["string", "null"]},
+          "material": {"type": "boolean"},
+          "confidence": {"enum": ["high", "medium", "low"]},
+          "rationale": {"type": "string"}
+        }
+      }
+    }
+  }
+}

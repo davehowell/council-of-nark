@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "design": "topology",
+  "label": "topology-smoke",
+  "seed": "council-topology-smoke-v1",
+  "packets": [
+    "01-revenue-dashboard",
+    "02-key-rotation",
+    "03-webhook-redesign"
+  ],
+  "roles": ["simplicity", "correctness", "security"],
+  "topologies": ["fanout", "chain"],
+  "all_role_orders": true,
+  "repetitions": 1,
+  "wrapper": "functional",
+  "provider": {
+    "adapter": "claude",
+    "model": "claude-haiku-4-5-20251001",
+    "effort": "low"
+  },
+  "max_concurrency": 3,
+  "request_timeout_seconds": 300,
+  "max_attempts": 2,
+  "ledger_max_findings": 8,
+  "decoding": {
+    "temperature": "provider default; Claude Code does not expose this setting",
+    "structured_output": true,
+    "maximum_findings": 8
+  }
+}

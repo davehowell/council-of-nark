@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "design": "stage_a",
+  "label": "mock-smoke",
+  "seed": "council-mock-smoke-v1",
+  "packets": ["01-revenue-dashboard"],
+  "arms": ["S0", "M1"],
+  "repetitions": 1,
+  "provider": {
+    "adapter": "mock",
+    "model": "deterministic-empty-v1",
+    "effort": "none"
+  },
+  "max_concurrency": 2,
+  "request_timeout_seconds": 30,
+  "max_attempts": 1,
+  "decoding": {
+    "temperature": 0,
+    "structured_output": true,
+    "maximum_findings": 8
+  }
+}
