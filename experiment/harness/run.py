@@ -7,6 +7,7 @@ from pathlib import Path
 import shutil
 import subprocess
 import threading
+import time
 from typing import Any
 
 from .adapters import invoke
@@ -159,6 +160,9 @@ def execute_call(
                     break
                 # Only process/transport failures are retried. A malformed substantive
                 # response has return code zero and is preserved as a zero-scoring sample.
+                if attempt < max_attempts:
+                    backoff = float(config.get("retry_backoff_seconds", 5)) * attempt
+                    time.sleep(backoff)
 
             assert final is not None
             attempt, result = final

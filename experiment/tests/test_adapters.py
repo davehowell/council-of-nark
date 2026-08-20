@@ -3,7 +3,12 @@ from __future__ import annotations
 import json
 import unittest
 
-from experiment.harness.adapters import command_for, extract
+from experiment.harness.adapters import (
+    command_for,
+    extract,
+    extract_pi_assistant,
+    pi_provider_error,
+)
 from experiment.harness.summarize import token_counts
 from experiment.harness.validate import findings_response, judgement_response
 
@@ -36,6 +41,63 @@ class AdapterTests(unittest.TestCase):
     def test_rejects_unknown_fields(self) -> None:
         invalid = {"findings": [{**VALID["findings"][0], "severity": "major"}]}
         self.assertTrue(findings_response(invalid))
+
+    def test_pi_parser_never_uses_echoed_user_prompt(self) -> None:
+        stream = "\n".join(
+            [
+                json.dumps(
+                    {
+                        "type": "message_end",
+                        "message": {
+                            "role": "user",
+                            "content": [{"type": "text", "text": json.dumps(VALID)}],
+                        },
+                    }
+                ),
+                json.dumps(
+                    {
+                        "type": "message_end",
+                        "message": {
+                            "role": "assistant",
+                            "content": [],
+                            "stopReason": "error",
+                            "errorMessage": "quota exceeded",
+                        },
+                    }
+                ),
+            ]
+        )
+        parsed, _ = extract_pi_assistant(stream, "findings")
+        self.assertIsNone(parsed)
+        self.assertEqual("quota exceeded", pi_provider_error(stream))
+
+    def test_pi_parser_reads_assistant_text_only(self) -> None:
+        stream = "\n".join(
+            [
+                json.dumps(
+                    {
+                        "type": "message_end",
+                        "message": {
+                            "role": "user",
+                            "content": [{"type": "text", "text": '{"findings":[]}'}],
+                        },
+                    }
+                ),
+                json.dumps(
+                    {
+                        "type": "message_end",
+                        "message": {
+                            "role": "assistant",
+                            "content": [{"type": "text", "text": json.dumps(VALID)}],
+                            "stopReason": "stop",
+                        },
+                    }
+                ),
+            ]
+        )
+        parsed, error = extract_pi_assistant(stream, "findings")
+        self.assertIsNone(error)
+        self.assertEqual(VALID, parsed)
 
     def test_cli_schema_omits_unsupported_meta_schema_annotation(self) -> None:
         schema = {"$schema": "https://json-schema.org/draft/2020-12/schema", "type": "object"}

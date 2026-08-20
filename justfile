@@ -102,7 +102,7 @@ experiment-stage-a-smoke jobs="3":
     @just experiment-complete experiment/config/stage-a-smoke.json "{{jobs}}"
 
 # Run the 81-call low-reasoning Gemma Stage A smoke test.
-experiment-stage-a-smoke-gemma jobs="4":
+experiment-stage-a-smoke-gemma jobs="2":
     @just experiment-complete experiment/config/stage-a-smoke-gemma.json "{{jobs}}"
 
 # Exercise the complete harness with a deterministic local adapter and no model calls.

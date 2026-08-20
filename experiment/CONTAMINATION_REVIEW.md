@@ -58,6 +58,12 @@ The first smoke used an arm-blinded LLM rater, mostly from the same provider fam
 
 **Correction:** use LLM ratings only to calibrate plumbing and hardness. Two independent humans, blinded to condition, decide claim-bearing semantic matches and fix quality.
 
+### 7. Pi JSON streams echo the user prompt
+
+Pi JSON mode emits user and assistant events. The first Pi parser searched the complete stream, so after a provider error it could find the JSON example inside the echoed user prompt and misclassify infrastructure failure as malformed model output. Pi also reports provider quota errors while the local process exits zero.
+
+**Correction:** parse only assistant-role text events for Pi. Promote assistant `stopReason: error` events to retryable infrastructure failures, preserve each attempt, add backoff, and test prompt/response separation explicitly. The first Gemma run was sealed and discarded before scoring.
+
 ## Checks that did not reveal contamination
 
 - M1 and M2 use byte-identical lens kernels; only paired wrappers differ.
