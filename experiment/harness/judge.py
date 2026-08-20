@@ -8,10 +8,11 @@ from pathlib import Path
 import time
 from typing import Any
 
-from .adapters import invoke
+from .adapters import extract, invoke
 from .common import ROOT, load_json, opaque_id, resolve_run, slug_timestamp, source_commit, utc_now, write_json
 from .prompting import replace
 from .run import DetachedWorktree
+from .validate import judgement_response
 
 FIELDS = [
     "rater",
@@ -39,6 +40,18 @@ def existing_ratings(path: Path) -> dict[str, dict[str, Any]]:
                 raise SystemExit(f"Duplicate existing LLM rating: {item_id}")
             ratings[item_id] = row
     return ratings
+
+
+def recover_captured_response(
+    destination: Path, expected_ids: set[str]
+) -> dict[str, Any] | None:
+    """Recover a valid structured output after a parser-only failure."""
+    attempts = sorted(destination.glob("attempts/*/stdout.txt"), reverse=True)
+    for path in attempts:
+        parsed, _ = extract(path.read_text(encoding="utf-8"), "judgements")
+        if parsed is not None and not judgement_response(parsed, expected_ids):
+            return parsed
+    return None
 
 
 def rate_set(
@@ -141,6 +154,21 @@ def rate_set(
         return set_id, result.parsed
 
 
+def merge_ratings(
+    ratings: dict[str, dict[str, Any]], response: dict[str, Any], model: str
+) -> None:
+    for judgement in response["judgements"]:
+        ratings[judgement["item_id"]] = {
+            "rater": f"llm:{model}",
+            "item_id": judgement["item_id"],
+            "defect_id": judgement["defect_id"],
+            "false_positive_cluster": judgement["false_positive_cluster"],
+            "material": judgement["material"],
+            "confidence": judgement["confidence"],
+            "notes": judgement["rationale"],
+        }
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Create exploratory arm-blinded LLM smoke ratings")
     parser.add_argument("run")
@@ -178,8 +206,23 @@ def main() -> int:
         # A partially rated set is rerated as one blinded unit.
         for item_id in expected:
             ratings.pop(item_id, None)
+        destination = run / "blinded" / "llm-triage" / output_set["set_id"]
+        recovered = recover_captured_response(destination, expected)
+        if recovered is not None:
+            merge_ratings(ratings, recovered, config["provider"]["model"])
+            record_path = destination / "record.json"
+            if record_path.exists():
+                record = load_json(record_path)
+                record["status"] = "success"
+                record["parsed_response"] = recovered
+                record["recovered_at"] = utc_now()
+                record["recovery"] = "parser-only recovery from captured structured output"
+                record["judge_harness_commit"] = source_commit()
+                write_json(record_path, record)
+            print(f"{output_set['set_id']} recovered from captured output", flush=True)
+            continue
         pending.append(output_set)
-    print(f"Resuming with {len(ratings)} existing ratings; {len(pending)} sets pending.")
+    print(f"Resuming with {len(ratings)} existing/recovered ratings; {len(pending)} sets pending.")
 
     errors = []
     with ThreadPoolExecutor(max_workers=args.jobs) as pool:
@@ -201,20 +244,11 @@ def main() -> int:
                 errors.append(set_id)
                 print(f"{set_id} rating error", flush=True)
                 continue
-            for judgement in response["judgements"]:
-                ratings[judgement["item_id"]] = {
-                    "rater": f"llm:{config['provider']['model']}",
-                    "item_id": judgement["item_id"],
-                    "defect_id": judgement["defect_id"],
-                    "false_positive_cluster": judgement["false_positive_cluster"],
-                    "material": judgement["material"],
-                    "confidence": judgement["confidence"],
-                    "notes": judgement["rationale"],
-                }
+            merge_ratings(ratings, response, config["provider"]["model"])
             print(f"{set_id} rated", flush=True)
 
     with path.open("w", newline="", encoding="utf-8") as handle:
-        writer = csv.DictWriter(handle, fieldnames=FIELDS)
+        writer = csv.DictWriter(handle, fieldnames=FIELDS, lineterminator="\n")
         writer.writeheader()
         writer.writerows(ratings[item_id] for item_id in sorted(ratings))
     missing = known_item_ids - set(ratings)

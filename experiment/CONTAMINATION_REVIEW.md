@@ -64,6 +64,12 @@ Pi JSON mode emits user and assistant events. The first Pi parser searched the c
 
 **Correction:** parse only assistant-role text events for Pi. Promote assistant `stopReason: error` events to retryable infrastructure failures, preserve each attempt, add backoff, and test prompt/response separation explicitly. The first Gemma run was sealed and discarded before scoring.
 
+### 8. Structured-output wrappers embed their own schema
+
+agy returns both `structured_output` and `json_schema`. A generic recursive extractor accepted any object containing a `judgements` key, so it could select the schema's `properties.judgements` object instead of the model's judgement array.
+
+**Correction:** a response root is eligible only when the requested root value is an array. Parser-only failures can be recovered mechanically from captured structured output after schema validation, without another model call or changed judgement.
+
 ## Checks that did not reveal contamination
 
 - M1 and M2 use byte-identical lens kernels; only paired wrappers differ.

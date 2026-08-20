@@ -193,7 +193,7 @@ def extract(text: str, expected_root: str) -> tuple[Any | None, str | None]:
     for value in raw_json_values(text):
         candidates.extend(nested_candidates(value))
     for value in reversed(candidates):
-        if isinstance(value, dict) and expected_root in value:
+        if isinstance(value, dict) and isinstance(value.get(expected_root), list):
             return value, None
 
     # Pi JSON mode can stream text deltas without a final text block.
@@ -207,9 +207,9 @@ def extract(text: str, expected_root: str) -> tuple[Any | None, str | None]:
                     deltas.append(delta)
     if deltas:
         for value in raw_json_values("".join(deltas)):
-            if isinstance(value, dict) and expected_root in value:
+            if isinstance(value, dict) and isinstance(value.get(expected_root), list):
                 return value, None
-    return None, f"No JSON object with root key {expected_root!r} found"
+    return None, f"No JSON object with array root key {expected_root!r} found"
 
 
 def ndjson_events(text: str) -> list[dict[str, Any]]:
@@ -259,9 +259,9 @@ def extract_pi_assistant(text: str, expected_root: str) -> tuple[Any | None, str
         completed.append("".join(deltas))
     for candidate in reversed(completed):
         for value in reversed(raw_json_values(candidate)):
-            if isinstance(value, dict) and expected_root in value:
+            if isinstance(value, dict) and isinstance(value.get(expected_root), list):
                 return value, None
-    return None, f"No assistant JSON object with root key {expected_root!r} found"
+    return None, f"No assistant JSON object with array root key {expected_root!r} found"
 
 
 def pi_provider_error(text: str) -> str | None:
