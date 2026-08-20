@@ -79,6 +79,8 @@ just experiment-stage-a-smoke 3                           # frozen 81-call smoke
 
 Each call starts in a fresh process and detached worktree at the frozen commit, with tools, project context, optional memory, and session persistence disabled where supported. Raw requests and responses are sealed by digest before arm-blinded scoring.
 
+The first 81-call Stage A smoke calibration and its negative/null results are published in [`experiment/results/2026-08-20-stage-a-smoke/`](experiment/results/2026-08-20-stage-a-smoke/). It is explicitly non-confirmatory and uses LLM triage; the repository does not present those scores as proof that the council works.
+
 ## Public-release audit
 
 Run this before every public commit:

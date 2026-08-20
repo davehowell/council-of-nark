@@ -1,0 +1,20 @@
+{
+  "config": "experiment/config/stage-a-smoke.json",
+  "config_sha256": "663fa4236edbc91cd39b1e6dd8b40e66273e8a4fa90284109ead44c2dd1aa3ec",
+  "published_files": {
+    "ratings-tidy.csv": "0fd97dc69957b238462cddc51ea15d2602549e188286e8ffb197c5bfb0daaa7c",
+    "run-health.json": "ae5c85b21d4b5e24bb465bbedc7793e09bbe8fbb3f17bb05d81e3539ba220d9b",
+    "sets.csv": "c1cc9f60d6c8160b1b67f3fe555c88695455ffe2a6f89b303767f1dcd3dbbd1b",
+    "summary.json": "a9a27081ba2da9b890bb648f317a3bb940c455c75bba300158f7105cc8752750"
+  },
+  "rating_provenance": {
+    "human": 0,
+    "llm:claude-sonnet-4-6": 544,
+    "llm:openai-codex/gpt-5.4-mini": 6
+  },
+  "raw_seal_sha256": "bd888bf747d33a3a6cea8e0a0cd43599dbc8ea0b406dcf66e9157682fe1ac812",
+  "review_source_commit": "d421a4d3aba1a73dcf4706d23a22e69df8d6e1a8",
+  "review_source_tag": "experiment-harness-v0.1.1",
+  "schema_version": 1,
+  "study_stage": "smoke calibration; non-confirmatory"
+}
