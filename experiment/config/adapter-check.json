@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "design": "stage_a",
+  "label": "adapter-check",
+  "seed": "council-adapter-check-v1",
+  "packets": ["01-revenue-dashboard"],
+  "arms": ["S0"],
+  "repetitions": 1,
+  "provider": {
+    "adapter": "claude",
+    "model": "claude-haiku-4-5-20251001",
+    "effort": "low"
+  },
+  "max_concurrency": 1,
+  "request_timeout_seconds": 300,
+  "max_attempts": 2,
+  "decoding": {
+    "temperature": "provider default; Claude Code does not expose this setting",
+    "structured_output": true,
+    "maximum_findings": 8
+  }
+}

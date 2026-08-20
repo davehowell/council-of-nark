@@ -13,7 +13,15 @@ Use this runsheet when one person must operate the study. The `just` recipes do 
 
 The doctor checks executables, model identifiers, prompt assembly, wrapper length, call counts, and answer-key exclusion. It makes no model calls.
 
-## 2. Run Stage A smoke
+## 2. Verify the adapter, then run Stage A smoke
+
+Make one frozen call before the larger run:
+
+```bash
+just experiment-adapter-check
+```
+
+Verify that its run reports one successful call. Then run:
 
 ```bash
 just experiment-stage-a-smoke 3

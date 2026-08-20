@@ -89,6 +89,10 @@ experiment-complete config jobs="3":
     python3 -m experiment.harness.bundle "$run"
     printf '\nRUN=%s\n' "$run"
 
+# Make one frozen model call to verify the Claude adapter before a larger run.
+experiment-adapter-check:
+    @just experiment-complete experiment/config/adapter-check.json 1
+
 # Run the 81-call Stage A smoke test.
 experiment-stage-a-smoke jobs="3":
     @just experiment-complete experiment/config/stage-a-smoke.json "{{jobs}}"
