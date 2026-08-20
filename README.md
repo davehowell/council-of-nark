@@ -16,7 +16,7 @@ The council is designed to widen attention, not manufacture consensus. Each revi
 | [`skills/nark-matrix/`](skills/nark-matrix/) | The orchestration skill plus standalone Bender and Holly prompt templates. |
 | [`skills/walle-ste/`](skills/walle-ste/) | An STE-derived technical-writing review kernel used by WALL-E. |
 | [`experiment/`](experiment/) | Synthetic packets, controlled prompts, answer keys, and the empirical protocol. |
-| [`presentations/`](presentations/) | Part 1, which introduces the council hypothesis, and Part 2, which specifies how to test it. Markdown sources and exported PDFs are included. |
+| [`presentations/`](presentations/) | Part 1 introduces the council, Part 2 specifies the trial, and Part 3 records experimental failures, repairs, and pivots. Markdown sources and exported PDFs are included. |
 | [`scripts/public_audit.py`](scripts/public_audit.py) | A pre-publication scan for common secrets, private paths, private hosts, and local forbidden terms. |
 
 ## The review lenses
@@ -54,8 +54,9 @@ Pi deliberately has no built-in subagent policy. The skill therefore describes t
 
 - **Part 1: The Council of Nark** introduces the roster and the fan-out/fuse hypothesis. It labels the quality and variance claims as hypotheses.
 - **Part 2: Put the Council on Trial** separates role specialisation, fictional wrappers, fusion, provider effects, and topology into falsifiable comparisons.
+- **Part 3: The Experiment Fought Back** covers instrumentation failures, ceiling effects, parser bugs, discarded runs, negative persona evidence, and stricter Go/Seatbelt isolation.
 
-Run `just slides-talk` or `just slides-experiment` to serve a deck. See [`presentations/README.md`](presentations/README.md) for exports and pinned dependencies.
+Run `just slides-talk`, `just slides-experiment`, or `just slides-trials` to serve a deck. See [`presentations/README.md`](presentations/README.md) for exports and pinned dependencies.
 
 ## Experiments
 

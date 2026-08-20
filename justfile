@@ -20,17 +20,23 @@ slides-talk:
 slides-experiment:
     cd presentations && bunx --bun slidev part-2/slides.md
 
-# Export both PDFs.
+# Serve the part-3 engineering-trials deck.
+slides-trials:
+    cd presentations && bunx --bun slidev part-3/slides.md
+
+# Export all PDFs.
 slides-export:
     cd presentations && bunx --bun slidev export part-1/slides.md --output part-1/council-of-nark.pdf
     cd presentations && bunx --bun slidev export part-2/slides.md --output part-2/put-the-council-on-trial.pdf
+    cd presentations && bunx --bun slidev export part-3/slides.md --output part-3/the-experiment-fought-back.pdf
 
-# Render both decks to temporary PNG directories for visual inspection.
+# Render all decks to temporary PNG directories for visual inspection.
 slides-verify:
-    rm -rf /tmp/council-slides /tmp/council-experiment-slides
+    rm -rf /tmp/council-slides /tmp/council-experiment-slides /tmp/council-trials-slides
     cd presentations && bunx --bun slidev export part-1/slides.md --format png --output /tmp/council-slides
     cd presentations && bunx --bun slidev export part-2/slides.md --format png --output /tmp/council-experiment-slides
-    @echo "Rendered /tmp/council-slides and /tmp/council-experiment-slides"
+    cd presentations && bunx --bun slidev export part-3/slides.md --format png --output /tmp/council-trials-slides
+    @echo "Rendered /tmp/council-slides, /tmp/council-experiment-slides, and /tmp/council-trials-slides"
 
 # Run Go harness unit and isolation tests without making model calls.
 experiment-test:
