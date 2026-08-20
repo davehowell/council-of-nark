@@ -89,6 +89,12 @@ func TestPiAssistantParserIgnoresEchoedPrompt(t *testing.T) {
 		t.Fatalf("unexpected parse: %v %s", value, errText)
 	}
 }
+func TestAgyDisplayModel(t *testing.T) {
+	if got := agyDisplayModel("gemini-3.5-flash-low"); got != "Gemini 3.5 Flash (Low)" {
+		t.Fatalf("got %q", got)
+	}
+}
+
 func TestAgyModelEncodesEffort(t *testing.T) {
 	command, err := commandFor(Provider{Adapter: "agy", Model: "gemini-3.5-flash-low", Effort: "low"}, "prompt", "system", map[string]any{"type": "object"})
 	if err != nil {

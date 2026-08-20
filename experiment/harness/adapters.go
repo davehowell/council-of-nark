@@ -300,7 +300,7 @@ func invoke(base string, provider Provider, prompt, system string, schema map[st
 		parsed := map[string]any{"findings": []any{}}
 		return Invocation{ReturnCode: 0, Stdout: "{\"findings\":[]}", Parsed: parsed, LatencySeconds: time.Since(started).Seconds(), Usage: map[string]any{}, Sandbox: map[string]any{"seatbelt": true, "process": "mock-no-child"}}, nil
 	}
-	sandbox, err := makeSandbox(base, provider.Adapter, command.Executables, command.RuntimeRoots)
+	sandbox, err := makeSandbox(base, provider, command.Executables, command.RuntimeRoots)
 	if err != nil {
 		return Invocation{}, err
 	}
