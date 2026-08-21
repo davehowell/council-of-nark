@@ -2,7 +2,7 @@
 
 > Status: candidate set frozen for harness integration; no respondent run has occurred.
 
-This set uses public fixes merged from 1 June through 20 August 2026. It samples one Python graphics project, one Python data-loading project, one Go code-intelligence project, and one Rust/Python vector-index project.
+The core set uses public fixes merged from 1 June through 20 August 2026. It samples one Python graphics project, one Python data-loading project, one Go code-intelligence project, and one Rust/Python vector-index project. A separately gated Modular task tests an extreme-complexity stratum without weakening the core set's evidence rules.
 
 ## Selected set
 
@@ -19,9 +19,21 @@ This set uses public fixes merged from 1 June through 20 August 2026. It samples
 
 [`candidates.json`](candidates.json) records exact pre-fix parent commits, evidence commits, dates, licenses, patch sizes, and relevant regression tests. [`briefs/`](briefs/) contains symptom-oriented task text with root-cause and patch instructions removed.
 
+## Extreme reserve: Modular
+
+The candidate `eco-modular-cpu-splitk-arg-reduce` uses the newly open-sourced [Modular Platform](https://github.com/modular/modular). A large CPU `argmax`/`argmin` can return the wrong global index only after entering a multi-worker split-axis reduction. Diagnosing it requires navigating Mojo's generic monoid state, SIMD-lane collapse, scratch representation, parallel publication, and finalisation across a 225.9 MB, 10,538-blob source tree.
+
+It is not yet eligible for a respondent run:
+
+- Modular open-sourced Mojo on 18 August 2026, then synchronized this fix as a public linear commit. There is no public issue or PR review, so its evidence provenance is weaker and must remain a separate stratum.
+- The parent pins Mojo `1.1.0.dev2026081813`, MAX `26.6.0.dev2026081813`, and the BuildBuddy Bazel wrapper `5.0.382`. Their complete artifacts and digests must be mirrored before offline execution.
+- The focused CPU test must first fail at parent `f0f9e8f…` and pass at evidence commit `6df03ad2…` on the declared macOS host. The local screening host has sufficient CPU cores but lacks the required full Xcode installation, so this validation was not attempted.
+
+Do not substitute it after looking at pilot outputs. Promote it only by a new preregistered extreme-task stage after the three gates above pass.
+
 ## Curation procedure
 
-On 21 August 2026 the curator queried GitHub for merged pull requests in `2026-06-01..2026-08-20`. The search returned 75 Manim, 141 dlt, 434 Gortex, and 186 turbovec PRs. Titles/labels removed releases, dependency bumps, documentation-only changes, and obvious one-line chores. For finalists, the curator inspected PR/issue text, changed-file lists, patch size, exact merge parent, regression-test evidence, and macOS feasibility. The curator necessarily saw the fixes. Respondents must not see this directory. Outcome raters may receive the patch/tests only after outputs are frozen, in a condition-blinded evidence bundle.
+On 21 August 2026 the curator queried GitHub for merged pull requests in `2026-06-01..2026-08-20`. The search returned 75 Manim, 141 dlt, 434 Gortex, and 186 turbovec PRs. Modular returned only three merged PRs: its 561,408-line open-source import, notices, and documentation. The curator therefore screened post-import public source commits separately and retained one CPU-only, test-backed fix as blocked extreme reserve—not as PR-backed evidence. Titles/labels removed releases, dependency bumps, documentation-only changes, and obvious one-line chores. For finalists, the curator inspected PR/issue or commit text, changed-file lists, patch size, exact parent, regression-test evidence, and macOS feasibility. The curator necessarily saw the fixes. Respondents must not see this directory. Outcome raters may receive the patch/tests only after outputs are frozen, in a condition-blinded evidence bundle.
 
 This is purposive stratified sampling, not a random sample of open-source defects. It favours well-documented merged bugs with tests. Freeze that limitation and the pilot/reserve split before running models.
 
@@ -38,7 +50,7 @@ A selected task must:
 - be narrow enough for one task and one scoring key;
 - require diagnosis rather than repeating a solution already stated in the supplied brief.
 
-The four pilot tasks deliberately span languages and failure shapes. Reserve tasks are harder and should not replace a failed pilot task after outputs are inspected unless the exclusion rule was frozen beforehand.
+The four pilot tasks deliberately span languages and failure shapes. Reserve tasks are harder and should not replace a failed pilot task after outputs are inspected unless the exclusion rule was frozen beforehand. The Modular task does not yet satisfy the public-review and validated-offline-toolchain gates, so it is a watchlist item rather than a selected ninth task.
 
 ## Exclusions
 
@@ -66,9 +78,10 @@ For each task:
 5. store provenance and file digests outside the source root visible to the model;
 6. run a deny probe for `.git` history, sibling directories, the council repository, network tools, and evidence files;
 7. supply the brief through the frozen request, not as an upstream issue URL;
-8. expose the same allowlisted read/search/test tools to every arm.
+8. expose the same allowlisted read/search/test tools to every arm;
+9. for dependency-heavy tasks, prefetch the exact toolchain and repository closure controller-side, record artifact digests and licenses, then prove the focused test runs with network denied.
 
-The answer evidence consists of the merged patch, its regression tests, issue/maintainer discussion, and independent human review. The upstream patch is evidence, not the only acceptable answer: supported novel findings remain valid and must be adjudicated.
+The answer evidence normally consists of the merged patch, its regression tests, issue/maintainer discussion, and independent human review. The Modular watchlist task has commit/test evidence but no public review discussion; report and analyse that stratum separately. An upstream correction is evidence, not the only acceptable answer: supported novel findings remain valid and must be adjudicated.
 
 ## Scoring
 
