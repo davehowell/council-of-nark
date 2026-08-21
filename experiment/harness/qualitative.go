@@ -68,6 +68,21 @@ func (h *Harness) UnblindQualitative(runArgument, ratingsArgument, label string)
 	if len(pairMap) == 0 {
 		return fmt.Errorf("run has no private paired-comparison map")
 	}
+	coverage := map[string]int{}
+	for _, rating := range ratings {
+		if pairMap[rating["pair_id"]] == nil {
+			return fmt.Errorf("unknown pair_id %s", rating["pair_id"])
+		}
+		coverage[rating["rater"]]++
+	}
+	if len(coverage) < 2 {
+		return fmt.Errorf("qualitative unblinding requires at least two independent raters")
+	}
+	for rater, count := range coverage {
+		if count != len(pairMap) {
+			return fmt.Errorf("rater %s covers %d/%d pairs", rater, count, len(pairMap))
+		}
+	}
 	pairRows, err := readJSONL(filepath.Join(run, "blinded", "pairs.jsonl"))
 	if err != nil {
 		return err
@@ -127,6 +142,12 @@ func (h *Harness) UnblindQualitative(runArgument, ratingsArgument, label string)
 			return fmt.Errorf("%s has invalid overall preference", pairID)
 		}
 		guess := rating["condition_guess_left_functional_left_fictional_unsure"]
+		if guess != "unsure" && guess != "left-functional" && guess != "left-fictional" {
+			return fmt.Errorf("%s has invalid condition guess", pairID)
+		}
+		if _, err := scoreOneToFive(rating, "guess_confidence_1_5"); err != nil {
+			return fmt.Errorf("%s: %w", pairID, err)
+		}
 		if guess != "unsure" {
 			knownGuesses++
 			if (guess == "left-functional" && leftCondition == "functional") || (guess == "left-fictional" && leftCondition == "fictional") {
@@ -154,7 +175,7 @@ func (h *Harness) UnblindQualitative(runArgument, ratingsArgument, label string)
 	if knownGuesses > 0 {
 		guessAccuracy = float64(correctGuesses) / float64(knownGuesses)
 	}
-	summary := map[string]any{"schema_version": 1, "n_ratings": len(ratings), "condition_scores": means, "preferences": preferences, "condition_guess": map[string]any{"known_guesses": knownGuesses, "correct_guesses": correctGuesses, "accuracy_when_guessed": guessAccuracy}, "wording_revealed_condition": wording, "warning": "condition labels were hidden, but output wording may reveal treatment; report guess/reveal results with quality ratings"}
+	summary := map[string]any{"schema_version": 1, "n_raters": len(coverage), "n_pairs": len(pairMap), "n_ratings": len(ratings), "condition_scores": means, "preferences": preferences, "condition_guess": map[string]any{"known_guesses": knownGuesses, "correct_guesses": correctGuesses, "accuracy_when_guessed": guessAccuracy}, "wording_revealed_condition": wording, "warning": "condition labels were hidden, but output wording may reveal treatment; report guess/reveal results with quality ratings"}
 	analysis := filepath.Join(run, "analysis", label)
 	if err := os.MkdirAll(analysis, 0o755); err != nil {
 		return err

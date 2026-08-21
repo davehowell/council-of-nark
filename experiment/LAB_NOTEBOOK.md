@@ -84,7 +84,7 @@ This is the chronological engineering record. It preserves failed runs and the r
 - Added Part 3, *The Experiment Fought Back*, as a living presentation of instrumentation failures, discarded runs, scoring repairs, negative findings, and isolation hardening.
 - Decision: published talks should show the failed paths and why the methodology changed, not reconstruct a falsely linear success story.
 
-## 2026-08-20 13:20 — human blinding and ecological curation
+## 2026-08-21 13:20 — human blinding and ecological curation
 
 - Clarified that one council author may be a human rater if the prior is disclosed and an independent second rater is retained.
 - Found that earlier opaque IDs were hashes of a public seed: procedurally blinded, but reproducible by a motivated rater.

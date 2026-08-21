@@ -19,6 +19,12 @@ This set uses public fixes merged from 1 June through 20 August 2026. It samples
 
 [`candidates.json`](candidates.json) records exact pre-fix parent commits, evidence commits, dates, licenses, patch sizes, and relevant regression tests. [`briefs/`](briefs/) contains symptom-oriented task text with root-cause and patch instructions removed.
 
+## Curation procedure
+
+On 21 August 2026 the curator queried GitHub for merged pull requests in `2026-06-01..2026-08-20`. The search returned 75 Manim, 141 dlt, 434 Gortex, and 186 turbovec PRs. Titles/labels removed releases, dependency bumps, documentation-only changes, and obvious one-line chores. For finalists, the curator inspected PR/issue text, changed-file lists, patch size, exact merge parent, regression-test evidence, and macOS feasibility. The curator necessarily saw the fixes. Respondents must not see this directory. Outcome raters may receive the patch/tests only after outputs are frozen, in a condition-blinded evidence bundle.
+
+This is purposive stratified sampling, not a random sample of open-source defects. It favours well-documented merged bugs with tests. Freeze that limitation and the pilot/reserve split before running models.
+
 ## Inclusion criteria
 
 A selected task must:

@@ -299,6 +299,9 @@ func loadOrCreateBlindingKey(run string) ([]byte, error) {
 	if err := os.MkdirAll(private, 0o700); err != nil {
 		return nil, err
 	}
+	if err := os.Chmod(private, 0o700); err != nil {
+		return nil, err
+	}
 	path := filepath.Join(private, "blinding-key")
 	if value, err := os.ReadFile(path); err == nil {
 		if len(value) != 32 {
@@ -407,6 +410,7 @@ func (h *Harness) Bundle(runArgument string) error {
 	for _, set := range plan.OutputSets {
 		blindSetID := blindedID(key, "s", set.SetID)
 		blindedSetByActual[set.SetID] = blindSetID
+		itemRowsBySet[blindSetID] = []map[string]any{}
 		findings, err := findingsForSet(run, set)
 		if err != nil {
 			return err
@@ -465,7 +469,11 @@ func (h *Harness) Bundle(runArgument string) error {
 	if err := writeJSONL(filepath.Join(blinded, "pairs.jsonl"), pairs); err != nil {
 		return err
 	}
-	if err := writeJSON(filepath.Join(run, "private", "unblind.json"), map[string]any{"sets": unblindSets, "items": unblindItems, "pairs": unblindPairs}); err != nil {
+	unblindPath := filepath.Join(run, "private", "unblind.json")
+	if err := writeJSON(unblindPath, map[string]any{"sets": unblindSets, "items": unblindItems, "pairs": unblindPairs}); err != nil {
+		return err
+	}
+	if err := os.Chmod(unblindPath, 0o600); err != nil {
 		return err
 	}
 	if err := writeJSON(filepath.Join(blinded, "manifest.json"), map[string]any{"schema_version": 2, "id_scheme": "HMAC-SHA-256 with private random key", "blinding_key_sha256": shaBytes(key), "condition_labels_hidden": true, "wording_may_reveal_treatment": true, "item_count": len(items), "set_count": len(sets), "pair_count": len(pairs)}); err != nil {
