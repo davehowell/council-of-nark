@@ -82,6 +82,12 @@ Strict agy testing attempted to locate or create a login keychain when its norma
 
 **Correction:** fail before launching either shared-login client. Current Anthropic, Google, OpenAI, and Gemma calls all use explicitly pinned provider/model IDs through Pi. Only Pi auth and model-registry files enter the ephemeral home; Pi settings, skills, history, sessions, context, and themes do not. A live Seatbelt check succeeded for Gemma, Google/Gemini, and Anthropic calls.
 
+### 11. Public-seed hashes were opaque-looking, not cryptographically blinded
+
+Earlier item IDs were deterministic hashes of the public config seed and known output-set semantics. A compliant rater who avoided `plan.json` remained operationally blinded, but a motivated rater could reproduce candidate IDs from the public repository.
+
+**Correction:** generate a private random 256-bit key after sealing and HMAC every blinded set, item, and pair ID. Publish only the key digest. Randomise A/B side with the same private key, preserve original wording, and collect post-rating condition guesses because style can still reveal treatment. Historical result IDs retain their documented procedural blinding.
+
 ## Checks that did not reveal contamination
 
 - M1 and M2 use byte-identical lens kernels; only paired wrappers differ.

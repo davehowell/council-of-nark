@@ -1,7 +1,11 @@
 package harness
 
 import (
+	"crypto/hmac"
+	"crypto/rand"
+	"crypto/sha256"
 	"encoding/csv"
+	"encoding/hex"
 	"encoding/json"
 	"fmt"
 	"io/fs"
@@ -280,11 +284,106 @@ func writeJSONL(path string, rows []map[string]any) error {
 	}
 	return writeText(path, b.String())
 }
-func deterministicOrder(rows []map[string]any, seed, key string) {
+func blindedID(key []byte, prefix string, parts ...any) string {
+	values := []string{prefix}
+	for _, part := range parts {
+		values = append(values, fmt.Sprint(part))
+	}
+	mac := hmac.New(sha256.New, key)
+	_, _ = mac.Write([]byte(strings.Join(values, "\x1f")))
+	return prefix + "-" + hex.EncodeToString(mac.Sum(nil))[:16]
+}
+
+func loadOrCreateBlindingKey(run string) ([]byte, error) {
+	private := filepath.Join(run, "private")
+	if err := os.MkdirAll(private, 0o700); err != nil {
+		return nil, err
+	}
+	if err := os.Chmod(private, 0o700); err != nil {
+		return nil, err
+	}
+	path := filepath.Join(private, "blinding-key")
+	if value, err := os.ReadFile(path); err == nil {
+		if len(value) != 32 {
+			return nil, fmt.Errorf("invalid private blinding key length")
+		}
+		return value, nil
+	} else if !os.IsNotExist(err) {
+		return nil, err
+	}
+	value := make([]byte, 32)
+	if _, err := rand.Read(value); err != nil {
+		return nil, err
+	}
+	if err := atomicWrite(path, value, 0o600); err != nil {
+		return nil, err
+	}
+	return value, nil
+}
+
+func blindedOrder(rows []map[string]any, key []byte, field string) {
 	sort.SliceStable(rows, func(i, j int) bool {
-		return shaText(seed+"\x1f"+stringValue(rows[i][key])) < shaText(seed+"\x1f"+stringValue(rows[j][key]))
+		return blindedID(key, "order", stringValue(rows[i][field])) < blindedID(key, "order", stringValue(rows[j][field]))
 	})
 }
+
+type comparisonMember struct {
+	condition, role, kind, group string
+	set                          OutputSet
+}
+
+func comparisonFor(set OutputSet) (comparisonMember, bool) {
+	metadata := set.Metadata
+	design := stringValue(metadata["design"])
+	if design == "provider_pair" || design == "persona_factorial" {
+		condition := stringValue(metadata["wrapper"])
+		if condition != "functional" && condition != "fictional" {
+			return comparisonMember{}, false
+		}
+		role, kind := stringValue(metadata["role"]), stringValue(metadata["kind"])
+		group := pairKey(design, set.Packet, metadata["repeat"], metadata["provider_index"], metadata["model"], role, kind)
+		return comparisonMember{condition: condition, role: role, kind: kind, group: group, set: set}, true
+	}
+	if design != "stage_a" {
+		return comparisonMember{}, false
+	}
+	arm, kind := stringValue(metadata["arm"]), stringValue(metadata["kind"])
+	condition, role := "", ""
+	switch arm {
+	case "S1":
+		condition, role = "functional", "omnibus"
+	case "S2":
+		condition, role = "fictional", "omnibus"
+	case "M1":
+		condition, role = "functional", "specialist-panel"
+	case "M2":
+		condition, role = "fictional", "specialist-panel"
+	}
+	if condition == "" {
+		return comparisonMember{}, false
+	}
+	group := pairKey(design, set.Packet, metadata["repeat"], role, kind)
+	return comparisonMember{condition: condition, role: role, kind: kind, group: group, set: set}, true
+}
+
+func writeTemplate(path string, header []string, rows [][]string) error {
+	f, err := os.Create(path)
+	if err != nil {
+		return err
+	}
+	writer := csv.NewWriter(f)
+	_ = writer.Write(header)
+	for _, row := range rows {
+		_ = writer.Write(row)
+	}
+	writer.Flush()
+	if err := writer.Error(); err != nil {
+		_ = f.Close()
+		return err
+	}
+	return f.Close()
+}
+
 func (h *Harness) Bundle(runArgument string) error {
 	run, err := h.resolveRun(runArgument)
 	if err != nil {
@@ -294,72 +393,125 @@ func (h *Harness) Bundle(runArgument string) error {
 	if err := readJSON(filepath.Join(run, "plan.json"), &plan); err != nil {
 		return err
 	}
+	key, err := loadOrCreateBlindingKey(run)
+	if err != nil {
+		return err
+	}
 	blinded := filepath.Join(run, "blinded")
 	_ = os.RemoveAll(blinded)
 	if err := os.MkdirAll(blinded, 0o755); err != nil {
 		return err
 	}
-	seed := plan.Seed + ":blinding"
-	items, sets := []map[string]any{}, []map[string]any{}
-	unblindSets, unblindItems := map[string]any{}, map[string]any{}
+	items, sets, pairs := []map[string]any{}, []map[string]any{}, []map[string]any{}
+	unblindSets, unblindItems, unblindPairs := map[string]any{}, map[string]any{}, map[string]any{}
 	packets := map[string]bool{}
+	blindedSetByActual := map[string]string{}
+	itemRowsBySet := map[string][]map[string]any{}
 	for _, set := range plan.OutputSets {
+		blindSetID := blindedID(key, "s", set.SetID)
+		blindedSetByActual[set.SetID] = blindSetID
+		itemRowsBySet[blindSetID] = []map[string]any{}
 		findings, err := findingsForSet(run, set)
 		if err != nil {
 			return err
 		}
 		ids := []string{}
 		for index, finding := range findings {
-			id := "i-" + opaqueID(seed, 16, set.SetID, index)
+			id := blindedID(key, "i", set.SetID, index)
 			ids = append(ids, id)
-			items = append(items, map[string]any{"item_id": id, "set_id": set.SetID, "packet": set.Packet, "finding": finding})
-			unblindItems[id] = map[string]any{"set_id": set.SetID, "source_index": index}
+			item := map[string]any{"item_id": id, "set_id": blindSetID, "packet": set.Packet, "finding": finding}
+			items = append(items, item)
+			itemRowsBySet[blindSetID] = append(itemRowsBySet[blindSetID], map[string]any{"item_id": id, "finding": finding})
+			unblindItems[id] = map[string]any{"set_id": blindSetID, "source_set_id": set.SetID, "source_index": index}
 		}
-		sets = append(sets, map[string]any{"set_id": set.SetID, "packet": set.Packet, "item_ids": ids})
-		unblindSets[set.SetID] = set
+		sets = append(sets, map[string]any{"set_id": blindSetID, "packet": set.Packet, "item_ids": ids})
+		unblindSets[blindSetID] = set
 		packets[set.Packet] = true
 	}
-	deterministicOrder(items, seed, "item_id")
-	deterministicOrder(sets, seed+":sets", "set_id")
+	comparisonGroups := map[string]map[string]comparisonMember{}
+	for _, set := range plan.OutputSets {
+		member, ok := comparisonFor(set)
+		if !ok {
+			continue
+		}
+		if comparisonGroups[member.group] == nil {
+			comparisonGroups[member.group] = map[string]comparisonMember{}
+		}
+		comparisonGroups[member.group][member.condition] = member
+	}
+	for group, members := range comparisonGroups {
+		functional, hasFunctional := members["functional"]
+		fictional, hasFictional := members["fictional"]
+		if !hasFunctional || !hasFictional {
+			continue
+		}
+		pairID := blindedID(key, "p", group)
+		left, right := functional, fictional
+		if h := hmac.New(sha256.New, key); true {
+			_, _ = h.Write([]byte("side\x1f" + group))
+			if h.Sum(nil)[0]&1 == 1 {
+				left, right = fictional, functional
+			}
+		}
+		leftSet, rightSet := blindedSetByActual[left.set.SetID], blindedSetByActual[right.set.SetID]
+		pairs = append(pairs, map[string]any{"pair_id": pairID, "packet": left.set.Packet, "role": left.role, "kind": left.kind, "left": map[string]any{"output_id": leftSet, "findings": itemRowsBySet[leftSet]}, "right": map[string]any{"output_id": rightSet, "findings": itemRowsBySet[rightSet]}})
+		unblindPairs[pairID] = map[string]any{"left_condition": left.condition, "right_condition": right.condition, "left_set_id": left.set.SetID, "right_set_id": right.set.SetID}
+	}
+	blindedOrder(items, key, "item_id")
+	blindedOrder(sets, key, "set_id")
+	blindedOrder(pairs, key, "pair_id")
 	if err := writeJSONL(filepath.Join(blinded, "findings.jsonl"), items); err != nil {
 		return err
 	}
 	if err := writeJSONL(filepath.Join(blinded, "sets.jsonl"), sets); err != nil {
 		return err
 	}
-	if err := writeJSON(filepath.Join(run, "private", "unblind.json"), map[string]any{"sets": unblindSets, "items": unblindItems}); err != nil {
+	if err := writeJSONL(filepath.Join(blinded, "pairs.jsonl"), pairs); err != nil {
 		return err
 	}
-	answerDir := filepath.Join(blinded, "answer-keys")
+	unblindPath := filepath.Join(run, "private", "unblind.json")
+	if err := writeJSON(unblindPath, map[string]any{"sets": unblindSets, "items": unblindItems, "pairs": unblindPairs}); err != nil {
+		return err
+	}
+	if err := os.Chmod(unblindPath, 0o600); err != nil {
+		return err
+	}
+	if err := writeJSON(filepath.Join(blinded, "manifest.json"), map[string]any{"schema_version": 2, "id_scheme": "HMAC-SHA-256 with private random key", "blinding_key_sha256": shaBytes(key), "condition_labels_hidden": true, "wording_may_reveal_treatment": true, "item_count": len(items), "set_count": len(sets), "pair_count": len(pairs)}); err != nil {
+		return err
+	}
+	answerDir, packetDir := filepath.Join(blinded, "answer-keys"), filepath.Join(blinded, "review-packets")
 	if err := os.MkdirAll(answerDir, 0o755); err != nil {
+		return err
+	}
+	if err := os.MkdirAll(packetDir, 0o755); err != nil {
 		return err
 	}
 	for packet := range packets {
 		if err := copyFile(filepath.Join(h.Root, "experiment/scenarios", packet, "answer-key.md"), filepath.Join(answerDir, packet+".md"), 0o644); err != nil {
 			return err
 		}
+		if err := copyFile(filepath.Join(h.Root, "experiment/scenarios", packet, "review-packet.md"), filepath.Join(packetDir, packet+".md"), 0o644); err != nil {
+			return err
+		}
 	}
-	f, err := os.Create(filepath.Join(blinded, "rating-template.csv"))
-	if err != nil {
-		return err
-	}
-	writer := csv.NewWriter(f)
-	_ = writer.Write([]string{"rater", "item_id", "defect_id", "false_positive_cluster", "material", "confidence", "notes"})
+	itemTemplate := [][]string{}
 	for _, row := range items {
-		_ = writer.Write([]string{"", stringValue(row["item_id"]), "", "", "", "", ""})
+		itemTemplate = append(itemTemplate, []string{"", stringValue(row["item_id"]), "", "", "", "", ""})
 	}
-	writer.Flush()
-	if err := writer.Error(); err != nil {
-		_ = f.Close()
+	if err := writeTemplate(filepath.Join(blinded, "rating-template.csv"), []string{"rater", "item_id", "defect_id", "false_positive_cluster", "material", "confidence", "notes"}, itemTemplate); err != nil {
 		return err
 	}
-	if err := f.Close(); err != nil {
+	pairTemplate := [][]string{}
+	for _, row := range pairs {
+		pairTemplate = append(pairTemplate, []string{"", stringValue(row["pair_id"]), "", "", "", "", "", "", "", "", "", "", ""})
+	}
+	if err := writeTemplate(filepath.Join(blinded, "pairwise-rating-template.csv"), []string{"rater", "pair_id", "left_supportedness_1_5", "right_supportedness_1_5", "left_actionability_1_5", "right_actionability_1_5", "left_fix_quality_1_5", "right_fix_quality_1_5", "overall_preference_left_right_tie", "condition_guess_left_functional_left_fictional_unsure", "guess_confidence_1_5", "wording_revealed_condition_true_false_unsure", "notes"}, pairTemplate); err != nil {
 		return err
 	}
-	runsheet := "# Blinded rating runsheet\n\n1. Do not open `plan.json`, `calls/`, or `private/unblind.json`.\n2. Open `findings.jsonl` and the answer key for each item's `packet`.\n3. Enter one row per item in a copy of `rating-template.csv`.\n4. Set `defect_id` to one matching planted ID, or `NONE`.\n5. For `NONE`, assign a short `false_positive_cluster`; reuse it for the same claimed mechanism in this set.\n6. Set `material` to `true` only when the packet supports the claim and its consequence.\n7. Use `confidence` = `high`, `medium`, or `low`; explain ambiguous matches in `notes`.\n8. Work independently. Do not compare ratings until both raters finish.\n9. Resolve disagreements without revealing arm, model, or provider metadata.\n10. Save the adjudicated file and run the scoring recipe.\n\nDifferent wording can map to the same defect. An unmatched material claim is a false positive. A style preference with no planted mechanism maps to `NONE`.\n"
+	runsheet := "# Blinded human rating runsheet\n\n## Phase 1 — independent defect mapping\n\n1. Do not open `plan.json`, `calls/`, or `private/`. Do not derive IDs from public configs.\n2. Rate `findings.jsonl` one item at a time in its shuffled order; do not compare paired outputs yet.\n3. Use the packet and answer key for the item's `packet`. Map to one defect ID or `NONE`.\n4. Cluster semantically duplicate false claims within the same opaque set. Record materiality, confidence, and notes.\n5. Finish and lock your Phase 1 CSV before opening `pairs.jsonl`.\n\n## Phase 2 — paired qualitative judgement\n\n6. `pairs.jsonl` randomises functional/fictional output between left and right. Score supportedness, actionability, and fix quality from 1 (poor) to 5 (excellent).\n7. Choose left, right, or tie overall. Only after scoring, guess which side is functional, or choose unsure; record confidence and whether wording revealed the condition.\n8. Wording is not transformed because style and token use are part of the treatment. Therefore this is label-blinded, not guaranteed treatment-blinded.\n\n## Independence and unblinding\n\n9. Work independently. Disclose relevant priors; one rater's preference for the fictional robots is acceptable but must not be the only rating.\n10. Use two raters. Reconcile Phase 1 disagreements before unblinding. Preserve both original rating files.\n11. The controller joins opaque IDs to conditions only after both ratings are locked. Do not delete the hashes; publish an unblinded derived table so the audit trail survives.\n"
 	if err := writeText(filepath.Join(blinded, "RUNSHEET.md"), runsheet); err != nil {
 		return err
 	}
-	fmt.Printf("Created %d blinded items across %d output sets.\n", len(items), len(sets))
+	fmt.Printf("Created %d blinded items across %d output sets and %d paired comparisons.\n", len(items), len(sets), len(pairs))
 	return nil
 }

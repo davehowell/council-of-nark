@@ -21,6 +21,8 @@ presentations/dist/
 experiment/runs/
 experiment/worktrees/
 experiment/private/
+experiment/ecological/work/
+experiment/ecological/cache/
 
 # Editors and operating systems
 .DS_Store

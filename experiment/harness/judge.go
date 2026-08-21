@@ -227,6 +227,25 @@ func writeRatings(path string, ratings map[string]map[string]string) error {
 	}
 	return f.Close()
 }
+func blindedSetIDs(run string, plan Plan) map[string]string {
+	mapping := map[string]string{}
+	var unblind map[string]any
+	if err := readJSON(filepath.Join(run, "private", "unblind.json"), &unblind); err == nil {
+		for blindID, raw := range mapValue(unblind["sets"]) {
+			actual := stringValue(mapValue(raw)["set_id"])
+			if actual != "" {
+				mapping[actual] = blindID
+			}
+		}
+	}
+	for _, set := range plan.OutputSets {
+		if mapping[set.SetID] == "" {
+			mapping[set.SetID] = set.SetID
+		}
+	}
+	return mapping
+}
+
 func (h *Harness) Judge(runArgument, configArgument string, jobs int) error {
 	if err := h.requireCleanTree(); err != nil {
 		return fmt.Errorf("derived rating stages require a clean committed harness: %w", err)
@@ -277,11 +296,14 @@ func (h *Harness) Judge(runArgument, configArgument string, jobs int) error {
 		}
 	}
 	pending := []OutputSet{}
+	blindSetByActual := blindedSetIDs(run, plan)
 	judgeCommit, err := h.sourceCommit()
 	if err != nil {
 		return err
 	}
-	for _, set := range plan.OutputSets {
+	for _, sourceSet := range plan.OutputSets {
+		set := sourceSet
+		set.SetID = blindSetByActual[sourceSet.SetID]
 		expected := map[string]bool{}
 		complete := true
 		for _, item := range bySet[set.SetID] {

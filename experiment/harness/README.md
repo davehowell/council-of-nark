@@ -9,12 +9,12 @@ The single `council-exp` command provides these stages:
 1. `doctor` validates macOS, Seatbelt, config, prompt assembly, wrapper length, model identifiers, call counts, and answer-key exclusion without model calls.
 2. `freeze` requires a clean tree, reruns the public audit, records `HEAD`, hashes every tracked input, and records external CLI entrypoint digests/versions.
 3. `plan` builds opaque call/output-set IDs and a deterministic hash-ordered schedule.
-4. `run` schedules dependencies and starts every call in a fresh process from a detached worktree at the frozen commit.
+4. `run` schedules dependencies, assembles prompts from detached worktrees, and starts provider children elsewhere under Seatbelt.
 5. `summarize` reports status, usage, cost, findings, and latency without scoring.
 6. `seal` hashes and makes raw run files read-only; `verify` recomputes those digests.
-7. `bundle` shuffles findings into a rating bundle that hides arm, wrapper, model, and provider.
+7. `bundle` uses a private random HMAC key for opaque item/set/pair IDs, shuffles finding-level ratings, and randomises left/right qualitative comparisons.
 8. `judge` can produce exploratory arm-blinded smoke triage. It requires a clean committed harness and records the derived-stage commit.
-9. `score` consumes one adjudicated rating per finding and reports set/group metrics.
+9. `score` consumes one adjudicated rating per finding; `qualitative` unblinds locked A/B ratings into a derived report while preserving opaque IDs.
 
 Use `just` rather than calling the binary directly. `go run` builds outside the worktree and no persistent harness binary is required.
 
@@ -74,4 +74,6 @@ Only non-zero process/transport failures are retried, with configured linear bac
 
 ## Data boundaries
 
-`request.json` records the exact prompts, schema, model, source commit, isolation declaration, and digests. Prompt assembly rejects answer-key headings, planted IDs, and long key claims. Answer keys enter only the blinded rating stage. Raw and derived stages have separate integrity boundaries.
+`request.json` records the exact prompts, schema, model, source commit, isolation declaration, and digests. Prompt assembly rejects answer-key headings, planted IDs, and long key claims. Answer keys enter only the blinded rating stage.
+
+A private 256-bit key makes blinded IDs non-derivable from the public plan seed; its digest, not the key, enters the bundle manifest. Output wording remains unchanged because style is part of the treatment, so the qualitative template records condition guesses and apparent unblinding. Raw and derived stages have separate integrity boundaries.

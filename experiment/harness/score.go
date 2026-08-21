@@ -270,10 +270,23 @@ func (h *Harness) Score(runArgument, ratingsArgument, label string) error {
 	for _, set := range plan.OutputSets {
 		planSets[set.SetID] = set
 	}
+	var unblind map[string]any
+	if err := readJSON(filepath.Join(run, "private", "unblind.json"), &unblind); err == nil {
+		for blindID, raw := range mapValue(unblind["sets"]) {
+			data, _ := json.Marshal(raw)
+			var set OutputSet
+			if json.Unmarshal(data, &set) == nil {
+				planSets[blindID] = set
+			}
+		}
+	}
 	rows := []map[string]any{}
 	detectedBySet := map[string]stringSet{}
 	for setID, blinded := range blindedSets {
-		set := planSets[setID]
+		set, ok := planSets[setID]
+		if !ok {
+			return fmt.Errorf("opaque set %s is absent from private unblind map", setID)
+		}
 		valid, err := answerIDs(h.Root, set.Packet)
 		if err != nil {
 			return err

@@ -9,7 +9,7 @@ import (
 )
 
 func usage() {
-	fmt.Fprintln(os.Stderr, "usage: council-exp <doctor|sandbox-check|freeze|plan|run|summarize|seal|verify|bundle|judge|score> [arguments]")
+	fmt.Fprintln(os.Stderr, "usage: council-exp <doctor|sandbox-check|freeze|plan|run|summarize|seal|verify|bundle|judge|score|qualitative> [arguments]")
 }
 func fail(err error) { fmt.Fprintln(os.Stderr, "error:", err); os.Exit(1) }
 func need(args []string, n int) error {
@@ -114,6 +114,16 @@ func main() {
 			fail(e)
 		}
 		err = h.Score(fs.Args()[0], fs.Args()[1], *label)
+	case "qualitative":
+		fs := flag.NewFlagSet("qualitative", flag.ContinueOnError)
+		label := fs.String("label", "qualitative", "")
+		if e := fs.Parse(args); e != nil {
+			fail(e)
+		}
+		if e := need(fs.Args(), 2); e != nil {
+			fail(e)
+		}
+		err = h.UnblindQualitative(fs.Args()[0], fs.Args()[1], *label)
 	default:
 		usage()
 		os.Exit(2)
