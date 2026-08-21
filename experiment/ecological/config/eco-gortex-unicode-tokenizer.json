@@ -1,0 +1,100 @@
+{
+  "schema_version": 1,
+  "task_id": "eco-gortex-unicode-tokenizer",
+  "repository_url": "https://github.com/zzet/gortex.git",
+  "parent_commit": "a1c26e19aa9dd8d840b0128bd470b83a98fdb91f",
+  "evidence_commit": "7ff32d7b7be63f2aa05be74ff4dcf3ce63714207",
+  "expected_evidence_parent": "a1c26e19aa9dd8d840b0128bd470b83a98fdb91f",
+  "license_spdx": "Apache-2.0",
+  "license_files": [
+    {
+      "path": "LICENSE.md",
+      "sha256": "aaede525f28a7ac5d76de963443c0b3bd08d1ba8f8b215d57cd2ca81ddacfce4",
+      "contains": "Apache License"
+    },
+    {
+      "path": "NOTICE",
+      "sha256": "3b7395e9878403b0105ae5ff434b911238665393f226cb6a14b01d5b1597f85c",
+      "contains": "Gortex"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES.md",
+      "sha256": "b79dd8ce5b9669aaee64d4272da22a1a9c104af62545a1de346899c39a6184cb",
+      "contains": "Third-Party Notices"
+    }
+  ],
+  "sanitization": {
+    "remove": [
+      {
+        "path": ".github",
+        "reason": "issue templates, workflow automation, and review-bot prompts",
+        "required": true
+      },
+      {
+        "path": "examples/.github",
+        "reason": "workflow example that instructs automated reviewers",
+        "required": true
+      },
+      {
+        "path": "CLAUDE.md",
+        "reason": "project-level agent instructions",
+        "required": true
+      },
+      {
+        "path": "docs/agents.md",
+        "reason": "agent and MCP integration instructions",
+        "required": true
+      },
+      {
+        "path": ".gortex.yaml",
+        "reason": "project-local MCP/application configuration",
+        "required": true
+      },
+      {
+        "path": "eval",
+        "reason": "model evaluation prompts, adapters, and result machinery",
+        "required": true
+      },
+      {
+        "path": "docs/04-evaluation",
+        "reason": "evaluation task prompts and expected-answer guidance",
+        "required": true
+      },
+      {
+        "path": "bench",
+        "reason": "benchmark ground truth, issue reproductions, and generated score inputs",
+        "required": true
+      },
+      {
+        "path": "BENCHMARK.md",
+        "reason": "generated benchmark report",
+        "required": true
+      },
+      {
+        "path": "BENCHMARK-SWE.md",
+        "reason": "generated benchmark report",
+        "required": true
+      }
+    ],
+    "forbidden_content": [
+      "a1c26e19aa9dd8d840b0128bd470b83a98fdb91f",
+      "7ff32d7b7be63f2aa05be74ff4dcf3ce63714207",
+      "github.com/zzet/gortex/pull/569",
+      "rerank-tokenize-unicode-panic"
+    ]
+  },
+  "focused_test": {
+    "package": "./internal/search/rerank",
+    "run": "^TestTokenize$",
+    "evidence_test_files": [
+      "internal/search/rerank/tokens_test.go"
+    ],
+    "require_absent_at_parent": true,
+    "parent_failure_contains": "index out of range [1] with length 1"
+  },
+  "toolchain": {
+    "kind": "go",
+    "required_version": "go version go1.26.5 darwin/arm64",
+    "license_spdx": "BSD-3-Clause"
+  }
+}

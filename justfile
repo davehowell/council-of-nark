@@ -38,9 +38,13 @@ slides-verify:
     cd presentations && bunx --bun slidev export part-3/slides.md --format png --output /tmp/council-trials-slides
     @echo "Rendered /tmp/council-slides, /tmp/council-experiment-slides, and /tmp/council-trials-slides"
 
-# Run Go harness unit and isolation tests without making model calls.
+# Run Go harness and ecological snapshot tests without making model calls.
 experiment-test:
-    go test ./experiment/harness/...
+    go test ./experiment/harness/... ./experiment/ecological/snapshot ./experiment/ecological/cmd/ecological-snapshot
+
+# Build a fresh Gortex pilot snapshot and validate its focused regression offline.
+ecological-gortex-snapshot:
+    go run ./experiment/ecological/cmd/ecological-snapshot --config experiment/ecological/config/eco-gortex-unicode-tokenizer.json
 
 # Prove Seatbelt permits scratch writes while denying repository reads.
 experiment-sandbox-check:

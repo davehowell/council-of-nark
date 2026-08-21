@@ -73,13 +73,25 @@ For each task:
 
 1. fetch the recorded `parent_commit` into a controller-only cache;
 2. use `git archive`, not a working clone copy, to produce a new source directory;
-3. remove project-level agent instructions, MCP configuration, workflow bot prompts, issue caches, patch files, and generated changelogs that could instruct or reveal a solution;
-4. initialise one neutral root commit with no remote, reflog, alternate object store, tags, branches, or upstream refs;
+3. remove project-level agent instructions, MCP configuration, workflow bot prompts, issue caches, patch files, generated changelogs, and evaluation assets that could instruct or reveal a solution;
+4. create a neutral source root with normalized modes/timestamps and no `.git`; keep any later edit baseline outside the respondent-visible tree;
 5. store provenance and file digests outside the source root visible to the model;
-6. run a deny probe for `.git` history, sibling directories, the council repository, network tools, and evidence files;
+6. run a deny probe for council/controller metadata, sibling tasks, network access, writes, and evidence files;
 7. supply the brief through the frozen request, not as an upstream issue URL;
 8. expose the same allowlisted read/search/test tools to every arm;
-9. for dependency-heavy tasks, prefetch the exact toolchain and repository closure controller-side, record artifact digests and licenses, then prove the focused test runs with network denied.
+9. prefetch and digest the exact toolchain/package closure controller-side, record dependency licenses, then run the focused test with network disabled.
+
+### Implemented Gortex exporter
+
+`config/eco-gortex-unicode-tokenizer.json` freezes the upstream commits, license-file digests, explicit removals, forbidden evidence markers, Go version, and focused test. Run:
+
+```bash
+just ecological-gortex-snapshot
+```
+
+Each invocation creates a new ignored `work/<attempt>/` and never reuses an attempt in place. `source/` is the read-only respondent candidate. `controller/` contains archives, the applied evidence test, logs, manifests, provenance, and a seal; it must never be mounted for a respondent. Immutable Go/tool module closures live under ignored `cache/` and are verified by tree digest before use. The evidence test is applied only in controller validation: it must reproduce the configured failure at the parent and pass at the evidence commit.
+
+The first development validation preserved four failed attempts before completing this lifecycle. It made no model call. Its controller tree was dirty while the exporter was being written, so rerun from a clean committed tree before any claim-bearing respondent run.
 
 The answer evidence normally consists of the merged patch, its regression tests, issue/maintainer discussion, and independent human review. The Modular watchlist task has commit/test evidence but no public review discussion; report and analyse that stratum separately. An upstream correction is evidence, not the only acceptable answer: supported novel findings remain valid and must be adjudicated.
 

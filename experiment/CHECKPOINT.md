@@ -1,16 +1,17 @@
 # Experiment checkpoint
 
-> Checkpoint: 21 August 2026, after PRs #18 and #19. Start future sessions in the `council-of-nark` repository root and read this file plus [`LAB_NOTEBOOK.md`](LAB_NOTEBOOK.md) before changing or running the experiment.
+> Checkpoint: 21 August 2026, after the Gortex ecological snapshot development validation. Start future sessions in the `council-of-nark` repository root and read this file plus [`LAB_NOTEBOOK.md`](LAB_NOTEBOOK.md) before changing or running the experiment.
 
 ## Repository state
 
-- `main` was clean and synchronized with `origin/main` at checkpoint creation.
-- Last substantive integration before this checkpoint: PR #19, baseline merge `9221554fdd3b1f1ba1ec17cfc00c04c364ce7c9a`.
+- The snapshot work started from clean `main` at `69638aea2c429b64a43886098fde1f3cd8bee3f9`, synchronized with `origin/main`.
+- This checkpoint adds the Gortex exporter, frozen task config, tests, documentation, and `just ecological-gortex-snapshot` recipe. Confirm the live commit and remote state rather than assuming the base is still HEAD.
 - Strict Go/Seatbelt harness tag: `experiment-harness-go-v1.0`.
 - Maintained platform: macOS, Go 1.22+, `/usr/bin/sandbox-exec`, isolated Pi adapters. Direct agy and direct Claude CLI remain fail-closed.
 - Published synthetic results remain calibration, not confirmatory evidence.
+- No persona-factorial, ecological respondent, or ecological rating call has occurred.
 
-Confirm the live state rather than assuming this hash is still HEAD:
+Confirm the live state rather than assuming a recorded hash is still HEAD:
 
 ```bash
 git status --short --branch
@@ -65,27 +66,21 @@ Reserve:
 
 PR #19 added a separately gated Modular extreme reserve: CPU split-axis `argmax`/`argmin` index corruption. It is **not eligible** until its exact external build closure is mirrored/digested and the focused test is shown failing at the parent and passing at the evidence commit. It has public commit/test evidence but no public issue or PR review, so never pool it silently with the PR-backed set.
 
-No ecological source export, respondent call, or outcome rating has occurred.
+A local development export now exists for the Gortex Unicode pilot. The fifth preserved attempt completed with source tree digest `41a9a14b…`; the exact evidence test failed at the parent with the expected panic and passed at the evidence commit using the frozen offline Go/module closure. The exporter was still uncommitted during that attempt, so it is engineering validation, not a claim-bearing snapshot. No ecological respondent call or outcome rating has occurred.
 
 ## Highest-priority next work
 
-### 1. Build the ecological snapshot pipeline
+### 1. Freeze the committed Gortex snapshot
 
 Do this before spending 480 calls on the synthetic persona factorial.
 
-Start with the Gortex Unicode pilot because it has a focused Go test, no special hardware, and a relatively conventional toolchain. The exporter should:
+The exporter now implements the required exact fetch, license checks, `git archive`, explicit sanitization, history-free source, external provenance, frozen dependency closure, offline parent/evidence discrimination, and preserved attempts. Before respondent use:
 
-1. fetch the exact parent into a controller-only cache;
-2. verify commit identity and license;
-3. export with `git archive` rather than copying a checkout;
-4. remove `.git`, remotes, reflogs, patches, changelogs, issue caches, agent instructions (`AGENTS.md`, `CLAUDE.md`, `.cursor`, MCP/project AI configuration), and solution hints while retaining required licenses/notices;
-5. create a neutral, history-free source root and store provenance/digests outside it;
-6. prove the source cannot read the council repository, sibling tasks, evidence commit, or controller metadata;
-7. prefetch and digest the dependency/test closure, then prove focused tests run with network denied;
-8. apply the evidence regression test to the parent controller-side to demonstrate expected failure, and run it at the evidence commit to demonstrate pass;
-9. preserve every failed export/build attempt rather than repairing artifacts in place.
-
-Do not expose upstream evidence, `ecological/candidates.json`, or this repository to respondents.
+1. run `just ecological-gortex-snapshot` from a clean committed tree;
+2. verify `status.json`, `controller/provenance.json`, `controller/seal.json`, and the source tree digest;
+3. keep `controller/`, `ecological/candidates.json`, upstream evidence, and this repository outside every respondent mount;
+4. retain all failed and successful local attempts without repairing them in place;
+5. classify the resulting snapshot as infrastructure evidence only until tool access and scoring are frozen.
 
 ### 2. Design explicit ecological tool access
 
@@ -162,3 +157,5 @@ just experiment-qualitative "$RUN" blinded/pairwise-ratings-both.csv qualitative
 ## Ignored local artifact warning
 
 `experiment/runs/20260821T135400Z-mock-pair-fcb1a5efea` is a two-call mock plumbing run created while testing HMAC pairing. It contains no respondent findings and any locally fabricated qualitative rows/derived analyses are plumbing fixtures, not human evidence. Do not report or pool it. Historical real runs remain identified in the published result manifests and notebook.
+
+The ignored `experiment/ecological/work/` and `experiment/ecological/cache/` trees contain the Gortex controller cache, four preserved failed exporter attempts, and the successful dirty-tree development attempt `20260821T160711Z-eco-gortex-unicode-tokenizer-f3a5b8c9`. They contain upstream evidence and controller metadata. Never mount or publish them as respondent source.

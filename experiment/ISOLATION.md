@@ -45,14 +45,15 @@ For a pre-fix ecological task:
 
 1. select the project/issue using frozen inclusion criteria;
 2. export the target parent commit with `git archive` into a new directory;
-3. remove upstream metadata and initialise one neutral root commit;
-4. exclude changelogs, issue caches, patch files, and generated references that reveal the solution;
-5. give every condition the same local read/search/test tools through an allowlisted mediator;
-6. keep unrestricted shell, Git remotes, and internet disabled unless they are declared factors;
-7. retain the upstream patch, tests, and review discussion only for blinded evaluation;
-8. accept supported novel findings rather than treating the eventual patch as the sole valid answer.
+3. remove upstream metadata, normalize the source tree, and leave `.git` absent;
+4. exclude changelogs, issue caches, patch files, generated references, agent instructions, and evaluation assets that could reveal or steer a solution;
+5. store provenance, evidence tests, dependency closure, and any edit baseline outside the source root;
+6. give every condition the same local read/search/test tools through an allowlisted mediator;
+7. keep unrestricted shell, Git remotes, and internet disabled unless they are declared factors;
+8. retain the upstream patch, tests, and review discussion only for blinded evaluation;
+9. accept supported novel findings rather than treating the eventual patch as the sole valid answer.
 
-Deleting `.git` after a normal clone is insufficient if refs, worktrees, caches, or adjacent directories remain visible. Export into a new sandbox root.
+Deleting `.git` after a normal clone is insufficient if refs, worktrees, caches, or adjacent directories remain visible. Export into a new root. The Gortex pilot exporter also runs its controller-only focused test against a digested Go/module closure with `GOPROXY=off` and network-denied Seatbelt. This validates the snapshot; it does not yet grant model tools or define the respondent mediator.
 
 ## OS accounts
 

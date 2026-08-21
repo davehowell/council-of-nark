@@ -109,6 +109,14 @@ This is the chronological engineering record. It preserves failed runs and the r
 - Priority is now ecological infrastructure: begin with a history-free Gortex Unicode snapshot, verify the regression controller-side, then design narrowly allowlisted read/search/test access under a changed and probed isolation boundary.
 - The 480-call persona factorial remains unrun and is not the default next action.
 
+## 2026-08-21 15:57–16:08 — Gortex ecological snapshot development validation
+
+- Added the first ecological exporter and task config for `eco-gortex-unicode-tokenizer`. It fetches the exact parent/evidence objects, verifies commit ancestry and Apache license/notice digests, uses `git archive`, removes configured agent/evaluation/benchmark assets, normalizes the source, and leaves `.git` absent. Provenance and evidence remain outside the respondent-visible source.
+- Froze Go `1.26.5` plus the focused package's six-module closure and dependency license files. Controller validation applies the exact evidence test to the parent and runs `go test -count=1 ./internal/search/rerank -run '^TestTokenize$'` with module download and VCS stamping disabled.
+- Preserved four failed attempts: validation extraction initially omitted an intermediate directory; macOS refused to move a read-only module-cache root; cleanup of a duplicate read-only toolchain staging tree failed; then Go attempted VCS stamping from the enclosing council checkout. Repairs were limited to new code/new attempts: create extraction parents, atomically stage the module closure with a temporary writable root, make duplicate staging directories removable, and set `-buildvcs=false`.
+- The fifth attempt, `20260821T160711Z-eco-gortex-unicode-tokenizer-f3a5b8c9`, completed. The sanitized source has 4,093 entries / 37,789,193 bytes, tree digest `41a9a14b…`; the parent reproduced `index out of range [1] with length 1`, and the evidence commit passed. Source/controller/evidence/network probes passed. No model or rating call occurred.
+- This was a development run from a dirty controller tree (`69638ae…`), not a claim-bearing frozen snapshot. Rerun after committing the exporter. Next, define the narrow respondent read/search/test mediator and ecological scoring rubric; do not run the persona factorial by default.
+
 ## Notebook rule
 
 Append material decisions before or immediately after their run. Record source commit/tag, config, exclusions, failures, repairs, interpretation, and next decision. Correct factual errors explicitly; do not silently rewrite earlier reasoning.
