@@ -82,9 +82,13 @@ experiment-bundle run:
 experiment-judge run jobs="2" config="experiment/config/judge-smoke.json":
     go run ./experiment/harness/cmd/council-exp judge --jobs "{{jobs}}" --config "{{config}}" "{{run}}"
 
-# Score one adjudicated or exploratory blinded ratings CSV.
+# Score one adjudicated or exploratory blinded finding-ratings CSV.
 experiment-score run ratings label="adjudicated":
     go run ./experiment/harness/cmd/council-exp score --label "{{label}}" "{{run}}" "{{ratings}}"
+
+# Unblind locked paired qualitative ratings while preserving opaque IDs.
+experiment-qualitative run ratings label="qualitative":
+    go run ./experiment/harness/cmd/council-exp qualitative --label "{{label}}" "{{run}}" "{{ratings}}"
 
 # Freeze, plan, run, summarize, seal, verify, and blind any config.
 experiment-complete config jobs="3":

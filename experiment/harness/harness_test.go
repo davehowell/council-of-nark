@@ -29,7 +29,7 @@ func TestPlanCounts(t *testing.T) {
 	cases := []struct {
 		name        string
 		calls, sets int
-	}{{"stage-a-smoke.json", 81, 27}, {"topology-smoke.json", 144, 108}, {"provider-pair-smoke.json", 18, 18}, {"persona-pair-gemma-repeated.json", 60, 60}, {"persona-factorial-gemma.json", 480, 480}}
+	}{{"stage-a-smoke.json", 81, 27}, {"topology-smoke.json", 144, 108}, {"provider-pair-smoke.json", 18, 18}, {"persona-pair-gemma-repeated.json", 60, 60}, {"persona-factorial-gemma.json", 480, 480}, {"mock-pair.json", 2, 2}}
 	for _, tc := range cases {
 		t.Run(tc.name, func(t *testing.T) {
 			plan, err := BuildPlan(configAt(t, tc.name))
@@ -137,6 +137,42 @@ func TestGemmaCommandPinsIsolation(t *testing.T) {
 		t.Fatal("CLI schema retained unsupported annotation")
 	}
 }
+func TestBlindedIDsRequirePrivateKey(t *testing.T) {
+	first := blindedID([]byte("01234567890123456789012345678901"), "i", "set", 1)
+	again := blindedID([]byte("01234567890123456789012345678901"), "i", "set", 1)
+	other := blindedID([]byte("abcdefghijklmnopqrstuvwxyzABCDEF"), "i", "set", 1)
+	if first != again || first == other || !strings.HasPrefix(first, "i-") {
+		t.Fatalf("unexpected HMAC IDs: %s %s %s", first, again, other)
+	}
+}
+
+func TestComparisonPairsHideWrapperButMatchRole(t *testing.T) {
+	base := OutputSet{SetID: "source", Packet: "packet", Metadata: map[string]any{"design": "persona_factorial", "provider_index": 0, "model": "gemma", "role": "correctness", "kind": "final", "repeat": 1}}
+	functional := base
+	functional.Metadata = map[string]any{}
+	for k, v := range base.Metadata {
+		functional.Metadata[k] = v
+	}
+	functional.Metadata["wrapper"] = "functional"
+	fictional := base
+	fictional.Metadata = map[string]any{}
+	for k, v := range base.Metadata {
+		fictional.Metadata[k] = v
+	}
+	fictional.Metadata["wrapper"] = "fictional"
+	left, ok := comparisonFor(functional)
+	if !ok {
+		t.Fatal("functional output was not pairable")
+	}
+	right, ok := comparisonFor(fictional)
+	if !ok {
+		t.Fatal("fictional output was not pairable")
+	}
+	if left.group != right.group || left.condition == right.condition || left.role != "correctness" {
+		t.Fatalf("bad pair: %#v %#v", left, right)
+	}
+}
+
 func TestBootstrapDeterministic(t *testing.T) {
 	a := bootstrapMeanCI([]float64{-.1, 0, .1, .2}, "fixed", 1000)
 	b := bootstrapMeanCI([]float64{-.1, 0, .1, .2}, "fixed", 1000)

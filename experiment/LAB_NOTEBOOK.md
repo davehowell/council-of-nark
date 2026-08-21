@@ -84,6 +84,15 @@ This is the chronological engineering record. It preserves failed runs and the r
 - Added Part 3, *The Experiment Fought Back*, as a living presentation of instrumentation failures, discarded runs, scoring repairs, negative findings, and isolation hardening.
 - Decision: published talks should show the failed paths and why the methodology changed, not reconstruct a falsely linear success story.
 
+## 2026-08-20 13:20 — human blinding and ecological curation
+
+- Clarified that one council author may be a human rater if the prior is disclosed and an independent second rater is retained.
+- Found that earlier opaque IDs were hashes of a public seed: procedurally blinded, but reproducible by a motivated rater.
+- Repair: private-key HMAC IDs for findings, sets, and A/B pairs; finding mapping precedes pair comparison; qualitative ratings record condition guesses and whether wording revealed treatment.
+- Decision: do not rewrite fictional output into neutral prose. Wording is an outcome of the treatment; instead report imperfect blinding directly.
+- Curated four pilot and four reserve pre-fix tasks merged after 1 June 2026 across Manim, dlt, Gortex, and turbovec. Froze parent/evidence commits, sanitized symptom briefs, exclusions, and task-specific evidence tests.
+- Caveat: post-cutoff dates reduce training-set risk but cannot rule out provider retrieval, later fine-tuning, or hidden search. Real-task respondents must receive history-free archives with no internet/evidence access.
+
 ## Notebook rule
 
 Append material decisions before or immediately after their run. Record source commit/tag, config, exclusions, failures, repairs, interpretation, and next decision. Correct factual errors explicitly; do not silently rewrite earlier reasoning.

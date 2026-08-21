@@ -85,6 +85,8 @@ Each prompt is assembled in a fresh detached worktree. The provider child then s
 
 The first 81-call Stage A plumbing smoke and its mixed calibration results are published in [`experiment/results/2026-08-20-stage-a-smoke/`](experiment/results/2026-08-20-stage-a-smoke/). The low-reasoning Gemma rerun and 30-pair persona calibration are also under [`experiment/results/`](experiment/results/). They are explicitly non-confirmatory and use LLM triage; the repository does not present those scores as proof that the council works or is worthless.
 
+The next ecological stage curates eight post–June 2026 pre-fix tasks across Manim, dlt, Gortex, and turbovec under [`experiment/ecological/`](experiment/ecological/). Respondents will receive history-free source archives and symptom-only briefs, never upstream PR evidence.
+
 ## Public-release audit
 
 Run this before every public commit:

@@ -27,6 +27,7 @@ The study measures model output. It cannot infer which internal features, activa
 - [`HARDNESS.md`](HARDNESS.md): scenario difficulty dimensions, smoke calibration triggers, and confirmatory mutation rules.
 - [`METRICS.md`](METRICS.md): F1, semantic union, overlap, and comparability definitions.
 - [`PERSONA_FACTORIAL.md`](PERSONA_FACTORIAL.md): balanced eight-role functional/fictional follow-up, estimands, multiplicity, and decision rule.
+- [`ecological/`](ecological/): eight curated post–June 2026 pre-fix open-source tasks across Manim, dlt, Gortex, and turbovec.
 - [`CONTAMINATION_REVIEW.md`](CONTAMINATION_REVIEW.md): post-smoke review of context boundaries, scoring, scheduling, and remaining threats.
 - [`ISOLATION.md`](ISOLATION.md): macOS Seatbelt, network, dedicated-account, and real-project threat model.
 - [`LAB_NOTEBOOK.md`](LAB_NOTEBOOK.md): chronological engineering decisions, failures, repairs, results, and pivots.
@@ -67,7 +68,7 @@ A finding maps to zero or one planted defect. Semantic duplicates of the same tr
 
 The primary metric is macro F1 over planted defects, weighted equally by packet. Also report precision, recall, p10, worst case, variance, token/cost efficiency, raw-union coverage, fusion retention, malformed responses, and latency.
 
-Use deterministic location checks where possible. Two blinded humans decide ambiguous semantic mappings; an LLM judge may triage but must not be the final confirmatory rater.
+Use deterministic location checks where possible. Two blinded humans decide ambiguous semantic mappings; an LLM judge may triage but must not be the final confirmatory rater. One human may be the council's author if that prior is disclosed and an independent second rater is retained. HMAC-keyed IDs hide labels; raw wording is not rewritten, so measure and report treatment-guess accuracy instead of claiming perfect blinding.
 
 ## Run the harness
 

@@ -1,0 +1,25 @@
+{
+  "schema_version": 2,
+  "design": "provider_pair",
+  "label": "mock-pair",
+  "seed": "council-mock-pair-v1",
+  "packets": ["01-revenue-dashboard"],
+  "role": "correctness",
+  "wrappers": ["functional", "fictional"],
+  "repetitions": 1,
+  "providers": [
+    {
+      "adapter": "mock",
+      "model": "deterministic-empty-v1",
+      "effort": "none"
+    }
+  ],
+  "max_concurrency": 2,
+  "request_timeout_seconds": 30,
+  "max_attempts": 1,
+  "decoding": {
+    "temperature": 0,
+    "structured_output": true,
+    "maximum_findings": 8
+  }
+}

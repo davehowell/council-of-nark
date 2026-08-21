@@ -157,13 +157,14 @@ Report the final score for every order and the range across all six. If one favo
 
 ## 6. Blinding and run procedure
 
-1. Give each packet, arm, repeat, and chain order an opaque run ID.
+1. Give each packet, arm, repeat, chain order, output set, finding, and qualitative pair an HMAC-keyed opaque ID. Keep the random key and unblind map private.
 2. Generate all reviewer calls in fresh sessions. The model never sees arm names, other conditions, answer keys, or hypotheses.
-3. Shuffle finding order before scoring. Remove character quotes only from the scorer copy; retain the raw output for token/style analysis.
-4. Give the scorer the answer key and finding, but no arm, model, provider, prompt, or run metadata.
-5. Use a deterministic matcher for exact locations and defect IDs where possible. Send ambiguous semantic matches to two blinded human raters. A strong LLM judge may triage, but human agreement decides the final label.
-6. Freeze prompts, caps, decoding settings, model snapshot IDs, mutation variants, exclusion rules, and the analysis script before the confirmatory run.
-7. Save raw requests, raw responses, latency, input/output tokens, errors, retries, and cost.
+3. Shuffle findings before scoring. Preserve raw output wording: style and token use are part of the treatment, and rewriting would introduce another model or editor. This hides labels but cannot guarantee treatment blindness.
+4. Give the scorer the answer key and finding, but no arm, model, provider, prompt, or run metadata. Complete independent finding mapping before opening paired A/B output.
+5. Randomise functional/fictional output between left and right for qualitative scoring. Record supportedness, actionability, fix quality, overall preference, condition guess, guess confidence, and whether wording revealed the condition.
+6. Use a deterministic matcher for exact locations and defect IDs where possible. Send ambiguous semantic matches to two label-blinded human raters. One may disclose a prior preference, but an independent second rater is mandatory. A strong LLM judge may triage; human agreement decides the final label.
+7. Freeze prompts, caps, decoding settings, model snapshot IDs, mutation variants, exclusion rules, and the analysis script before the confirmatory run.
+8. Save raw requests, raw responses, latency, input/output tokens, errors, retries, and cost.
 
 Retries are infrastructure events, not new samples. Predefine whether a refused or malformed response scores zero; the recommended rule is zero after one format-repair attempt that cannot alter substantive content.
 
@@ -221,12 +222,12 @@ Run a power simulation from the pilot before choosing the final repeat count. Th
 - **Prompt content:** explicit lens kernels, fictional wrappers, and provider identity are separate factors. Do not compare the full production Bender prompt with a two-line generic prompt and call the difference "persona".
 - **Context cost:** character wrappers and chain ledgers consume tokens. Measure useful findings per token and truncation rate.
 - **Ceiling/floor:** calibrate with a smoke test. Add clean packets so reviewers can demonstrate restraint.
-- **Grader bias:** prefer planted defects and locations. Blind human raters to condition and report Cohen's kappa.
+- **Grader bias:** prefer planted defects and locations. Hide labels with private HMAC IDs, report inter-rater agreement, and publish treatment-guess accuracy and wording-reveal rate.
 - **Correlated samples:** repeated calls on one packet are not independent tasks. Treat packet variants as the unit for generalisation.
 - **Model drift:** pin snapshots where possible and finish a randomised block close in time.
-- **Contamination:** use synthetic private packets, not common benchmark tasks.
-- **Style leakage:** the scorer must not infer the arm from catchphrases; strip character-only prose from scorer copies.
-- **Ecological validity:** toy defects test mechanism. A later trial on real PRs should use developer acceptance and defects found before merge.
+- **Contamination:** public synthetic keys are reproducible demonstrations, not durable secret benchmarks. Ecological tasks use post-cutoff pre-fix archives with history, remotes, evidence, and internet tools removed.
+- **Style leakage:** output language can reveal a fictional condition. Do not call this perfectly blinded or silently rewrite the outcome; ask for a post-rating condition guess and quantify leakage.
+- **Ecological validity:** toy defects test mechanism. Real-project tasks use merged patches/tests and maintainer discussion as evidence while allowing independently supported novel findings.
 
 ## 10. Preregistered interpretation
 
