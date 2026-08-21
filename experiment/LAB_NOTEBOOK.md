@@ -93,6 +93,15 @@ This is the chronological engineering record. It preserves failed runs and the r
 - Curated four pilot and four reserve pre-fix tasks merged after 1 June 2026 across Manim, dlt, Gortex, and turbovec. Froze parent/evidence commits, sanitized symptom briefs, exclusions, and task-specific evidence tests.
 - Caveat: post-cutoff dates reduce training-set risk but cannot rule out provider retrieval, later fine-tuning, or hidden search. Real-task respondents must receive history-free archives with no internet/evidence access.
 
+## 2026-08-21 14:45 — Modular extreme-task screening
+
+- Screened `modular/modular` after it was suggested as an extreme ecological option.
+- Provenance finding: Mojo was open-sourced on 18 August in a 561,408-line import. The June–August GitHub search contains no public bug-fix PR suitable for the existing PR-backed set; subsequent public history includes synchronized internal commits.
+- Retained one CPU-only watchlist candidate: commit `6df03ad2…`, whose parent exhibits wrong `argmax`/`argmin` indices when a large row enters a multi-worker split-axis reduction. The evidence adds focused Mojo tests and changes 134 lines across three files.
+- Kept it out of the selected set because it has no public issue/PR review and because the exact Bazel/prebuilt-Mojo dependency closure has not been frozen or run offline.
+- Environment check: the screening host is macOS arm64 with 14 logical cores, but only Command Line Tools are active while Modular's development guide specifies Xcode 16+. With 40 GiB free, no speculative 225.9 MB source plus toolchain build/cache was started.
+- Promotion rule: independently demonstrate the focused test failing at the exact parent and passing at the evidence commit, mirror and digest all build artifacts, then preregister an extreme-task stage. Do not use it as an outcome-dependent pilot replacement.
+
 ## Notebook rule
 
 Append material decisions before or immediately after their run. Record source commit/tag, config, exclusions, failures, repairs, interpretation, and next decision. Correct factual errors explicitly; do not silently rewrite earlier reasoning.

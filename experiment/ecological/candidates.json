@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "curated_at": "2026-08-21",
   "merge_window_start": "2026-06-01T00:00:00Z",
   "merge_window_end": "2026-08-20T23:59:59Z",
@@ -156,6 +156,42 @@
       "brief": "briefs/eco-turbovec-calibration-bounds.md",
       "evidence_tests": ["turbovec/tests/calibration_bounds.rs"],
       "scope_note": "Score only issue 478; the upstream PR also fixes issue 489."
+    },
+    {
+      "id": "eco-modular-cpu-splitk-arg-reduce",
+      "stage": "extreme-reserve",
+      "status": "blocked-environment-validation",
+      "repository": "modular/modular",
+      "language": "Mojo",
+      "license": "Apache-2.0 WITH LLVM-exception",
+      "difficulty": "extreme",
+      "issue": null,
+      "issue_created_at": null,
+      "issue_url": null,
+      "pull_request": null,
+      "pull_request_url": null,
+      "evidence_type": "public source commit synchronized from an internal change",
+      "source_opened_at": "2026-08-18T13:29:35Z",
+      "commit_authored_at": "2026-08-19T08:43:34Z",
+      "evidence_url": "https://github.com/modular/modular/commit/6df03ad20722f0dfe4102088dc93a64143d8fb45",
+      "parent_commit": "f0f9e8f6df2a8fdf4d7c7f0a2d5071723f57bf30",
+      "evidence_commit": "6df03ad20722f0dfe4102088dc93a64143d8fb45",
+      "patch_size": {"files": 3, "additions": 116, "deletions": 18},
+      "source_tree": {"entries": 12101, "blobs": 10538, "blob_bytes": 225888362},
+      "brief": "briefs/eco-modular-cpu-splitk-arg-reduce.md",
+      "evidence_tests": ["max/kernels/test/algorithm/test_arg_reduce_nan.mojo"],
+      "evidence_test_target": "//max/kernels/test/algorithm:test_arg_reduce_nan.mojo.test",
+      "toolchain": {
+        "mode": "prebuilt-mojo",
+        "mojo_package_version": "1.1.0.dev2026081813",
+        "max_package_version": "26.6.0.dev2026081813",
+        "bazel_wrapper_version": "buildbuddy-io/5.0.382"
+      },
+      "eligibility_blockers": [
+        "The fix has a public commit and tests but no public issue or pull-request review; keep its evidence stratum separate.",
+        "The prebuilt Mojo/Bazel dependency closure and its digests have not been mirrored into an offline controller cache.",
+        "The recorded regression test has not yet been demonstrated failing at the parent and passing at the evidence commit on the declared macOS host."
+      ]
     }
   ],
   "excluded_finalists": [

@@ -27,7 +27,7 @@ The study measures model output. It cannot infer which internal features, activa
 - [`HARDNESS.md`](HARDNESS.md): scenario difficulty dimensions, smoke calibration triggers, and confirmatory mutation rules.
 - [`METRICS.md`](METRICS.md): F1, semantic union, overlap, and comparability definitions.
 - [`PERSONA_FACTORIAL.md`](PERSONA_FACTORIAL.md): balanced eight-role functional/fictional follow-up, estimands, multiplicity, and decision rule.
-- [`ecological/`](ecological/): eight curated post–June 2026 pre-fix open-source tasks across Manim, dlt, Gortex, and turbovec.
+- [`ecological/`](ecological/): eight PR-backed post–June 2026 tasks across Manim, dlt, Gortex, and turbovec, plus one blocked Modular extreme-reserve candidate.
 - [`CONTAMINATION_REVIEW.md`](CONTAMINATION_REVIEW.md): post-smoke review of context boundaries, scoring, scheduling, and remaining threats.
 - [`ISOLATION.md`](ISOLATION.md): macOS Seatbelt, network, dedicated-account, and real-project threat model.
 - [`LAB_NOTEBOOK.md`](LAB_NOTEBOOK.md): chronological engineering decisions, failures, repairs, results, and pivots.
