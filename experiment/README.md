@@ -18,6 +18,7 @@ The study measures model output. It cannot infer which internal features, activa
 
 ## Material
 
+- [`CHECKPOINT.md`](CHECKPOINT.md): current handoff, completed work, blockers, non-negotiable rules, and prioritized next steps.
 - [`protocol.md`](protocol.md): hypotheses, arms, topology, scoring, sampling, threats, and interpretation rules.
 - [`prompts/`](prompts/): controlled single-reviewer, specialist, and fuser prompts.
 - [`scenarios/`](scenarios/): three synthetic packets and their planted-defect keys.

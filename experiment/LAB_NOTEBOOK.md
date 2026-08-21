@@ -102,6 +102,13 @@ This is the chronological engineering record. It preserves failed runs and the r
 - Environment check: the screening host is macOS arm64 with 14 logical cores, but only Command Line Tools are active while Modular's development guide specifies Xcode 16+. With 40 GiB free, no speculative 225.9 MB source plus toolchain build/cache was started.
 - Promotion rule: independently demonstrate the focused test failing at the exact parent and passing at the evidence commit, mirror and digest all build artifacts, then preregister an extreme-task stage. Do not use it as an outcome-dependent pilot replacement.
 
+## 2026-08-21 15:13 — repository handoff checkpoint
+
+- Recorded the complete session handoff in `experiment/CHECKPOINT.md` before moving future work from the `prezo` workspace to the council repository itself.
+- No respondent or rating calls were made for this checkpoint.
+- Priority is now ecological infrastructure: begin with a history-free Gortex Unicode snapshot, verify the regression controller-side, then design narrowly allowlisted read/search/test access under a changed and probed isolation boundary.
+- The 480-call persona factorial remains unrun and is not the default next action.
+
 ## Notebook rule
 
 Append material decisions before or immediately after their run. Record source commit/tag, config, exclusions, failures, repairs, interpretation, and next decision. Correct factual errors explicitly; do not silently rewrite earlier reasoning.
