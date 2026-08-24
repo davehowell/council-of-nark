@@ -85,7 +85,7 @@ Each prompt is assembled in a fresh detached worktree. The provider child then s
 
 The first 81-call Stage A plumbing smoke and its mixed calibration results are published in [`experiment/results/2026-08-20-stage-a-smoke/`](experiment/results/2026-08-20-stage-a-smoke/). The low-reasoning Gemma rerun and 30-pair persona calibration are also under [`experiment/results/`](experiment/results/). They are explicitly non-confirmatory and use LLM triage; the repository does not present those scores as proof that the council works or is worthless.
 
-The next ecological stage curates eight PR-backed post–June 2026 pre-fix tasks across Manim, dlt, Gortex, and turbovec under [`experiment/ecological/`](experiment/ecological/), plus one separately gated Modular extreme-reserve candidate. Respondents will receive history-free source archives and symptom-only briefs, never upstream evidence. See [`experiment/CHECKPOINT.md`](experiment/CHECKPOINT.md) for the current handoff and prioritized next work.
+The next ecological stage curates eight PR-backed post–June 2026 pre-fix tasks across Manim, dlt, Gortex, and turbovec under [`experiment/ecological/`](experiment/ecological/), plus one separately gated Modular extreme-reserve candidate. The Gortex pilot now has a clean history-free snapshot, bounded controller-side source/test mediator, anchored scoring key, and no-model isolated-Pi doctor. No ecological respondent call has occurred; the JSON-mode claim runner and compared-arm design are still gated. See [`experiment/CHECKPOINT.md`](experiment/CHECKPOINT.md) for the current handoff.
 
 ## Public-release audit
 

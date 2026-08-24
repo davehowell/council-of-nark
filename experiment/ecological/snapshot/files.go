@@ -37,7 +37,8 @@ func shaBytes(value []byte) string {
 	return hex.EncodeToString(digest[:])
 }
 
-func shaFile(path string) (string, error) {
+// FileSHA256 returns the lowercase SHA-256 digest of one regular file.
+func FileSHA256(path string) (string, error) {
 	file, err := os.Open(path)
 	if err != nil {
 		return "", err
@@ -49,6 +50,11 @@ func shaFile(path string) (string, error) {
 	}
 	return hex.EncodeToString(digest.Sum(nil)), nil
 }
+
+func shaFile(path string) (string, error) { return FileSHA256(path) }
+
+// BuildTreeManifest hashes a source tree using the snapshot manifest format.
+func BuildTreeManifest(root string) (TreeManifest, error) { return treeManifest(root) }
 
 func treeManifest(root string) (TreeManifest, error) {
 	var records []FileRecord
@@ -74,7 +80,7 @@ func treeManifest(root string) (TreeManifest, error) {
 		case info.Mode().IsRegular():
 			record.Type = "file"
 			record.Size = info.Size()
-			record.SHA256, err = shaFile(path)
+			record.SHA256, err = FileSHA256(path)
 			bytes += info.Size()
 		case info.IsDir():
 			record.Type = "directory"

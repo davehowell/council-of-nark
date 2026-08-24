@@ -23,6 +23,8 @@ experiment/worktrees/
 experiment/private/
 experiment/ecological/work/
 experiment/ecological/cache/
+experiment/ecological/mediator-runs/
+experiment/ecological/respondent-runs/
 
 # Editors and operating systems
 .DS_Store

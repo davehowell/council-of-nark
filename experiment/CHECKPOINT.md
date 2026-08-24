@@ -1,11 +1,11 @@
 # Experiment checkpoint
 
-> Checkpoint: 21 August 2026, after the Gortex ecological snapshot development validation. Start future sessions in the `council-of-nark` repository root and read this file plus [`LAB_NOTEBOOK.md`](LAB_NOTEBOOK.md) before changing or running the experiment.
+> Checkpoint: 24 August 2026, after the clean Gortex snapshot rerun and first ecological mediator/rubric implementation. Start future sessions in the `council-of-nark` repository root and read this file plus [`LAB_NOTEBOOK.md`](LAB_NOTEBOOK.md) before changing or running the experiment.
 
 ## Repository state
 
 - The snapshot work started from clean `main` at `69638aea2c429b64a43886098fde1f3cd8bee3f9`, synchronized with `origin/main`.
-- This checkpoint adds the Gortex exporter, frozen task config, tests, documentation, and `just ecological-gortex-snapshot` recipe. Confirm the live commit and remote state rather than assuming the base is still HEAD.
+- Controller `ef48b42…` contains the Gortex exporter. This checkpoint adds the narrow mediator/test runner, Pi extension and no-model doctor, frozen tool policy, evidence key, scoring anchors, and documentation. Confirm the live commit and clean state before any further snapshot or respondent work.
 - Strict Go/Seatbelt harness tag: `experiment-harness-go-v1.0`.
 - Maintained platform: macOS, Go 1.22+, `/usr/bin/sandbox-exec`, isolated Pi adapters. Direct agy and direct Claude CLI remain fail-closed.
 - Published synthetic results remain calibration, not confirmatory evidence.
@@ -66,52 +66,43 @@ Reserve:
 
 PR #19 added a separately gated Modular extreme reserve: CPU split-axis `argmax`/`argmin` index corruption. It is **not eligible** until its exact external build closure is mirrored/digested and the focused test is shown failing at the parent and passing at the evidence commit. It has public commit/test evidence but no public issue or PR review, so never pool it silently with the PR-backed set.
 
-A local development export now exists for the Gortex Unicode pilot. The fifth preserved attempt completed with source tree digest `41a9a14b…`; the exact evidence test failed at the parent with the expected panic and passed at the evidence commit using the frozen offline Go/module closure. The exporter was still uncommitted during that attempt, so it is engineering validation, not a claim-bearing snapshot. No ecological respondent call or outcome rating has occurred.
+The original local development export completed with source tree digest `41a9a14b…`; the exact evidence test failed at the parent with the expected panic and passed at the evidence commit using the frozen offline Go/module closure. A clean rerun from committed controller `ef48b42…` completed on 24 August as ignored attempt `20260824T012106Z-eco-gortex-unicode-tokenizer-62e6fe45`, reproduced the same tree digest, verified its seal, and passed all configured isolation probes. It is frozen infrastructure evidence, not a respondent result. No ecological respondent call or outcome rating has occurred.
 
 ## Highest-priority next work
 
-### 1. Freeze the committed Gortex snapshot
+### 1. Complete and probe the ecological launcher
 
-Do this before spending 480 calls on the synthetic persona factorial.
+Do this before spending 480 calls on the synthetic persona factorial. The clean snapshot, tool policy, Go mediator/test runner, Pi extension, and no-model doctor now exist. No claim runner or ecological model call exists yet.
 
-The exporter now implements the required exact fetch, license checks, `git archive`, explicit sanitization, history-free source, external provenance, frozen dependency closure, offline parent/evidence discrimination, and preserved attempts. Before respondent use:
+The controller-side test runner and `just ecological-gortex-mediator-check <snapshot>` now verify the sealed snapshot/closure, exercise bounded list/read/search, reproduce the hidden regression under network-denied Seatbelt, sanitize returned paths, and deny traversal/arbitrary targets. The first successful check (`20260824T014109Z-gortex-mediator-check-2324d548`) came from a dirty development tree and is engineering evidence only.
 
-1. run `just ecological-gortex-snapshot` from a clean committed tree;
-2. verify `status.json`, `controller/provenance.json`, `controller/seal.json`, and the source tree digest;
-3. keep `controller/`, `ecological/candidates.json`, upstream evidence, and this repository outside every respondent mount;
-4. retain all failed and successful local attempts without repairing them in place;
-5. classify the resulting snapshot as infrastructure evidence only until tool access and scoring are frozen.
+`just ecological-gortex-pi-doctor <snapshot>` now probes the other half of the boundary without a provider call. It starts isolated Pi with no built-ins/discovered resources/session, denies source/controller/evidence reads, exercises inherited mediator pipes, explicitly verifies model/thinking state, and seals events/profiles/runtime/transcript digests. Four failed attempts exposed persistent RPC shutdown behavior and Pi clamping Gemma `off` to `minimal`; successful dirty-tree attempt `20260824T015407Z-gortex-pi-doctor-ceb9c4b8` pins explicit `minimal` and uses controlled post-check termination.
 
-### 2. Design explicit ecological tool access
+The claim runner must:
 
-The current one-shot harness disables tools and denies provider children all repository access. A real-source ecological task therefore needs a new, published isolation boundary; do not silently grant a shell or reuse the synthetic prompt path.
+1. use the verified snapshot/policy/mediator/extension/runtime inputs and JSON/print mode, which exits after the agent settles;
+2. assemble and digest the exact system prompt, sanitized brief, tool schemas, model, thinking level, and decoding state;
+3. capture Pi events and mediator transcript, validate exactly one terminating structured submission, and seal responses, usage, cost, latency, profiles, and probes;
+4. rerun negative direct-read/Git/write/arbitrary-target/shell/pipe/test-network probes from a clean committed controller;
+5. rerun both no-model checks after committing this infrastructure, then run a deterministic mock lifecycle before any ecological model call.
 
-Preferred design questions to resolve:
+Do not load `pi/ecological-tools.ts` manually for a respondent.
 
-- allow read-only access only to the sanitized task snapshot, never to the council/controller roots;
-- expose narrow read/search operations plus predeclared test targets, not an unrestricted shell;
-- execute tests in a separate network-denied sandbox with frozen dependencies while retaining network only for provider transport;
-- log every tool request/result and include tool-policy/profile digests in `request.json` and the seal;
-- keep tool budgets identical across compared arms;
-- add executable probes for history, remotes, evidence, sibling paths, network, writes, and hidden solution search.
+### 2. Finish ecological scoring/run design before calls
 
-If Pi extensions/custom tools are used, first read the installed Pi extension and TUI/tool documentation and examples completely. Publish the changed threat model in [`ISOLATION.md`](ISOLATION.md).
+[`ecological/SCORING.md`](ecological/SCORING.md) now freezes claim-supportedness rules, five anchored dimensions, efficiency measures, missing-output handling, and disagreement/adjudication. `ecological/evidence/eco-gortex-unicode-tokenizer.md` freezes the task-specific evidence key and acceptable equivalent remedies. Both raters must remain condition-blinded; the evidence directory is controller/rater-only.
 
-### 3. Freeze ecological scoring before calls
+Still freeze:
 
-Create a task-specific evidence key and anchored human rubric for:
+- compared arms and the exact byte-level prompt factor;
+- call count, randomisation/blocking, model/thinking level, retries, and smallest effect of interest;
+- the cross-rater aggregation and any primary endpoint derived from the five separate dimensions;
+- two available raters and the rating CSV/bundle format;
+- exclusions and pilot-to-reserve substitution rules.
 
-- root-cause localisation;
-- material consequence;
-- correction correctness and scope;
-- regression-test discrimination;
-- unsupported claims;
-- remedy quality/actionability;
-- tool, token, latency, and cost efficiency.
+The upstream patch remains evidence, not the only acceptable solution. Preserve supported novel findings.
 
-The upstream patch is evidence, not the only acceptable solution. Preserve supported novel findings. Require two independent condition-blinded human raters and freeze exclusions/adjudication before output inspection.
-
-### 4. Decide whether the persona factorial is still worth 480 calls
+### 3. Decide whether the persona factorial is still worth 480 calls
 
 Do not run `just experiment-persona-factorial-gemma 2` by default. First confirm:
 

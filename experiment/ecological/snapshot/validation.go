@@ -220,6 +220,12 @@ func writeClosureMetadata(root string, manifest TreeManifest, metadata map[strin
 	return os.Chmod(root, 0o555)
 }
 
+// BuildClosureManifest hashes the immutable root/notices/gomod payload while
+// excluding cache metadata files, matching the exporter closure digest.
+func BuildClosureManifest(root string) (TreeManifest, error) {
+	return treeManifestExcludingMetadata(root)
+}
+
 func treeManifestExcludingMetadata(root string) (TreeManifest, error) {
 	var records []FileRecord
 	var byteCount int64
