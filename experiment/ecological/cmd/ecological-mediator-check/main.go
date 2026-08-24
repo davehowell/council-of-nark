@@ -52,6 +52,22 @@ func main() {
 		fmt.Fprintln(os.Stderr, "error:", err)
 		os.Exit(1)
 	}
+	summaryDigest, sealErr := snapshot.FileSHA256(filepath.Join(attempt, "summary.json"))
+	if sealErr == nil {
+		sealErr = writeJSON(filepath.Join(attempt, "seal.json"), map[string]any{
+			"schema_version": 1, "summary_sha256": summaryDigest,
+			"completed_at": time.Now().UTC().Format(time.RFC3339Nano),
+		})
+	}
+	if sealErr != nil {
+		status["status"] = "failed"
+		status["error"] = "seal check: " + sealErr.Error()
+		status["finished_at"] = time.Now().UTC().Format(time.RFC3339Nano)
+		_ = writeJSON(filepath.Join(attempt, "status.json"), status)
+		printAttempt(root, attempt)
+		fmt.Fprintln(os.Stderr, "error:", sealErr)
+		os.Exit(1)
+	}
 	status["status"] = "success"
 	status["finished_at"] = time.Now().UTC().Format(time.RFC3339Nano)
 	_ = writeJSON(filepath.Join(attempt, "status.json"), status)
@@ -148,6 +164,10 @@ func run(root, attempt, attemptArgument, policyArgument string) error {
 	if err != nil {
 		return err
 	}
+	testArtifacts, err := snapshot.BuildTreeManifest(filepath.Join(attempt, "tests"))
+	if err != nil {
+		return err
+	}
 	return writeJSON(filepath.Join(attempt, "summary.json"), map[string]any{
 		"schema_version": 1, "task_id": taskID,
 		"controller": map[string]any{
@@ -159,8 +179,9 @@ func run(root, attempt, attemptArgument, policyArgument string) error {
 			"source_entries": verified.SourceEntries, "source_bytes": verified.SourceBytes,
 		},
 		"policy_canonical_sha256": policyDigest, "policy_file_sha256": policyFileDigest,
-		"extension_sha256":  extensionDigest,
-		"transcript_sha256": transcriptDigest, "responses": responses,
+		"extension_sha256":           extensionDigest,
+		"transcript_sha256":          transcriptDigest,
+		"test_artifacts_tree_sha256": testArtifacts.TreeSHA256, "responses": responses,
 		"probes": map[string]any{
 			"list": true, "read": true, "search": true, "focused_test": true,
 			"traversal_denied": true, "arbitrary_test_target_denied": true,

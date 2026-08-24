@@ -121,9 +121,14 @@ func Doctor(root, snapshotAttempt, configPath, artifacts string) (DoctorResult, 
 		}
 	}
 	probe, err := ProbeChildBoundary(sandbox, runtime, extensionPath, denied)
-	if writeErr := writeJSON(filepath.Join(artifacts, "pi-boundary-probe.json"), probe); writeErr != nil {
+	probePath := filepath.Join(artifacts, "pi-boundary-probe.json")
+	if writeErr := writeJSON(probePath, probe); writeErr != nil {
 		return DoctorResult{}, writeErr
 	}
+	if err != nil {
+		return DoctorResult{}, err
+	}
+	probeDigest, err := snapshot.FileSHA256(probePath)
 	if err != nil {
 		return DoctorResult{}, err
 	}
@@ -181,7 +186,8 @@ func Doctor(root, snapshotAttempt, configPath, artifacts string) (DoctorResult, 
 		},
 		Isolation: map[string]any{
 			"seatbelt": true, "profile_sha256": profileDigest, "probe_profile_sha256": probeProfileDigest,
-			"empty_cwd": true, "ephemeral_home": true, "provider_transport_network_only": true,
+			"probe_result_sha256": probeDigest,
+			"empty_cwd":           true, "ephemeral_home": true, "provider_transport_network_only": true,
 			"provider_child_source_read_denied": true, "controller_read_denied": true,
 			"evidence_read_denied": true, "council_read_denied_except_literal_extension": true,
 			"scratch_write_allowed": true, "builtin_tools_disabled": true,
@@ -337,11 +343,15 @@ func runRPCHealth(config Config, runtime PiRuntime, sandbox ChildSandbox, extens
 	if err != nil {
 		return nil, err
 	}
+	stderrDigest, err := snapshot.FileSHA256(stderrPath)
+	if err != nil {
+		return nil, err
+	}
 	return map[string]any{
 		"mode": "rpc", "health_command_handled": true, "inherited_pipes_exercised": true,
 		"state_model": stateModel, "state_thinking": stateThinking,
 		"thinking_set_via_rpc": true, "controlled_termination_after_checks": "SIGKILL", "extension_errors": extensionErrors,
-		"provider_calls": 0, "events_sha256": eventsDigest, "exit_code": -1,
+		"provider_calls": 0, "events_sha256": eventsDigest, "stderr_sha256": stderrDigest, "exit_code": -1,
 	}, nil
 }
 
