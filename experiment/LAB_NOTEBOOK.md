@@ -129,6 +129,13 @@ This is the chronological engineering record. It preserves failed runs and the r
 - Dirty-tree doctor attempt `20260824T015407Z-gortex-pi-doctor-ceb9c4b8` completed in 3.2 seconds with zero provider turns and extension errors. It selected `gemma-4-31b-it`/`minimal`, exercised one mediated pipe request, denied source/controller/council/evidence reads, allowed only scratch writes, recorded Node `v22.19.0` and Pi `0.84.2` entrypoint digests, and verified its doctor seal. No model or rating call occurred.
 - Both successful checks ran from the current dirty development tree, so they are engineering evidence only and must be repeated after commit. Next: implement the JSON-mode claim runner, frozen prompt/request assembly, final-submission validation, full sealing, and a deterministic mock lifecycle. Do not make an ecological model call before that runner and the compared-arm design are frozen.
 
+## 2026-08-24 02:01 — committed ecological boundary checks
+
+- Committed the mediator/rubric/doctor boundary as `0ba767a…`, then added complete summary/raw-artifact sealing as `a5972ab…`. The repository was clean for both checks below; ignored prior attempts were retained.
+- Clean mediator attempt `20260824T020111Z-gortex-mediator-check-662f680b` completed from `a5972ab…`. It reverified snapshot `41a9a14b…`, closure and policy/extension/mediator digests; passed bounded list/read/search and the hidden network-denied regression; denied traversal and an arbitrary test target; exposed no absolute controller path in returned responses; and sealed the summary, transcript, and test-artifact tree.
+- Clean Pi doctor `20260824T020121Z-gortex-pi-doctor-a93ff02e` completed from `a5972ab…`. It passed provider-child source/controller/council/evidence denial, inherited-pipe health, explicit `gemma-4-31b-it`/`minimal` state, zero-provider-turn and zero-extension-error checks, and sealed the doctor plus raw event, stderr, probe, profile, config, runtime, and transcript digests.
+- No model or rating call occurred. The next gate is still a JSON-mode claim runner with frozen prompt assembly, exactly-one-final-submission validation, mock lifecycle, and complete usage/cost/latency sealing. Compared arms and human-rating aggregation must be preregistered before the first ecological respondent call.
+
 ## Notebook rule
 
 Append material decisions before or immediately after their run. Record source commit/tag, config, exclusions, failures, repairs, interpretation, and next decision. Correct factual errors explicitly; do not silently rewrite earlier reasoning.

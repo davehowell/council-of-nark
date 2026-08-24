@@ -105,7 +105,9 @@ A controller-side Gortex test runner now verifies the snapshot and closure, runs
 
 `just ecological-gortex-pi-doctor <snapshot>` now starts Pi in no-model RPC mode under the new provider-child profile, disables built-ins and discovered resources, exercises the inherited mediator pipes through a controller-only extension command, explicitly sets and verifies model/thinking state, checks source/controller/evidence denial, and seals its event/transcript/profile/runtime digests. Pi RPC is intentionally persistent, so the doctor uses controlled termination after all responses are captured; a claim runner should use JSON/print mode, which exits after the agent settles.
 
-The mediator, extension, and doctor remain infrastructure only until a claim runner assembles the frozen brief/system prompt, captures the final structured submission and usage, and seals the complete lifecycle. Do not start a model by loading the extension manually. The first successful checks were run from a dirty development tree and must be repeated after commit before they can freeze runner inputs.
+Clean committed attempts `20260824T020111Z-gortex-mediator-check-662f680b` and `20260824T020121Z-gortex-pi-doctor-a93ff02e` completed from controller `a5972ab…`; their summary/raw-artifact digests and seals verified, and the doctor made zero provider turns. They freeze infrastructure inputs, not respondent outcomes.
+
+The mediator, extension, and doctor remain infrastructure only until a claim runner assembles the frozen brief/system prompt, captures the final structured submission and usage, and seals the complete lifecycle. Do not start a model by loading the extension manually.
 
 The answer evidence normally consists of the merged patch, its regression tests, issue/maintainer discussion, and independent human review. The Modular watchlist task has commit/test evidence but no public review discussion; report and analyse that stratum separately. An upstream correction is evidence, not the only acceptable answer: supported novel findings remain valid and must be adjudicated.
 

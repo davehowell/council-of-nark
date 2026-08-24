@@ -5,7 +5,7 @@
 ## Repository state
 
 - The snapshot work started from clean `main` at `69638aea2c429b64a43886098fde1f3cd8bee3f9`, synchronized with `origin/main`.
-- Controller `ef48b42…` contains the Gortex exporter. This checkpoint adds the narrow mediator/test runner, Pi extension and no-model doctor, frozen tool policy, evidence key, scoring anchors, and documentation. Confirm the live commit and clean state before any further snapshot or respondent work.
+- Controller `ef48b42…` contains the Gortex exporter; `0ba767a…` adds the mediator/rubric/doctor boundary and `a5972ab…` completes raw-artifact sealing. Confirm the live commit and clean state before any further snapshot or respondent work.
 - Strict Go/Seatbelt harness tag: `experiment-harness-go-v1.0`.
 - Maintained platform: macOS, Go 1.22+, `/usr/bin/sandbox-exec`, isolated Pi adapters. Direct agy and direct Claude CLI remain fail-closed.
 - Published synthetic results remain calibration, not confirmatory evidence.
@@ -76,7 +76,9 @@ Do this before spending 480 calls on the synthetic persona factorial. The clean 
 
 The controller-side test runner and `just ecological-gortex-mediator-check <snapshot>` now verify the sealed snapshot/closure, exercise bounded list/read/search, reproduce the hidden regression under network-denied Seatbelt, sanitize returned paths, and deny traversal/arbitrary targets. The first successful check (`20260824T014109Z-gortex-mediator-check-2324d548`) came from a dirty development tree and is engineering evidence only.
 
-`just ecological-gortex-pi-doctor <snapshot>` now probes the other half of the boundary without a provider call. It starts isolated Pi with no built-ins/discovered resources/session, denies source/controller/evidence reads, exercises inherited mediator pipes, explicitly verifies model/thinking state, and seals events/profiles/runtime/transcript digests. Four failed attempts exposed persistent RPC shutdown behavior and Pi clamping Gemma `off` to `minimal`; successful dirty-tree attempt `20260824T015407Z-gortex-pi-doctor-ceb9c4b8` pins explicit `minimal` and uses controlled post-check termination.
+`just ecological-gortex-pi-doctor <snapshot>` now probes the other half of the boundary without a provider call. It starts isolated Pi with no built-ins/discovered resources/session, denies source/controller/evidence reads, exercises inherited mediator pipes, explicitly verifies model/thinking state, and seals events/profiles/runtime/transcript digests. Four failed attempts exposed persistent RPC shutdown behavior and Pi clamping Gemma `off` to `minimal`; the repair pins explicit `minimal` and uses controlled post-check termination.
+
+After commits `0ba767a…` and `a5972ab…`, clean mediator attempt `20260824T020111Z-gortex-mediator-check-662f680b` and clean Pi doctor `20260824T020121Z-gortex-pi-doctor-a93ff02e` both completed from `a5972ab…`. Their summaries/raw artifacts and seals verified, the returned mediator responses contained no absolute controller path, and the doctor made zero provider turns. These are frozen infrastructure checks, not respondent results.
 
 The claim runner must:
 
