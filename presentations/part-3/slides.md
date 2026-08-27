@@ -8,7 +8,7 @@ info: |
 transition: slide-left
 mdc: true
 layout: image-right
-image: ./Nark-council.png
+image: /Nark-council.png
 backgroundSize: cover
 ---
 
