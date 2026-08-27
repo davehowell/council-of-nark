@@ -1,5 +1,7 @@
 # Presentations
 
+The presentable GitHub Pages hub is [davehowell.github.io/council-of-nark](https://davehowell.github.io/council-of-nark/). It hosts all three Slidev decks, downloadable PDFs, published-result tiles, and the living experiment timeline.
+
 ## Part 1: The Council of Nark
 
 [`part-1/slides.md`](part-1/slides.md) introduces the review roster, explains the proposed fan-out/fuse topology, and frames improved coverage and lower variance as hypotheses. The exported deck is [`part-1/council-of-nark.pdf`](part-1/council-of-nark.pdf).
@@ -21,8 +23,12 @@ just slides-install
 just slides-talk
 just slides-experiment
 just slides-trials
+just slides-site-build
+just slides-site-preview
 just slides-export
 just slides-verify
 ```
 
-Slidev serves [`public/`](public/) at the site root. The PNG headshots are crops from the main council artwork.
+`site/` contains the static Pages shell. `scripts/build-site.mjs` builds each deck beneath `dist/decks/`, copies the PDFs, and applies the repository base path in CI. Append timeline entries to [`site/timeline/events.js`](site/timeline/events.js), keeping each claim aligned with [`experiment/LAB_NOTEBOOK.md`](../experiment/LAB_NOTEBOOK.md). Story mode makes the timeline keyboard-presentable.
+
+Slidev serves [`public/`](public/) at the site root. The PNG headshots are crops from the main council artwork. GitHub Actions deploys `presentations/dist/` from `main`; generated output remains ignored locally.

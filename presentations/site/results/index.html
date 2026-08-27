@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Published Council of Nark experiment results, including excluded infrastructure failures and negative findings.">
+  <meta name="theme-color" content="#070b16">
+  <title>Published results — Council of Nark</title>
+  <link rel="stylesheet" href="../assets/site.css">
+</head>
+<body>
+  <a class="skip-link" href="#content">Skip to content</a>
+  <header class="site-header">
+    <nav class="nav" aria-label="Main navigation">
+      <a class="brand" href="../"><span class="brand-mark">N</span><span>Council of Nark</span></a>
+      <div class="nav-links">
+        <a href="../#presentations">Presentations</a>
+        <a href="./" aria-current="page">Results</a>
+        <a href="../timeline/">Timeline</a>
+        <a href="https://github.com/davehowell/council-of-nark">GitHub</a>
+      </div>
+    </nav>
+  </header>
+
+  <main id="content">
+    <section class="section results-hero">
+      <p class="eyebrow">Published snapshots</p>
+      <h1>Every run keeps its status.</h1>
+      <p class="lede">Complete, failed, and discarded runs answer different questions. Only complete runs received scores; all current scores are exploratory LLM triage rather than condition-blinded human adjudication.</p>
+      <div class="legend">
+        <span class="chip complete">complete calibration</span>
+        <span class="chip failed">infrastructure failure</span>
+        <span class="chip discarded">discarded before scoring</span>
+        <span class="chip infrastructure">infrastructure only</span>
+      </div>
+    </section>
+
+    <section class="section" style="padding-top:1rem">
+      <div class="grid result-grid">
+        <article class="card" id="schema-failure">
+          <div class="meta-row"><span class="chip failed">failed</span><span class="chip">20 Aug · 04:23 UTC</span></div>
+          <h3>Stage A schema instrumentation failure</h3>
+          <div class="metric">0 / 81 responses</div>
+          <p>A draft-2020 annotation was rejected locally: 72 reviewer calls failed before inference and nine dependent fusers were blocked.</p>
+          <p class="caveat"><strong>Interpretation:</strong> no experimental observations. The repair removed the unsupported CLI annotation while retaining it in source and provenance.</p>
+          <div class="card-actions"><a class="button small" href="https://github.com/davehowell/council-of-nark/blob/main/experiment/results/2026-08-20-stage-a-smoke-instrumentation-failure.md">Read receipt</a></div>
+        </article>
+
+        <article class="card" id="haiku-smoke">
+          <div class="meta-row"><span class="chip complete">complete</span><span class="chip">Haiku · 81 calls</span></div>
+          <h3>First Stage A plumbing smoke</h3>
+          <div class="metric">S0 F1 0.812</div>
+          <p>Most fused conditions landed between 0.75 and 0.86. Functional specialists reached 0.958 raw recall but only 0.752 after fusion.</p>
+          <p class="caveat"><strong>Pivot:</strong> the packets had too little headroom. Report raw unions and issue identity, audit fusion loss, then rerun unchanged material with a cheaper model.</p>
+          <div class="meta-row"><span class="chip">$4.8011</span><span class="chip">48 min</span><span class="chip">LLM triage</span></div>
+          <div class="card-actions"><a class="button small" href="https://github.com/davehowell/council-of-nark/tree/main/experiment/results/2026-08-20-stage-a-smoke">Read receipt</a></div>
+        </article>
+
+        <article class="card" id="gemma-incomplete">
+          <div class="meta-row"><span class="chip discarded">discarded</span><span class="chip">Gemma · partial</span></div>
+          <h3>Prompt echo and provider errors</h3>
+          <div class="metric">71 / 81 succeeded</div>
+          <p>Seven quota failures exited zero and three fusers were blocked. Searching the whole event stream could mistake example JSON echoed from the prompt for an answer.</p>
+          <p class="caveat"><strong>Interpretation:</strong> sealed and excluded before rating. Parse assistant events only, promote provider errors, back off, lower concurrency, use a new seed.</p>
+          <div class="card-actions"><a class="button small" href="https://github.com/davehowell/council-of-nark/blob/main/experiment/results/2026-08-20-gemma-smoke-incomplete.md">Read receipt</a></div>
+        </article>
+
+        <article class="card" id="gemma-clean">
+          <div class="meta-row"><span class="chip complete">complete</span><span class="chip">Gemma · 81 calls</span></div>
+          <h3>Clean low-reasoning Stage A smoke</h3>
+          <div class="metric support">M1 F1 0.911</div>
+          <p>Functional specialists increased raw recall to 0.917 versus repeated omnibus at 0.792. Conditions found different keyed defects.</p>
+          <p class="caveat"><strong>Limit:</strong> S0 still scored 0.819. One draw over three easy packets supports calibration, not a general council claim.</p>
+          <div class="meta-row"><span class="chip">12 min</span><span class="chip">0 malformed</span><span class="chip">419 findings</span></div>
+          <div class="card-actions"><a class="button small" href="https://github.com/davehowell/council-of-nark/tree/main/experiment/results/2026-08-20-stage-a-smoke-gemma">Read receipt</a></div>
+        </article>
+
+        <article class="card" id="persona-pairs">
+          <div class="meta-row"><span class="chip result">negative result</span><span class="chip">60 / 60 calls</span></div>
+          <h3>Repeated correctness / K-2SO pairs</h3>
+          <div class="metric negative">Δ F1 −0.0425</div>
+          <p>Across 30 packet-blocked pairs: two fictional wins, 16 ties, and 12 functional wins. Sampling-only interval: [−0.0808, −0.0047].</p>
+          <p class="caveat"><strong>Interpretation:</strong> wording changed defect identity in 14 pairs, but this overlay did not help this model, kernel, and toy task set.</p>
+          <div class="meta-row"><span class="chip">functional 0.790</span><span class="chip">fictional 0.748</span></div>
+          <div class="card-actions"><a class="button small" href="https://github.com/davehowell/council-of-nark/tree/main/experiment/results/2026-08-20-persona-pair-gemma">Read receipt</a></div>
+        </article>
+
+        <article class="card" id="ecological-infrastructure">
+          <div class="meta-row"><span class="chip infrastructure">infrastructure only</span><span class="chip">24 Aug</span></div>
+          <h3>Gortex ecological boundary</h3>
+          <div class="metric">0 respondent calls</div>
+          <p>A clean history-free snapshot, narrow source/test mediator, isolated Pi doctor, scoring key, and artifact seals all passed from committed code.</p>
+          <p class="caveat"><strong>Status:</strong> not an outcome. The JSON claim runner, mock lifecycle, compared arms, and human-rating aggregation remain gated.</p>
+          <div class="meta-row"><span class="chip">4,093 entries</span><span class="chip">tree 41a9a14b…</span><span class="chip">zero provider turns</span></div>
+          <div class="card-actions"><a class="button small" href="https://github.com/davehowell/council-of-nark/blob/main/experiment/CHECKPOINT.md">Read checkpoint</a><a class="button small" href="../decks/part-3/">Present visuals</a></div>
+        </article>
+      </div>
+
+      <div class="callout" style="margin-top:1.5rem">
+        <strong>Metric caution.</strong> F1 balances keyed precision and recall. It does not measure severity, remedy quality, or whether equal-scoring reviews found the same defects. Ecological scoring therefore separates localisation, consequence, correction, regression tests, and actionability.
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <p>Results are versioned snapshots. Historical scoring limitations remain visible.</p>
+      <p><a href="https://github.com/davehowell/council-of-nark/tree/main/experiment/results">Published files</a> · <a href="../timeline/">Timeline</a></p>
+    </div>
+  </footer>
+</body>
+</html>
