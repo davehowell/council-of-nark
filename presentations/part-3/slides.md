@@ -4,7 +4,7 @@ title: The Experiment Fought Back
 colorSchema: light
 info: |
   Part 3 of the Council of Nark series: instrumentation failures, ceiling effects,
-  parser bugs, contamination audits, negative persona results, and a stricter Go/Seatbelt harness.
+  negative persona evidence, isolation hardening, and the pivot to sealed ecological tasks.
 transition: slide-left
 mdc: true
 layout: image-right
@@ -417,23 +417,201 @@ layout: default
 layout: default
 ---
 
-# Next tests — without moving the goalposts
+# The next test changed shape
 
-<div class="grid grid-cols-2 gap-7 mt-6">
-  <div class="next"><b>Overlay family</b><span>8 role pairs</span><strong>480 calls</strong><p>Fresh correctness replication. ±0.02 practical margin. Report every role.</p></div>
-  <div class="next"><b>Ecological tasks</b><span>pre-fix open source</span><strong>history removed</strong><p>Actual patch + tests as evidence, not the only valid answer.</p></div>
+<div class="fork mt-8">
+  <div class="road paused"><small>planned</small><b>Persona factorial</b><strong>480 calls</strong><p>Generalise one negative overlay result across eight roles.</p></div>
+  <div class="junction">?</div>
+  <div class="road chosen"><small>prioritised</small><b>Ecological pilot</b><strong>real code</strong><p>First prove the mechanism survives outside planted packets.</p></div>
 </div>
 
-<div class="mt-8 text-sm text-center opacity-70">Two blinded humans before a claim. LLM ratings remain triage.</div>
+<div class="decision mt-8">Ceiling effects made “more synthetic calls” less urgent than “better evidence.”</div>
 
 <style>
-.next { border:1px solid #cbd5e1; border-radius:15px; padding:24px; background:#f8fafc; }.next b,.next span,.next strong { display:block; }.next b { font-size:21px; }.next span { margin-top:7px; opacity:.6; }.next strong { color:#7c3aed; font-size:25px; margin-top:16px; }.next p { font-size:13px; margin-top:14px; line-height:1.5; }
+.fork { display:grid; grid-template-columns:1fr 70px 1fr; align-items:center; gap:18px; }.road { border:1px solid #cbd5e1; border-radius:16px; padding:22px; }.road small,.road b,.road strong { display:block; }.road small { text-transform:uppercase; letter-spacing:.12em; opacity:.55; }.road b { font-size:21px; margin-top:8px; }.road strong { font-size:28px; margin-top:10px; }.road p { font-size:13px; line-height:1.45; margin-top:10px; }.paused { background:#f8fafc; }.paused strong { color:#64748b; }.chosen { background:#ecfdf5; border-color:#6ee7b7; }.chosen strong { color:#047857; }.junction { font-size:46px; text-align:center; color:#7c3aed; font-weight:900; }.decision { background:#f5f3ff; border-radius:11px; padding:15px; text-align:center; font-weight:700; }
 </style>
 
 <!-- Presenter cues
-- The eight-role factorial is worth doing if we want a general statement about fictional overlays.
-- The earlier correctness run is pilot evidence and is not pooled.
-- Real-project tasks are the answer to synthetic ceiling effects—not increasingly absurd planted defects.
+- The 480-call factorial remains a valid preregistered question; it was not cancelled because one persona lost.
+- But another large synthetic batch would not solve the observed lack of headroom.
+- We prioritised ecological validity and left the factorial visibly unrun rather than selectively testing promising characters.
+-->
+
+---
+layout: default
+---
+
+# Real-code curation was a funnel
+
+<div class="funnel mt-5">
+  <div><b>8</b><span>PR-backed tasks</span><small>Manim · dlt · Gortex · turbovec</small></div>
+  <i>+</i>
+  <div class="watch"><b>1</b><span>extreme watchlist</span><small>Modular CPU reduction</small></div>
+  <i>→</i>
+  <div class="pilot"><b>1</b><span>first pilot</span><small>Gortex Unicode tokenizer</small></div>
+</div>
+
+<div class="grid grid-cols-3 gap-4 mt-8 text-sm">
+  <div class="rule"><b>After cutoff</b><br>reduces—not removes—training risk</div>
+  <div class="rule"><b>Pre-fix parent</b><br>history and upstream evidence removed</div>
+  <div class="rule"><b>Known test</b><br>must fail before and pass after</div>
+</div>
+
+<div class="mt-6 text-center text-xs opacity-60">Modular stayed gated: no PR review and no frozen external build closure.</div>
+
+<style>
+.funnel { display:grid; grid-template-columns:1fr 35px 1fr 45px 1fr; align-items:center; gap:10px; }.funnel>div { padding:18px; border:1px solid #cbd5e1; border-radius:14px; text-align:center; background:#f8fafc; }.funnel b { display:block; font-size:38px; color:#7c3aed; }.funnel span,.funnel small { display:block; }.funnel span { font-weight:800; }.funnel small { margin-top:7px; opacity:.6; }.funnel i { font-size:27px; color:#94a3b8; text-align:center; font-style:normal; }.funnel .watch { border-style:dashed; }.funnel .pilot { background:#ecfdf5; border-color:#6ee7b7; }.rule { border-left:4px solid #7c3aed; padding:12px 14px; background:#f5f3ff; border-radius:8px; }
+</style>
+
+<!-- Presenter cues
+- The selected set has four pilot and four reserve tasks, all backed by public fixes merged after 1 June 2026.
+- The eventual patch is evidence, not the only acceptable answer. Supported novel findings remain valid.
+- Modular looked attractive because it was extreme, but methodological eligibility mattered more than spectacle.
+-->
+
+---
+layout: default
+---
+
+# The snapshot failed four different ways
+
+<div class="stair mt-5">
+  <div><em>1</em><b>Extract</b><span>missing intermediate directory</span></div>
+  <div><em>2</em><b>Move</b><span>read-only module cache</span></div>
+  <div><em>3</em><b>Clean</b><span>duplicate toolchain staging</span></div>
+  <div><em>4</em><b>Test</b><span>Go VCS stamping escaped upward</span></div>
+  <div class="pass"><em>5</em><b>Validate</b><span>parent failed · evidence passed</span></div>
+</div>
+
+<div class="mt-8 text-center text-sm"><b>Rule:</b> preserve each attempt; repair code; start a new attempt.</div>
+
+<style>
+.stair { display:grid; grid-template-columns:repeat(5,1fr); gap:9px; align-items:end; height:245px; }.stair div { border:1px solid #fca5a5; background:#fef2f2; border-radius:11px 11px 0 0; padding:12px; min-height:105px; }.stair div:nth-child(2){min-height:135px}.stair div:nth-child(3){min-height:165px}.stair div:nth-child(4){min-height:195px}.stair div:nth-child(5){min-height:225px}.stair em { display:block; font-size:26px; color:#b91c1c; font-weight:900; font-style:normal; }.stair b,.stair span { display:block; }.stair span { font-size:11px; line-height:1.35; margin-top:8px; opacity:.7; }.stair .pass { background:#ecfdf5; border-color:#6ee7b7; }.stair .pass em { color:#047857; }
+</style>
+
+<!-- Presenter cues
+- These were exporter and environment failures, not model failures.
+- The fourth failure mattered most: the test process discovered the enclosing council checkout through build metadata.
+- Setting buildvcs=false closed that path. The fifth development attempt reproduced the panic and passed at the evidence commit.
+-->
+
+---
+layout: default
+---
+
+# Clean source is infrastructure—not a result
+
+<div class="grid grid-cols-2 gap-7 mt-5">
+  <div class="snapshot"><small>history-free Gortex parent</small><b>4,093</b><span>entries</span><b>37.8 MB</b><span>sanitised source</span></div>
+  <div class="checks">
+    <div>✓ <span>tree digest <code>41a9a14b…</code></span></div>
+    <div>✓ <span><code>.git</code> absent</span></div>
+    <div>✓ <span>parent panic reproduced</span></div>
+    <div>✓ <span>evidence commit passed</span></div>
+    <div>✓ <span>source / controller / network probes</span></div>
+  </div>
+</div>
+
+<div class="zero mt-7"><b>0</b><span>ecological respondent calls</span></div>
+
+<style>
+.snapshot { border:1px solid #cbd5e1; border-radius:15px; padding:20px; text-align:center; background:#f8fafc; }.snapshot small,.snapshot b,.snapshot span { display:block; }.snapshot small { opacity:.6; }.snapshot b { color:#7c3aed; font-size:32px; margin-top:8px; }.snapshot span { font-size:12px; }.checks { display:grid; gap:8px; }.checks div { background:#ecfdf5; border:1px solid #a7f3d0; border-radius:9px; padding:11px 14px; color:#047857; }.checks span { color:#1f2937; margin-left:7px; }.zero { display:flex; justify-content:center; align-items:center; gap:13px; border:2px solid #f59e0b; background:#fffbeb; border-radius:12px; padding:13px; }.zero b { font-size:32px; color:#b45309; }.zero span { font-weight:800; }
+</style>
+
+<!-- Presenter cues
+- The clean rerun came from a committed controller and reproduced the exact source digest from development.
+- Snapshot validity means the task and closure are reproducible. It says nothing yet about reviewer performance.
+- We keep “infrastructure evidence” visually distinct from “respondent result” to prevent accidental claim inflation.
+-->
+
+---
+layout: default
+---
+
+# Source and network could not share a process
+
+<div class="boundary mt-4">
+  <div class="box provider"><b>Provider + model</b><span>transport network</span><small>no source mount</small></div>
+  <div class="pipe">Pi tool protocol<br>↕</div>
+  <div class="box pi"><b>Isolated Pi</b><span>custom tools only</span><small>two inherited JSON pipes</small></div>
+  <div class="pipe">bounded requests<br>↕</div>
+  <div class="box mediator"><b>Go mediator</b><span>list · read · RE2 search</span><small>allowlisted focused test</small></div>
+</div>
+
+<div class="grid grid-cols-2 gap-5 mt-7 text-sm">
+  <div class="zone green"><b>Source operations</b><br>in-process, confined, byte/call budgets</div>
+  <div class="zone red"><b>Test process</b><br>separate Seatbelt, frozen closure, network denied</div>
+</div>
+
+<style>
+.boundary { display:grid; grid-template-columns:1fr 120px 1fr 120px 1fr; align-items:center; gap:8px; }.box { text-align:center; border-radius:14px; padding:20px 12px; border:1px solid #cbd5e1; }.box b,.box span,.box small { display:block; }.box span { margin-top:8px; }.box small { margin-top:7px; opacity:.6; }.provider { background:#eff6ff; border-color:#93c5fd; }.pi { background:#f5f3ff; border-color:#c4b5fd; }.mediator { background:#ecfdf5; border-color:#6ee7b7; }.pipe { text-align:center; font:12px monospace; color:#64748b; }.zone { border-radius:10px; padding:14px 18px; }.green { background:#ecfdf5; }.red { background:#fef2f2; }
+</style>
+
+<!-- Presenter cues
+- Mounting source into a network-enabled model process would collapse the contamination boundary.
+- The extension knows file descriptors, not paths. The mediator—not Pi—owns source and test access.
+- Every tool request and result is correlated in a controller-owned, fail-closed transcript.
+-->
+
+---
+layout: default
+---
+
+# The doctor found assumptions, not bugs
+
+<div class="doctor-flow mt-5">
+  <div><b>EOF</b><span>RPC stayed alive</span></div><i>→</i>
+  <div><b>thinking off</b><span>clamped to minimal</span></div><i>→</i>
+  <div><b>shutdown()</b><span>idle process remained</span></div><i>→</i>
+  <div><b>SIGTERM</b><span>same persistent path</span></div>
+</div>
+
+<div class="repair mt-8">
+  <div><small>doctor repair</small><b>verify <code>minimal</code> explicitly</b></div>
+  <div><small>lifecycle repair</small><b>controlled termination after checks</b></div>
+  <div><small>claim runner</small><b>use JSON/print mode</b></div>
+</div>
+
+<div class="mt-7 text-center text-sm opacity-70">All failed attempts preserved. No prompt sent. No provider turn.</div>
+
+<style>
+.doctor-flow { display:grid; grid-template-columns:1fr 28px 1fr 28px 1fr 28px 1fr; align-items:center; gap:5px; }.doctor-flow div { padding:17px 10px; border:1px solid #fca5a5; background:#fef2f2; border-radius:11px; text-align:center; }.doctor-flow b,.doctor-flow span { display:block; }.doctor-flow b { font-family:monospace; }.doctor-flow span { font-size:11px; margin-top:7px; opacity:.65; }.doctor-flow i { font-style:normal; color:#7c3aed; font-size:22px; text-align:center; }.repair { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }.repair div { background:#ecfdf5; border:1px solid #a7f3d0; border-radius:11px; padding:15px; text-align:center; }.repair small,.repair b { display:block; }.repair small { text-transform:uppercase; opacity:.55; }.repair b { margin-top:7px; }
+</style>
+
+<!-- Presenter cues
+- We initially treated persistent RPC shutdown as a defect. It is the wrong lifecycle for a one-shot claim runner.
+- Pi also accepted “off” syntactically but selected the model's supported minimum. State must be observed, not inferred from an accepted command.
+- The final clean doctor sealed runtime, profiles, events, stderr, boundary probe and mediator transcript with zero provider turns.
+-->
+
+---
+layout: default
+---
+
+# The evidence ladder now has a hard gate
+
+<div class="ladder mt-4">
+  <div class="done"><b>1</b><span>Synthetic plumbing</span><small>complete</small></div>
+  <div class="done"><b>2</b><span>Negative overlay calibration</span><small>complete</small></div>
+  <div class="done"><b>3</b><span>History-free snapshot</span><small>sealed</small></div>
+  <div class="done"><b>4</b><span>Mediator + Pi doctor</span><small>sealed · zero calls</small></div>
+  <div class="gate"><b>5</b><span>Claim runner + mock</span><small>current gate</small></div>
+  <div><b>6</b><span>Compared arms</span><small>not started</small></div>
+</div>
+
+<div class="mt-7 grid grid-cols-2 gap-5 text-sm">
+  <div class="next"><b>Before first call</b><br>freeze byte-level prompt factor, model, retries, endpoint and human aggregation</div>
+  <div class="next"><b>Then measure</b><br>supported findings, remedy quality, tool/token/cost/latency efficiency</div>
+</div>
+
+<style>
+.ladder { display:grid; grid-template-columns:repeat(6,1fr); gap:8px; align-items:end; }.ladder div { min-height:145px; border:1px solid #cbd5e1; border-radius:11px; padding:12px; background:#f8fafc; }.ladder b,.ladder span,.ladder small { display:block; }.ladder b { font-size:25px; color:#94a3b8; }.ladder span { font-size:12px; font-weight:800; margin-top:9px; }.ladder small { font-size:10px; margin-top:8px; opacity:.6; }.ladder .done { background:#ecfdf5; border-color:#6ee7b7; }.ladder .done b { color:#047857; }.ladder .gate { background:#fffbeb; border:2px solid #f59e0b; transform:translateY(-8px); }.ladder .gate b { color:#b45309; }.next { background:#f5f3ff; border-radius:10px; padding:15px 18px; }
+</style>
+
+<!-- Presenter cues
+- The clean mediator and doctor are frozen infrastructure checks, not ecological outcomes.
+- This ladder prevents a successful sandbox check from being narrated as evidence that the council found a real defect.
+- The next model call remains gated by a deterministic mock lifecycle and a preregistered comparison.
 -->
 
 ---
