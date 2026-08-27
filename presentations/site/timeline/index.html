@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A living visual timeline of Council of Nark experiments, failures, findings, and pivots.">
+  <meta name="theme-color" content="#070b16">
+  <title>Experiment timeline — Council of Nark</title>
+  <link rel="stylesheet" href="../assets/site.css">
+  <script src="events.js" defer></script>
+  <script src="timeline.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#content">Skip to content</a>
+  <header class="site-header">
+    <nav class="nav" aria-label="Main navigation">
+      <a class="brand" href="../"><span class="brand-mark">N</span><span>Council of Nark</span></a>
+      <div class="nav-links">
+        <a href="../#presentations">Presentations</a>
+        <a href="../results/">Results</a>
+        <a href="./" aria-current="page">Timeline</a>
+        <a href="https://github.com/davehowell/council-of-nark">GitHub</a>
+      </div>
+    </nav>
+  </header>
+
+  <main id="content">
+    <section class="section timeline-hero">
+      <p class="eyebrow">Living experiment timeline</p>
+      <h1>The plan was linear. The evidence was not.</h1>
+      <p class="lede">Every node records what happened and why the next experiment changed. Failures remain visible; infrastructure checks never masquerade as respondent results.</p>
+      <div class="hero-actions">
+        <button class="button primary" id="present-timeline" type="button">Present this timeline →</button>
+        <a class="button" href="../decks/part-3/">Open the full evidence deck</a>
+      </div>
+      <p style="margin-top:1rem;color:var(--muted);font-size:.82rem">Story mode: use ← →, Page Up/Down, Home/End, and Esc.</p>
+    </section>
+
+    <section class="section" style="padding-top:0">
+      <div class="timeline-controls" aria-label="Timeline filters">
+        <div class="filter-row">
+          <button type="button" class="filter active" data-filter="all">All events</button>
+          <button type="button" class="filter" data-filter="failure">Failures and discarded runs</button>
+          <button type="button" class="filter" data-filter="result">Results</button>
+          <button type="button" class="filter" data-filter="pivot">Decisions and pivots</button>
+          <button type="button" class="filter" data-filter="infrastructure">Infrastructure and gates</button>
+        </div>
+      </div>
+      <div class="timeline" id="timeline" aria-live="polite"></div>
+      <noscript><div class="callout">JavaScript renders the filterable timeline. The complete chronological source remains in <a href="https://github.com/davehowell/council-of-nark/blob/main/experiment/LAB_NOTEBOOK.md">experiment/LAB_NOTEBOOK.md</a>.</div></noscript>
+    </section>
+  </main>
+
+  <dialog class="story-dialog" id="story-dialog" aria-label="Timeline story mode">
+    <div class="story-shell">
+      <header class="story-top">
+        <span class="brand"><span class="brand-mark">N</span><span>Experiment story</span></span>
+        <span class="story-progress" id="story-progress"></span>
+        <button class="story-close" id="story-close" type="button" aria-label="Close story mode">×</button>
+      </header>
+      <section class="story-stage" id="story-stage"></section>
+      <footer class="story-bottom">
+        <span>← → to navigate · Esc to close</span>
+        <div class="story-nav">
+          <button class="button small" id="story-previous" type="button">← Previous</button>
+          <button class="button primary small" id="story-next" type="button">Next →</button>
+        </div>
+      </footer>
+    </div>
+  </dialog>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <p>Append events in <code>presentations/site/timeline/events.js</code>.</p>
+      <p><a href="https://github.com/davehowell/council-of-nark/blob/main/experiment/LAB_NOTEBOOK.md">Authoritative notebook</a> · <a href="../results/">Published results</a></p>
+    </div>
+  </footer>
+</body>
+</html>

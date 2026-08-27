@@ -24,6 +24,14 @@ slides-experiment:
 slides-trials:
     cd presentations && bunx --bun slidev part-3/slides.md
 
+# Build the GitHub Pages landing site and all three presentable Slidev decks.
+slides-site-build:
+    cd presentations && bun run site:build
+
+# Serve the built Pages site locally at http://localhost:4173.
+slides-site-preview: slides-site-build
+    python3 -m http.server 4173 --directory presentations/dist
+
 # Export all PDFs.
 slides-export:
     cd presentations && bunx --bun slidev export part-1/slides.md --output part-1/council-of-nark.pdf

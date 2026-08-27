@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Presentations, published results, and the living experiment timeline for Council of Nark.">
+  <meta name="theme-color" content="#070b16">
+  <title>Council of Nark — talks and experiment story</title>
+  <link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+  <a class="skip-link" href="#content">Skip to content</a>
+  <header class="site-header">
+    <nav class="nav" aria-label="Main navigation">
+      <a class="brand" href="./" aria-current="page"><span class="brand-mark">N</span><span>Council of Nark</span></a>
+      <div class="nav-links">
+        <a href="#presentations">Presentations</a>
+        <a href="results/">Results</a>
+        <a href="timeline/">Timeline</a>
+        <a href="https://github.com/davehowell/council-of-nark">GitHub</a>
+      </div>
+    </nav>
+  </header>
+
+  <main id="content">
+    <section class="hero">
+      <div>
+        <p class="eyebrow">An experiment that reviews itself</p>
+        <h1>The council went on trial.</h1>
+        <p class="lede">Three presentable talks, every published result, and a living timeline of failures, findings, and methodological pivots. The receipts stay attached.</p>
+        <div class="hero-actions">
+          <a class="button primary" href="timeline/">Explore the timeline →</a>
+          <a class="button" href="decks/part-3/">Present the latest deck</a>
+        </div>
+      </div>
+      <div class="hero-art" aria-label="The Council of Nark robot reviewers">
+        <img src="assets/council.png" alt="Robot reviewers gathered around the Council of Nark console">
+        <div class="hero-stamp">0 ecological respondent calls</div>
+      </div>
+    </section>
+
+    <aside class="story-banner" aria-label="Timeline presentation mode">
+      <div class="story-banner-inner">
+        <div>
+          <h2>Tell it as a story, not a changelog.</h2>
+          <p>Timeline story mode turns each experiment into a presentable sequence: observation, failure, pivot, receipt.</p>
+        </div>
+        <a class="button primary" href="timeline/?present=1">Start story mode</a>
+      </div>
+    </aside>
+
+    <section class="section" id="presentations">
+      <div class="section-heading">
+        <div><p class="eyebrow">Presentation series</p><h2>From proposal to trial to scars</h2></div>
+        <p>Each tile opens a full Slidev deck. Use the on-screen controls or press <strong>P</strong> inside Slidev for presenter mode; PDFs remain available offline.</p>
+      </div>
+      <div class="grid deck-grid">
+        <article class="card">
+          <span class="card-number">Part 01 · hypothesis</span>
+          <h3>The Council of Nark</h3>
+          <p>Meet the specialist roster and the fan-out/fuse hypothesis. The quality claims are explicitly hypotheses, not testimonials.</p>
+          <div class="meta-row"><span class="chip">11 slides</span><span class="chip decision">proposal</span></div>
+          <div class="card-actions"><a class="button primary small" href="decks/part-1/">Open deck</a><a class="button small" href="downloads/council-of-nark.pdf">PDF</a></div>
+        </article>
+        <article class="card">
+          <span class="card-number">Part 02 · protocol</span>
+          <h3>Put the Council on Trial</h3>
+          <p>Separate role specialisation, fictional wrappers, fusion, provider effects, and topology into comparisons that can lose.</p>
+          <div class="meta-row"><span class="chip">11 slides</span><span class="chip pivot">falsifiable design</span></div>
+          <div class="card-actions"><a class="button primary small" href="decks/part-2/">Open deck</a><a class="button small" href="downloads/put-the-council-on-trial.pdf">PDF</a></div>
+        </article>
+        <article class="card">
+          <span class="card-number">Part 03 · evidence</span>
+          <h3>The Experiment Fought Back</h3>
+          <p>Instrumentation failures, discarded runs, negative persona evidence, isolation hardening, and the ecological pivot through its current gate.</p>
+          <div class="meta-row"><span class="chip">23 slides</span><span class="chip infrastructure">current story</span></div>
+          <div class="card-actions"><a class="button primary small" href="decks/part-3/">Open deck</a><a class="button small" href="downloads/the-experiment-fought-back.pdf">PDF</a></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="results">
+      <div class="section-heading">
+        <div><p class="eyebrow">Published experiment snapshots</p><h2>Useful results include failures</h2></div>
+        <p>These are calibration records, not a benchmark verdict. Raw runs were sealed before arm-blinded scoring; excluded runs remain excluded.</p>
+      </div>
+      <div class="grid result-grid">
+        <article class="card">
+          <div class="meta-row"><span class="chip failed">instrumentation failure</span><span class="chip">0 observations</span></div>
+          <h3>Schema rejected before inference</h3>
+          <div class="metric">0 / 81 model responses</div>
+          <p>The local CLI rejected a standards annotation. The failed run was preserved and the adapter gained a preflight check.</p>
+          <div class="card-actions"><a class="button small" href="results/#schema-failure">Result tile</a></div>
+        </article>
+        <article class="card">
+          <div class="meta-row"><span class="chip complete">complete</span><span class="chip">Haiku</span></div>
+          <h3>First Stage A smoke</h3>
+          <div class="metric">81 / 81 calls</div>
+          <p>High baseline performance exposed ceiling effects. Specialists widened raw recall, while fusion dropped valid minority findings.</p>
+          <div class="card-actions"><a class="button small" href="results/#haiku-smoke">Result tile</a></div>
+        </article>
+        <article class="card">
+          <div class="meta-row"><span class="chip discarded">discarded</span><span class="chip">Gemma partial</span></div>
+          <h3>The prompt looked like an answer</h3>
+          <div class="metric">71 / 81 before discard</div>
+          <p>Prompt echo and zero-exit provider errors could fool the stream parser. The partial run was sealed and never scored.</p>
+          <div class="card-actions"><a class="button small" href="results/#gemma-incomplete">Result tile</a></div>
+        </article>
+        <article class="card">
+          <div class="meta-row"><span class="chip result">negative result</span><span class="chip">30 paired repeats</span></div>
+          <h3>The fictional overlay lost</h3>
+          <div class="metric negative">−0.0425 mean F1</div>
+          <p>K-2SO wording changed behaviour but did not improve this model, kernel, and synthetic task set.</p>
+          <div class="card-actions"><a class="button small" href="results/#persona-pairs">Result tile</a></div>
+        </article>
+      </div>
+      <div class="hero-actions"><a class="button primary" href="results/">See all five result records →</a></div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <p>Open experimental work. Negative and null results stay visible.</p>
+      <p><a href="https://github.com/davehowell/council-of-nark/blob/main/experiment/LAB_NOTEBOOK.md">Lab notebook</a> · <a href="https://github.com/davehowell/council-of-nark/tree/main/experiment/results">Receipts</a></p>
+    </div>
+  </footer>
+</body>
+</html>
