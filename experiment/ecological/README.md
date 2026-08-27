@@ -73,17 +73,47 @@ For each task:
 
 1. fetch the recorded `parent_commit` into a controller-only cache;
 2. use `git archive`, not a working clone copy, to produce a new source directory;
-3. remove project-level agent instructions, MCP configuration, workflow bot prompts, issue caches, patch files, and generated changelogs that could instruct or reveal a solution;
-4. initialise one neutral root commit with no remote, reflog, alternate object store, tags, branches, or upstream refs;
+3. remove project-level agent instructions, MCP configuration, workflow bot prompts, issue caches, patch files, generated changelogs, and evaluation assets that could instruct or reveal a solution;
+4. create a neutral source root with normalized modes/timestamps and no `.git`; keep any later edit baseline outside the respondent-visible tree;
 5. store provenance and file digests outside the source root visible to the model;
-6. run a deny probe for `.git` history, sibling directories, the council repository, network tools, and evidence files;
+6. run a deny probe for council/controller metadata, sibling tasks, network access, writes, and evidence files;
 7. supply the brief through the frozen request, not as an upstream issue URL;
 8. expose the same allowlisted read/search/test tools to every arm;
-9. for dependency-heavy tasks, prefetch the exact toolchain and repository closure controller-side, record artifact digests and licenses, then prove the focused test runs with network denied.
+9. prefetch and digest the exact toolchain/package closure controller-side, record dependency licenses, then run the focused test with network disabled.
+
+### Implemented Gortex exporter
+
+`config/eco-gortex-unicode-tokenizer.json` freezes the upstream commits, license-file digests, explicit removals, forbidden evidence markers, Go version, and focused test. Run:
+
+```bash
+just ecological-gortex-snapshot
+```
+
+Each invocation creates a new ignored `work/<attempt>/` and never reuses an attempt in place. `source/` is the read-only respondent candidate. `controller/` contains archives, the applied evidence test, logs, manifests, provenance, and a seal; it must never be mounted for a respondent. Immutable Go/tool module closures live under ignored `cache/` and are verified by tree digest before use. The evidence test is applied only in controller validation: it must reproduce the configured failure at the parent and pass at the evidence commit.
+
+The first development validation preserved four failed attempts before completing this lifecycle. It made no model call. Its controller tree was dirty while the exporter was being written, which required the clean rerun recorded below.
+
+On 24 August 2026, a clean rerun from committed controller `ef48b42…` completed as ignored attempt `20260824T012106Z-eco-gortex-unicode-tokenizer-62e6fe45`. It reproduced the same source tree digest, `41a9a14b…`, verified the seal, observed the configured parent failure, passed the evidence commit, and passed source/controller/evidence/network probes. This freezes the candidate snapshot as infrastructure evidence; it is not a respondent result.
+
+### Narrow respondent mediator
+
+The tracked policy `tool-policy/eco-gortex-unicode-tokenizer-v1.json` freezes read/list/search/test call and byte budgets. The Go package under `mediator/` enforces source-root confinement, rejects Git/traversal/symlinks/binary or oversized text, uses deterministic bounded listing and RE2 search, correlates requests, and writes a fail-closed JSONL transcript. `pi/ecological-tools.ts` exposes only those operations plus a terminating structured review tool.
+
+The extension does not receive a source, evidence, cache, or controller path. The doctor connects it to the trusted Go mediator with inherited request/response pipes and starts Pi with all built-in/discovered tools and context disabled. A future claim runner must retain that boundary while capturing Pi's JSON event stream and the mediator transcript. The mediator—not the provider child—reads the source and runs the predeclared test. This keeps provider transport networking separate from the network-denied test sandbox.
+
+A controller-side Gortex test runner now verifies the snapshot and closure, runs the hidden parent regression under a new network-denied Seatbelt profile, sanitizes controller paths from its returned output, and retains raw logs outside the respondent channel. `just ecological-gortex-mediator-check <snapshot>` exercises positive list/read/search/test requests plus traversal and arbitrary-target denials without a model call.
+
+`just ecological-gortex-pi-doctor <snapshot>` now starts Pi in no-model RPC mode under the new provider-child profile, disables built-ins and discovered resources, exercises the inherited mediator pipes through a controller-only extension command, explicitly sets and verifies model/thinking state, checks source/controller/evidence denial, and seals its event/transcript/profile/runtime digests. Pi RPC is intentionally persistent, so the doctor uses controlled termination after all responses are captured; a claim runner should use JSON/print mode, which exits after the agent settles.
+
+Clean committed attempts `20260824T020111Z-gortex-mediator-check-662f680b` and `20260824T020121Z-gortex-pi-doctor-a93ff02e` completed from controller `a5972ab…`; their summary/raw-artifact digests and seals verified, and the doctor made zero provider turns. They freeze infrastructure inputs, not respondent outcomes.
+
+The mediator, extension, and doctor remain infrastructure only until a claim runner assembles the frozen brief/system prompt, captures the final structured submission and usage, and seals the complete lifecycle. Do not start a model by loading the extension manually.
 
 The answer evidence normally consists of the merged patch, its regression tests, issue/maintainer discussion, and independent human review. The Modular watchlist task has commit/test evidence but no public review discussion; report and analyse that stratum separately. An upstream correction is evidence, not the only acceptable answer: supported novel findings remain valid and must be adjudicated.
 
 ## Scoring
+
+The detailed condition-blinded 1–5 anchors, claim-supportedness rules, efficiency measures, and adjudication procedure are frozen in [`SCORING.md`](SCORING.md). Task-specific keys under `evidence/` are rater/controller-only and must never enter a respondent mount or provider child.
 
 Score separately:
 

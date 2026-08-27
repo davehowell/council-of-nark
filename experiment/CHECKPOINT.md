@@ -1,16 +1,17 @@
 # Experiment checkpoint
 
-> Checkpoint: 21 August 2026, after PRs #18 and #19. Start future sessions in the `council-of-nark` repository root and read this file plus [`LAB_NOTEBOOK.md`](LAB_NOTEBOOK.md) before changing or running the experiment.
+> Checkpoint: 24 August 2026, after the clean Gortex snapshot rerun and first ecological mediator/rubric implementation. Start future sessions in the `council-of-nark` repository root and read this file plus [`LAB_NOTEBOOK.md`](LAB_NOTEBOOK.md) before changing or running the experiment.
 
 ## Repository state
 
-- `main` was clean and synchronized with `origin/main` at checkpoint creation.
-- Last substantive integration before this checkpoint: PR #19, baseline merge `9221554fdd3b1f1ba1ec17cfc00c04c364ce7c9a`.
+- The snapshot work started from clean `main` at `69638aea2c429b64a43886098fde1f3cd8bee3f9`, synchronized with `origin/main`.
+- Controller `ef48b42…` contains the Gortex exporter; `0ba767a…` adds the mediator/rubric/doctor boundary and `a5972ab…` completes raw-artifact sealing. Confirm the live commit and clean state before any further snapshot or respondent work.
 - Strict Go/Seatbelt harness tag: `experiment-harness-go-v1.0`.
 - Maintained platform: macOS, Go 1.22+, `/usr/bin/sandbox-exec`, isolated Pi adapters. Direct agy and direct Claude CLI remain fail-closed.
 - Published synthetic results remain calibration, not confirmatory evidence.
+- No persona-factorial, ecological respondent, or ecological rating call has occurred.
 
-Confirm the live state rather than assuming this hash is still HEAD:
+Confirm the live state rather than assuming a recorded hash is still HEAD:
 
 ```bash
 git status --short --branch
@@ -65,58 +66,45 @@ Reserve:
 
 PR #19 added a separately gated Modular extreme reserve: CPU split-axis `argmax`/`argmin` index corruption. It is **not eligible** until its exact external build closure is mirrored/digested and the focused test is shown failing at the parent and passing at the evidence commit. It has public commit/test evidence but no public issue or PR review, so never pool it silently with the PR-backed set.
 
-No ecological source export, respondent call, or outcome rating has occurred.
+The original local development export completed with source tree digest `41a9a14b…`; the exact evidence test failed at the parent with the expected panic and passed at the evidence commit using the frozen offline Go/module closure. A clean rerun from committed controller `ef48b42…` completed on 24 August as ignored attempt `20260824T012106Z-eco-gortex-unicode-tokenizer-62e6fe45`, reproduced the same tree digest, verified its seal, and passed all configured isolation probes. It is frozen infrastructure evidence, not a respondent result. No ecological respondent call or outcome rating has occurred.
 
 ## Highest-priority next work
 
-### 1. Build the ecological snapshot pipeline
+### 1. Complete and probe the ecological launcher
 
-Do this before spending 480 calls on the synthetic persona factorial.
+Do this before spending 480 calls on the synthetic persona factorial. The clean snapshot, tool policy, Go mediator/test runner, Pi extension, and no-model doctor now exist. No claim runner or ecological model call exists yet.
 
-Start with the Gortex Unicode pilot because it has a focused Go test, no special hardware, and a relatively conventional toolchain. The exporter should:
+The controller-side test runner and `just ecological-gortex-mediator-check <snapshot>` now verify the sealed snapshot/closure, exercise bounded list/read/search, reproduce the hidden regression under network-denied Seatbelt, sanitize returned paths, and deny traversal/arbitrary targets. The first successful check (`20260824T014109Z-gortex-mediator-check-2324d548`) came from a dirty development tree and is engineering evidence only.
 
-1. fetch the exact parent into a controller-only cache;
-2. verify commit identity and license;
-3. export with `git archive` rather than copying a checkout;
-4. remove `.git`, remotes, reflogs, patches, changelogs, issue caches, agent instructions (`AGENTS.md`, `CLAUDE.md`, `.cursor`, MCP/project AI configuration), and solution hints while retaining required licenses/notices;
-5. create a neutral, history-free source root and store provenance/digests outside it;
-6. prove the source cannot read the council repository, sibling tasks, evidence commit, or controller metadata;
-7. prefetch and digest the dependency/test closure, then prove focused tests run with network denied;
-8. apply the evidence regression test to the parent controller-side to demonstrate expected failure, and run it at the evidence commit to demonstrate pass;
-9. preserve every failed export/build attempt rather than repairing artifacts in place.
+`just ecological-gortex-pi-doctor <snapshot>` now probes the other half of the boundary without a provider call. It starts isolated Pi with no built-ins/discovered resources/session, denies source/controller/evidence reads, exercises inherited mediator pipes, explicitly verifies model/thinking state, and seals events/profiles/runtime/transcript digests. Four failed attempts exposed persistent RPC shutdown behavior and Pi clamping Gemma `off` to `minimal`; the repair pins explicit `minimal` and uses controlled post-check termination.
 
-Do not expose upstream evidence, `ecological/candidates.json`, or this repository to respondents.
+After commits `0ba767a…` and `a5972ab…`, clean mediator attempt `20260824T020111Z-gortex-mediator-check-662f680b` and clean Pi doctor `20260824T020121Z-gortex-pi-doctor-a93ff02e` both completed from `a5972ab…`. Their summaries/raw artifacts and seals verified, the returned mediator responses contained no absolute controller path, and the doctor made zero provider turns. These are frozen infrastructure checks, not respondent results.
 
-### 2. Design explicit ecological tool access
+The claim runner must:
 
-The current one-shot harness disables tools and denies provider children all repository access. A real-source ecological task therefore needs a new, published isolation boundary; do not silently grant a shell or reuse the synthetic prompt path.
+1. use the verified snapshot/policy/mediator/extension/runtime inputs and JSON/print mode, which exits after the agent settles;
+2. assemble and digest the exact system prompt, sanitized brief, tool schemas, model, thinking level, and decoding state;
+3. capture Pi events and mediator transcript, validate exactly one terminating structured submission, and seal responses, usage, cost, latency, profiles, and probes;
+4. rerun negative direct-read/Git/write/arbitrary-target/shell/pipe/test-network probes from a clean committed controller;
+5. rerun both no-model checks after committing this infrastructure, then run a deterministic mock lifecycle before any ecological model call.
 
-Preferred design questions to resolve:
+Do not load `pi/ecological-tools.ts` manually for a respondent.
 
-- allow read-only access only to the sanitized task snapshot, never to the council/controller roots;
-- expose narrow read/search operations plus predeclared test targets, not an unrestricted shell;
-- execute tests in a separate network-denied sandbox with frozen dependencies while retaining network only for provider transport;
-- log every tool request/result and include tool-policy/profile digests in `request.json` and the seal;
-- keep tool budgets identical across compared arms;
-- add executable probes for history, remotes, evidence, sibling paths, network, writes, and hidden solution search.
+### 2. Finish ecological scoring/run design before calls
 
-If Pi extensions/custom tools are used, first read the installed Pi extension and TUI/tool documentation and examples completely. Publish the changed threat model in [`ISOLATION.md`](ISOLATION.md).
+[`ecological/SCORING.md`](ecological/SCORING.md) now freezes claim-supportedness rules, five anchored dimensions, efficiency measures, missing-output handling, and disagreement/adjudication. `ecological/evidence/eco-gortex-unicode-tokenizer.md` freezes the task-specific evidence key and acceptable equivalent remedies. Both raters must remain condition-blinded; the evidence directory is controller/rater-only.
 
-### 3. Freeze ecological scoring before calls
+Still freeze:
 
-Create a task-specific evidence key and anchored human rubric for:
+- compared arms and the exact byte-level prompt factor;
+- call count, randomisation/blocking, model/thinking level, retries, and smallest effect of interest;
+- the cross-rater aggregation and any primary endpoint derived from the five separate dimensions;
+- two available raters and the rating CSV/bundle format;
+- exclusions and pilot-to-reserve substitution rules.
 
-- root-cause localisation;
-- material consequence;
-- correction correctness and scope;
-- regression-test discrimination;
-- unsupported claims;
-- remedy quality/actionability;
-- tool, token, latency, and cost efficiency.
+The upstream patch remains evidence, not the only acceptable solution. Preserve supported novel findings.
 
-The upstream patch is evidence, not the only acceptable solution. Preserve supported novel findings. Require two independent condition-blinded human raters and freeze exclusions/adjudication before output inspection.
-
-### 4. Decide whether the persona factorial is still worth 480 calls
+### 3. Decide whether the persona factorial is still worth 480 calls
 
 Do not run `just experiment-persona-factorial-gemma 2` by default. First confirm:
 
@@ -162,3 +150,5 @@ just experiment-qualitative "$RUN" blinded/pairwise-ratings-both.csv qualitative
 ## Ignored local artifact warning
 
 `experiment/runs/20260821T135400Z-mock-pair-fcb1a5efea` is a two-call mock plumbing run created while testing HMAC pairing. It contains no respondent findings and any locally fabricated qualitative rows/derived analyses are plumbing fixtures, not human evidence. Do not report or pool it. Historical real runs remain identified in the published result manifests and notebook.
+
+The ignored `experiment/ecological/work/` and `experiment/ecological/cache/` trees contain the Gortex controller cache, four preserved failed exporter attempts, and the successful dirty-tree development attempt `20260821T160711Z-eco-gortex-unicode-tokenizer-f3a5b8c9`. They contain upstream evidence and controller metadata. Never mount or publish them as respondent source.

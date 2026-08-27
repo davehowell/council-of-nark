@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "task_id": "eco-gortex-unicode-tokenizer",
+  "allowed_tools": [
+    "source_list",
+    "source_read",
+    "source_search",
+    "run_focused_test"
+  ],
+  "max_calls": 40,
+  "max_calls_by_tool": {
+    "source_list": 10,
+    "source_read": 24,
+    "source_search": 10,
+    "run_focused_test": 3
+  },
+  "max_result_bytes": 51200,
+  "max_total_result_bytes": 768000,
+  "max_read_lines": 400,
+  "max_list_depth": 3,
+  "max_list_entries": 300,
+  "max_search_matches": 100,
+  "max_search_pattern_bytes": 512,
+  "max_text_file_bytes": 2097152,
+  "test_targets": [
+    "unicode-tokenizer-regression"
+  ]
+}

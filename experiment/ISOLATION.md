@@ -45,14 +45,45 @@ For a pre-fix ecological task:
 
 1. select the project/issue using frozen inclusion criteria;
 2. export the target parent commit with `git archive` into a new directory;
-3. remove upstream metadata and initialise one neutral root commit;
-4. exclude changelogs, issue caches, patch files, and generated references that reveal the solution;
-5. give every condition the same local read/search/test tools through an allowlisted mediator;
-6. keep unrestricted shell, Git remotes, and internet disabled unless they are declared factors;
-7. retain the upstream patch, tests, and review discussion only for blinded evaluation;
-8. accept supported novel findings rather than treating the eventual patch as the sole valid answer.
+3. remove upstream metadata, normalize the source tree, and leave `.git` absent;
+4. exclude changelogs, issue caches, patch files, generated references, agent instructions, and evaluation assets that could reveal or steer a solution;
+5. store provenance, evidence tests, dependency closure, and any edit baseline outside the source root;
+6. give every condition the same local read/search/test tools through an allowlisted mediator;
+7. keep unrestricted shell, Git remotes, and internet disabled unless they are declared factors;
+8. retain the upstream patch, tests, and review discussion only for blinded evaluation;
+9. accept supported novel findings rather than treating the eventual patch as the sole valid answer.
 
-Deleting `.git` after a normal clone is insufficient if refs, worktrees, caches, or adjacent directories remain visible. Export into a new sandbox root.
+Deleting `.git` after a normal clone is insufficient if refs, worktrees, caches, or adjacent directories remain visible. Export into a new root. The Gortex pilot exporter also runs its controller-only focused test against a digested Go/module closure with `GOPROXY=off` and network-denied Seatbelt. This validates the snapshot; it does not itself grant model tools.
+
+## Ecological mediator boundary
+
+The ecological design does not mount source into Pi and does not override Pi's built-in read or shell tools. The intended process split is:
+
+```text
+provider transport + model
+        ↕ Pi tool protocol
+isolated Pi child (custom tools only; no source/controller paths)
+        ↕ inherited LF-delimited JSON pipes
+trusted Go mediator (policy, budgets, transcript)
+        ├─ read-only sanitized source
+        └─ separate network-denied focused-test sandbox
+```
+
+`experiment/ecological/mediator` validates every relative path beneath one canonical history-free source root. It rejects absolute/traversing paths, `.git`, symlinks, non-regular reads, binary/non-UTF-8 content, oversized files, unknown arguments, unlisted tests, and exhausted call/result budgets. Listing, reading, and RE2 searching happen in-process without a shell. Requests are serialized and paired with responses in a controller-owned JSONL transcript; transcript write failure closes the session.
+
+`experiment/ecological/pi/ecological-tools.ts` knows only inherited request/response file descriptors. It receives no source, evidence, cache, or controller path. The launcher must use `--no-builtin-tools`, disable discovered extensions/skills/prompts/themes/context/session persistence, explicitly allow only the tracked tools, and capture Pi's JSON stream. The final submission is a terminating structured-output tool, not a writable source operation.
+
+The no-model ecological doctor now verifies the snapshot, policy, extension and runtime digests; starts isolated Pi with only the custom tools; maps the two mediator pipes; proves source/controller/evidence reads are denied; exercises a mediated health request; explicitly verifies model/thinking state; and seals Pi events, profiles, probes, and the mediator transcript. The separate mediator check runs the allowlisted hidden test and its test-network probe. Both checks preserve attempts and make no provider call.
+
+This boundary is not complete for a respondent until a committed claim runner:
+
+- assembles and digests the exact system prompt, sanitized brief, tool schemas, model, and decoding state;
+- uses JSON/print mode so Pi exits after the agent settles, rather than the doctor's persistent RPC lifecycle;
+- records and seals every request/response, Pi event, mediator transcript, profile/probe, final structured output, usage, cost, and latency;
+- rejects missing, duplicate, malformed, or non-terminating final submissions;
+- reruns negative probes for direct source/evidence/controller reads, Git/remotes, writes, arbitrary test targets, shell execution, pipe bypass, and test-network access from a clean committed controller.
+
+Until those checks pass and the compared arms are preregistered, the tracked mediator, Pi extension, and doctor are infrastructure prototypes and must not be used for a respondent call.
 
 ## OS accounts
 
