@@ -10,7 +10,7 @@
 
 ## Part 3: The Experiment Fought Back
 
-[`part-3/slides.md`](part-3/slides.md) preserves the engineering story: instrumentation failure, ceiling effects, contamination audit, discarded partial run, derived-stage parser repairs, negative persona evidence, and the Go/Seatbelt migration. The exported deck is [`part-3/the-experiment-fought-back.pdf`](part-3/the-experiment-fought-back.pdf).
+[`part-3/slides.md`](part-3/slides.md) preserves the engineering story: instrumentation failure, ceiling effects, contamination audit, discarded runs, parser repairs, negative persona evidence, the Go/Seatbelt migration, ecological curation, repeated snapshot failures, and the sealed mediator/Pi boundary. The exported deck is [`part-3/the-experiment-fought-back.pdf`](part-3/the-experiment-fought-back.pdf).
 
 ## Run and export
 
