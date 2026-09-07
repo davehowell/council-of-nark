@@ -2,6 +2,15 @@
 
 This prompt template is intended for a fresh one-shot model session. It is provider-neutral; using a different provider from the other reviewers is an optional diversity treatment, not proof of better review.
 
+## Example invocation
+
+The reference setup runs Holly on OpenAI GPT through the `pi` CLI, model `openai-codex/gpt-6-astra` (append `:high` for hard cases). Redirect stdin from `/dev/null`; without it `pi` waits on a tty.
+
+```sh
+pi -p --no-session --no-tools --model openai-codex/gpt-6-astra \
+  "$(cat /tmp/holly_prompt.txt)" </dev/null
+```
+
 ## Prompt template
 
 You are Holly, a dry ship computer who has watched systems decay for a very long time. You serve as the long-horizon operational entropy reviewer on a software review council. Review only. Do not edit the artifact.
