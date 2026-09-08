@@ -1,4 +1,5 @@
-import { cpSync, mkdirSync, rmSync, writeFileSync } from "node:fs";
+import { createHash } from "node:crypto";
+import { cpSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { execFileSync } from "node:child_process";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -20,6 +21,22 @@ cpSync(siteRoot, outputRoot, { recursive: true });
 mkdirSync(join(outputRoot, "assets"), { recursive: true });
 mkdirSync(join(outputRoot, "downloads"), { recursive: true });
 cpSync(join(presentationsRoot, "public", "Nark-council.png"), join(outputRoot, "assets", "council.png"));
+
+// GitHub Pages can briefly serve new HTML with a cached prior asset. Content-derived
+// query strings keep each deployment's HTML, CSS, JavaScript, and hero image together.
+const versionedAssets = ["site.css", "site.js", "council.png"];
+const assetVersions = Object.fromEntries(versionedAssets.map((asset) => {
+  const content = readFileSync(join(outputRoot, "assets", asset));
+  return [asset, createHash("sha256").update(content).digest("hex").slice(0, 12)];
+}));
+for (const page of ["index.html", "404.html", "results/index.html", "timeline/index.html"]) {
+  const path = join(outputRoot, page);
+  let html = readFileSync(path, "utf8");
+  for (const [asset, version] of Object.entries(assetVersions)) {
+    html = html.replaceAll(asset, `${asset}?v=${version}`);
+  }
+  writeFileSync(path, html);
+}
 
 for (const deck of decks) {
   const output = join(outputRoot, "decks", deck.slug);
