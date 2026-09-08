@@ -10,17 +10,17 @@ layout: default
 class: cover
 ---
 
-<p class="eyebrow">04 / The conclusion</p>
+<p class="eyebrow">04 / The pivot</p>
 
 # What Would Settle It?
 
-<p class="lead">A smaller final test. An honest stopping rule.</p>
+<p class="lead">The next comparison, defined before the next call.</p>
 
 <div class="foot"><span>Council of Nark</span><span>1 / 6</span></div>
 
 <!--
 [Time: 0:00–0:45]
-We can close the current evidence review now, but we cannot honestly close every empirical question with a definitive winner. The council has not demonstrated a reliable advantage over one functional review. Nor have we established equivalence. One persona underperformed in one controlled calibration. The question is what additional work would change that confidence enough to be useful. My proposal is a smaller final comparison focused on practical review quality and resource use. It deliberately leaves provider diversity, every chain order and the full eight-role factorial for another study. This talk separates that proposed work from the results we already have.
+Part 3 ends without a verdict because calibration and infrastructure checks do not answer the original question. This talk is the pivot, not the conclusion. It defines the next comparison before any new respondent call: practical review tasks, matched resource limits, blinded human ratings, and explicit decision rules. The council has not demonstrated a reliable advantage over one functional review, and equivalence is also untested. The next stage must collect the evidence needed for a later conclusion rather than make the current uncertainty sound final.
 
 [Sources]
 https://github.com/davehowell/council-of-nark/blob/main/experiment/CONCLUSION.md
@@ -81,7 +81,7 @@ https://github.com/davehowell/council-of-nark/blob/main/experiment/CHECKPOINT.md
 - Equivalent: uncertainty fits inside a declared small margin.
 - Cheaper substitute: quality holds up and resources fall.
 
-<p class="verdict">Otherwise, publish “inconclusive”.</p>
+<p class="verdict">Apply the rule after the confirmatory run.</p>
 
 <div class="foot"><span>Two independent humans · locked rubric · declared comparisons</span><span>4 / 6</span></div>
 
@@ -96,20 +96,20 @@ https://github.com/davehowell/council-of-nark/blob/main/experiment/FINAL_ROUND.m
 
 ---
 
-# A small pilot cannot prove a small gap
+# Run feasibility, then confirmation
 
 <div class="pair">
 <div><span class="number">4 × 2</span><span class="label">Tasks × repeats for feasibility</span></div>
-<div><span class="number warm">136</span><span class="label">Planned stages, not API calls</span></div>
+<div><span class="number warm">57*</span><span class="label">Illustrative independent-task target</span></div>
 </div>
 
-<p class="caution">Confirmation needs a sample sized for precision, then one final analysis.</p>
+<p class="caution">*Freeze the final count from the declared precision rule.</p>
 
-<div class="foot"><span>Proposed · not run · extra feasibility, tools and retries excluded</span><span>5 / 6</span></div>
+<div class="foot"><span>Exclude feasibility data from the confirmatory result</span><span>5 / 6</span></div>
 
 <!--
 [Time: 3:25–4:15]
-Four tasks with two repeats across these arms require 136 planned review stages, before the separate initial feasibility block, tool-driven provider turns or retries. That can test whether the workflow completes and whether the rubric and budgets make sense. It cannot establish narrow equivalence. An illustrative precision calculation in the protocol can require around fifty-seven independent tasks under one assumed variability level, and repository clustering can require more. That is not a sample-size promise; it shows why adding repeats to four tasks is not a shortcut to generality. After excluded feasibility, freeze the confirmatory sample and spending cap. If the available resources cannot buy the required precision, stop and report the limit.
+Start with the four curated tasks and two repeats to test the workflow, rubric, and resource accounting. Exclude those feasibility observations from the result. Then freeze a larger set of independent eligible tasks and run the precision-sized confirmation. The current calculation gives an illustrative target of about fifty-seven tasks under one variability assumption; repository clustering can increase it. Repeated calls on four tasks cannot replace task diversity. The final count, spending cap, exclusion rules, and analysis must be fixed before the confirmatory responses. Part 5 should report that run, including failures and uncertainty, rather than promote the feasibility pilot into an answer.
 
 [Sources]
 https://github.com/davehowell/council-of-nark/blob/main/experiment/FINAL_ROUND.md
@@ -117,17 +117,17 @@ https://github.com/davehowell/council-of-nark/blob/main/experiment/FINAL_ROUND.m
 
 ---
 
-# The council has not earned a default
+# Next: run the ecological comparison
 
-<p class="lead">Start with one functional review.<br>Escalate when the task warrants it.</p>
+<p class="lead">Finish the runner.<br>Freeze the tasks.<br>Collect blinded human ratings.</p>
 
-<p class="verdict">A practical choice under uncertainty.<br>Not a claim of proven equivalence.</p>
+<p class="verdict">Then publish Part 5: the result.</p>
 
-<div class="foot"><span>Keep the negative results. Keep the route to replication.</span><span>6 / 6</span></div>
+<div class="foot"><span>Part 4 is the pivot, not the conclusion</span><span>6 / 6</span></div>
 
 <!--
 [Time: 4:15–5:00]
-My present operational choice is to start with one functional review and escalate for tasks whose risk justifies more attention. That is a decision under uncertainty, not a theorem that one agent is equivalent. The strongest persona result remains narrow: K-2SO reduced detection on this model and these three packets, with slightly fewer tokens. The council results remain mixed and exploratory. The closing protocol gives us a way to earn a stronger statement, including an equivalence result if the evidence is precise enough. Until the launcher, task environments and two human raters are ready, it remains a proposal. The useful outcome is a claim we can defend, even when that claim is smaller than the original idea.
+This talk hands the project back to execution. Finish the claim runner and deterministic mock lifecycle. Validate enough history-free task environments for the declared precision target. Freeze the compared arms, budgets, exclusions, and analysis. Then collect condition-blinded ratings from two independent humans. The existing K-2SO result and mixed council calibrations remain part of the record, but they are not the ending. Part 5 can be the conclusion after the ecological comparison produces results. It must report the outcome even if the council loses, the cheaper alternative holds up, or the interval still crosses the declared decision boundary.
 
 [Sources]
 https://github.com/davehowell/council-of-nark/blob/main/experiment/CONCLUSION.md

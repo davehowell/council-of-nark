@@ -1,6 +1,6 @@
 ---
 theme: default
-title: The Experiment Fought Back
+title: The Experiments Failed. A Lot.
 colorSchema: dark
 fonts:
   sans: Arial
@@ -12,9 +12,9 @@ class: cover
 
 <p class="eyebrow">03 / The evidence</p>
 
-# The Experiment<br>Fought Back
+# The Experiments<br>Failed. A Lot.
 
-<p class="lead">Failures changed what we could believe.</p>
+<p class="lead">What broke, what survived, and what changed.</p>
 
 <div class="foot"><span>Council of Nark</span><span>1 / 6</span></div>
 
@@ -132,7 +132,7 @@ https://github.com/davehowell/council-of-nark/blob/main/experiment/CONCLUSION.md
 
 <!--
 [Time: 4:15–5:00]
-The course correction was to move towards real pre-fix open-source tasks. That required stronger isolation: an empty respondent environment, history-free source, a narrow mediator for source access, and tests with network access denied. Gortex's frozen regression has been shown to fail before its fix and pass afterwards. Several failed exporter and process-lifecycle attempts were preserved on the way. This is valuable infrastructure evidence. It is not evidence that a reviewer found the bug: no ecological respondent call has occurred. That distinction is the bridge to the final talk. We now know what the existing results support, and can define a finite closing test without claiming it has already happened.
+The course correction was to move towards real pre-fix open-source tasks. That required stronger isolation: an empty respondent environment, history-free source, a narrow mediator for source access, and tests with network access denied. Gortex's frozen regression has been shown to fail before its fix and pass afterwards. Several failed exporter and process-lifecycle attempts were preserved on the way. This is valuable infrastructure evidence. It is not evidence that a reviewer found the bug: no ecological respondent call has occurred. That distinction is the bridge to the pivot talk. We now know what the existing results support and can define the next test without claiming it has already happened.
 
 [Sources]
 https://github.com/davehowell/council-of-nark/blob/main/experiment/CHECKPOINT.md
