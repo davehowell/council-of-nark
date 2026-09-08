@@ -115,13 +115,13 @@ https://github.com/davehowell/council-of-nark/blob/main/experiment/FINAL_ROUND.m
 
 ---
 
-# The Experiment Fought Back — speaker notes
+# The Experiments Failed. A Lot. — speaker notes
 
-Six slides · approximately five minutes · 636 spoken words.
+Six slides · approximately five minutes · 635 spoken words.
 
 Edit the closing comment in each slide in part-3/slides.md; these notes are generated from that source.
 
-## 1. The Experiment Fought Back
+## 1. The Experiments Failed. A Lot.
 
 [Time: 0:00–0:40]
 The most useful part of this project was not a leaderboard. It was finding the ways a leaderboard could mislead us. Some runs failed before a model answered. One partial run was discarded before scoring. Completed runs exposed both easy tasks and a fuser that could lose good findings. Then a focused repetition went against the persona I was testing. The story is a series of course corrections: each failure changed the measurement or narrowed the claim. I want to show three of those lessons, and the results that survived them, without turning this into a tour of every implementation detail.
@@ -167,7 +167,7 @@ https://github.com/davehowell/council-of-nark/blob/main/experiment/CONCLUSION.md
 ## 6. Better isolation enabled the next test
 
 [Time: 4:15–5:00]
-The course correction was to move towards real pre-fix open-source tasks. That required stronger isolation: an empty respondent environment, history-free source, a narrow mediator for source access, and tests with network access denied. Gortex's frozen regression has been shown to fail before its fix and pass afterwards. Several failed exporter and process-lifecycle attempts were preserved on the way. This is valuable infrastructure evidence. It is not evidence that a reviewer found the bug: no ecological respondent call has occurred. That distinction is the bridge to the final talk. We now know what the existing results support, and can define a finite closing test without claiming it has already happened.
+The course correction was to move towards real pre-fix open-source tasks. That required stronger isolation: an empty respondent environment, history-free source, a narrow mediator for source access, and tests with network access denied. Gortex's frozen regression has been shown to fail before its fix and pass afterwards. Several failed exporter and process-lifecycle attempts were preserved on the way. This is valuable infrastructure evidence. It is not evidence that a reviewer found the bug: no ecological respondent call has occurred. That distinction is the bridge to the pivot talk. We now know what the existing results support and can define the next test without claiming it has already happened.
 
 [Sources]
 https://github.com/davehowell/council-of-nark/blob/main/experiment/CHECKPOINT.md
@@ -176,14 +176,14 @@ https://github.com/davehowell/council-of-nark/blob/main/experiment/CHECKPOINT.md
 
 # What Would Settle It? — speaker notes
 
-Six slides · approximately five minutes · 655 spoken words.
+Six slides · approximately five minutes · 609 spoken words.
 
 Edit the closing comment in each slide in part-4/slides.md; these notes are generated from that source.
 
 ## 1. What Would Settle It?
 
 [Time: 0:00–0:45]
-We can close the current evidence review now, but we cannot honestly close every empirical question with a definitive winner. The council has not demonstrated a reliable advantage over one functional review. Nor have we established equivalence. One persona underperformed in one controlled calibration. The question is what additional work would change that confidence enough to be useful. My proposal is a smaller final comparison focused on practical review quality and resource use. It deliberately leaves provider diversity, every chain order and the full eight-role factorial for another study. This talk separates that proposed work from the results we already have.
+Part 3 ends without a verdict because calibration and infrastructure checks do not answer the original question. This talk is the pivot, not the conclusion. It defines the next comparison before any new respondent call: practical review tasks, matched resource limits, blinded human ratings, and explicit decision rules. The council has not demonstrated a reliable advantage over one functional review, and equivalence is also untested. The next stage must collect the evidence needed for a later conclusion rather than make the current uncertainty sound final.
 
 [Sources]
 https://github.com/davehowell/council-of-nark/blob/main/experiment/CONCLUSION.md
@@ -215,18 +215,18 @@ The real-code rubric measures localisation, consequence, correction, regression 
 https://github.com/davehowell/council-of-nark/blob/main/experiment/ecological/SCORING.md
 https://github.com/davehowell/council-of-nark/blob/main/experiment/FINAL_ROUND.md
 
-## 5. A small pilot cannot prove a small gap
+## 5. Run feasibility, then confirmation
 
 [Time: 3:25–4:15]
-Four tasks with two repeats across these arms require 136 planned review stages, before the separate initial feasibility block, tool-driven provider turns or retries. That can test whether the workflow completes and whether the rubric and budgets make sense. It cannot establish narrow equivalence. An illustrative precision calculation in the protocol can require around fifty-seven independent tasks under one assumed variability level, and repository clustering can require more. That is not a sample-size promise; it shows why adding repeats to four tasks is not a shortcut to generality. After excluded feasibility, freeze the confirmatory sample and spending cap. If the available resources cannot buy the required precision, stop and report the limit.
+Start with the four curated tasks and two repeats to test the workflow, rubric, and resource accounting. Exclude those feasibility observations from the result. Then freeze a larger set of independent eligible tasks and run the precision-sized confirmation. The current calculation gives an illustrative target of about fifty-seven tasks under one variability assumption; repository clustering can increase it. Repeated calls on four tasks cannot replace task diversity. The final count, spending cap, exclusion rules, and analysis must be fixed before the confirmatory responses. Part 5 should report that run, including failures and uncertainty, rather than promote the feasibility pilot into an answer.
 
 [Sources]
 https://github.com/davehowell/council-of-nark/blob/main/experiment/FINAL_ROUND.md
 
-## 6. The council has not earned a default
+## 6. Next: run the ecological comparison
 
 [Time: 4:15–5:00]
-My present operational choice is to start with one functional review and escalate for tasks whose risk justifies more attention. That is a decision under uncertainty, not a theorem that one agent is equivalent. The strongest persona result remains narrow: K-2SO reduced detection on this model and these three packets, with slightly fewer tokens. The council results remain mixed and exploratory. The closing protocol gives us a way to earn a stronger statement, including an equivalence result if the evidence is precise enough. Until the launcher, task environments and two human raters are ready, it remains a proposal. The useful outcome is a claim we can defend, even when that claim is smaller than the original idea.
+This talk hands the project back to execution. Finish the claim runner and deterministic mock lifecycle. Validate enough history-free task environments for the declared precision target. Freeze the compared arms, budgets, exclusions, and analysis. Then collect condition-blinded ratings from two independent humans. The existing K-2SO result and mixed council calibrations remain part of the record, but they are not the ending. Part 5 can be the conclusion after the ecological comparison produces results. It must report the outcome even if the council loses, the cheaper alternative holds up, or the interval still crosses the declared decision boundary.
 
 [Sources]
 https://github.com/davehowell/council-of-nark/blob/main/experiment/CONCLUSION.md

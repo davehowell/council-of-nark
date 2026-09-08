@@ -43,11 +43,15 @@ function eventCard(event) {
   const summary = element("p", "", event.summary);
   const facts = element("div", "event-facts");
   if (event.finding) facts.append(fact("Finding", event.finding));
-  if (event.pivot) facts.append(fact("Pivot", event.pivot));
-  if (event.stat) facts.append(fact("Measure", event.stat, true));
-  const link = element("a", "event-link", `${event.receipt} →`);
+  if (event.pivot) facts.append(fact("Next", event.pivot));
+  const measure = event.stat ? element("p", "event-stat", event.stat) : null;
+  const details = element("details", "event-details");
+  details.append(element("summary", "", "Finding and next step"), facts);
+  const link = element("a", "event-link", "Source record →");
   link.href = event.href;
-  card.append(time, meta, title, summary, facts, link);
+  card.append(time, meta, title, summary);
+  if (measure) card.append(measure);
+  card.append(details, link);
   return card;
 }
 
@@ -76,7 +80,7 @@ function renderStory() {
   const summary = element("p", "story-summary", event.summary);
   const facts = element("div", "event-facts");
   if (event.finding) facts.append(fact("Finding", event.finding));
-  if (event.pivot) facts.append(fact("Pivot", event.pivot));
+  if (event.pivot) facts.append(fact("Next", event.pivot));
   if (event.stat) facts.append(fact("Measure", event.stat, true));
   storyStage.append(time, meta, title, summary, facts);
   storyProgress.textContent = `${storyIndex + 1} / ${storyEvents.length}`;

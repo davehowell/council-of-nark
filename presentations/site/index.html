@@ -3,10 +3,11 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Presentations, published results, and the living experiment timeline for Council of Nark.">
-  <meta name="theme-color" content="#070b16">
-  <title>Council of Nark — talks and experiment story</title>
+  <meta name="description" content="Protocol, results, timeline, and presentations from the Council of Nark review experiment.">
+  <meta name="theme-color" content="#070710">
+  <title>Council of Nark — experiment record</title>
   <link rel="stylesheet" href="assets/site.css">
+  <script src="assets/site.js" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#content">Skip to content</a>
@@ -14,9 +15,9 @@
     <nav class="nav" aria-label="Main navigation">
       <a class="brand" href="./" aria-current="page"><span class="brand-mark">N</span><span>Council of Nark</span></a>
       <div class="nav-links">
-        <a href="#presentations">Presentations</a>
         <a href="results/">Results</a>
         <a href="timeline/">Timeline</a>
+        <a href="#presentations">Presentations</a>
         <a href="https://github.com/davehowell/council-of-nark">GitHub</a>
       </div>
     </nav>
@@ -25,110 +26,99 @@
   <main id="content">
     <section class="hero">
       <div>
-        <p class="eyebrow">An experiment that reviews itself</p>
-        <h1>The council went on trial.</h1>
-        <p class="lede">Four five-minute talks about extra reviewers, failed experiments, and what the evidence can actually support. Each has a readable speaker script and an offline PDF.</p>
+        <h1>Council of Nark</h1>
+        <p class="lede">An open experiment in adversarial software review: the protocol, calibration results, limitations, and proposed next test.</p>
         <div class="hero-actions">
-          <a class="button primary" href="#presentations">Choose a talk →</a>
-          <a class="button" href="downloads/speaker-notes.md">Read all speaker notes</a>
+          <a class="button primary" href="results/">Read the results</a>
+          <a class="button" href="timeline/">Browse the timeline</a>
         </div>
       </div>
       <div class="hero-art" aria-label="The Council of Nark robot reviewers">
         <img src="assets/council.png" alt="Robot reviewers gathered around the Council of Nark console">
-        <div class="hero-stamp">0 ecological respondent calls</div>
-      </div>
-    </section>
-
-    <aside class="story-banner" aria-label="Timeline presentation mode">
-      <div class="story-banner-inner">
-        <div>
-          <h2>A useful conclusion has a clear limit.</h2>
-          <p>Mixed council calibration. One negative persona result. No proven equivalence. The full chronology remains available.</p>
-        </div>
-        <a class="button primary" href="timeline/?present=1">Start story mode</a>
-      </div>
-    </aside>
-
-    <section class="section" id="presentations">
-      <div class="section-heading">
-        <div><p class="eyebrow">Four talks · twenty minutes</p><h2>Idea, test, evidence, conclusion</h2></div>
-        <p>Each tile opens a full Slidev deck. Use the on-screen controls or press <strong>P</strong> inside Slidev for presenter mode; PDFs remain available offline.</p>
-      </div>
-      <div class="grid deck-grid">
-        <article class="card">
-          <span class="card-number">Part 01 · hypothesis</span>
-          <h3>The Council of Nark</h3>
-          <p>Can independent attention earn its cost? Separate useful lenses from memorable characters.</p>
-          <div class="meta-row"><span class="chip">6 slides · 5 minutes</span></div>
-          <div class="card-actions"><a class="button primary small" href="decks/part-1/">Open deck</a><a class="button small" href="downloads/council-of-nark.pdf">PDF</a><a class="button small" href="downloads/part-1-notes.html">Speaker notes</a></div>
-        </article>
-        <article class="card">
-          <span class="card-number">Part 02 · protocol</span>
-          <h3>Put the Council on Trial</h3>
-          <p>A fair control for effort, roles, characters and fusion. Why an uncertain difference is not equivalence.</p>
-          <div class="meta-row"><span class="chip">6 slides · 5 minutes</span></div>
-          <div class="card-actions"><a class="button primary small" href="decks/part-2/">Open deck</a><a class="button small" href="downloads/put-the-council-on-trial.pdf">PDF</a><a class="button small" href="downloads/part-2-notes.html">Speaker notes</a></div>
-        </article>
-        <article class="card">
-          <span class="card-number">Part 03 · evidence</span>
-          <h3>The Experiment Fought Back</h3>
-          <p>Broken measurement, mixed council results, and the repeated K-2SO comparison that went the wrong way.</p>
-          <div class="meta-row"><span class="chip">6 slides · 5 minutes</span></div>
-          <div class="card-actions"><a class="button primary small" href="decks/part-3/">Open deck</a><a class="button small" href="downloads/the-experiment-fought-back.pdf">PDF</a><a class="button small" href="downloads/part-3-notes.html">Speaker notes</a></div>
-        </article>
-        <article class="card">
-          <span class="card-number">Part 04 · conclusion</span>
-          <h3>What Would Settle It?</h3>
-          <p>What we can say now, and a finite proposed test of a smaller council against one agent reviewing its own work.</p>
-          <div class="meta-row"><span class="chip">6 slides · 5 minutes</span><span class="chip gate">Final round proposed, not run</span></div>
-          <div class="card-actions"><a class="button primary small" href="decks/part-4/">Open deck</a><a class="button small" href="downloads/what-would-settle-it.pdf">PDF</a><a class="button small" href="downloads/part-4-notes.html">Speaker notes</a></div>
-        </article>
+        <div class="hero-stamp">Ecological trial · not run</div>
       </div>
     </section>
 
     <section class="section" id="results">
       <div class="section-heading">
-        <div><p class="eyebrow">Published experiment snapshots</p><h2>Useful results include failures</h2></div>
-        <p>These are calibration records, not a benchmark verdict. Raw runs were sealed before arm-blinded scoring; excluded runs remain excluded.</p>
+        <h2>Experiment results</h2>
+        <p>Calibration records include completed, failed, and discarded runs.</p>
       </div>
       <div class="grid result-grid">
         <article class="card">
           <div class="meta-row"><span class="chip failed">instrumentation failure</span><span class="chip">0 observations</span></div>
-          <h3>Schema rejected before inference</h3>
-          <div class="metric">0 / 81 model responses</div>
-          <p>The local CLI rejected a standards annotation. The failed run was preserved and the adapter gained a preflight check.</p>
-          <div class="card-actions"><a class="button small" href="results/#schema-failure">Result tile</a></div>
+          <h3>Stage A schema failure</h3>
+          <div class="metric">0 / 81 responses</div>
+          <p>The local CLI rejected the output schema before inference. The run was excluded.</p>
+          <div class="card-actions"><a class="button small" href="results/#schema-failure">Details</a></div>
         </article>
         <article class="card">
           <div class="meta-row"><span class="chip complete">complete</span><span class="chip">Haiku</span></div>
-          <h3>First Stage A smoke</h3>
+          <h3>Haiku Stage A calibration</h3>
           <div class="metric">81 / 81 calls</div>
-          <p>High baseline performance exposed ceiling effects. Specialists widened raw recall, while fusion dropped valid minority findings.</p>
-          <div class="card-actions"><a class="button small" href="results/#haiku-smoke">Result tile</a></div>
+          <p>High baseline performance left limited headroom and exposed losses during fusion.</p>
+          <div class="card-actions"><a class="button small" href="results/#haiku-smoke">Details</a></div>
         </article>
         <article class="card">
           <div class="meta-row"><span class="chip discarded">discarded</span><span class="chip">Gemma partial</span></div>
-          <h3>The prompt looked like an answer</h3>
-          <div class="metric">71 / 81 before discard</div>
-          <p>Prompt echo and zero-exit provider errors could fool the stream parser. The partial run was sealed and never scored.</p>
-          <div class="card-actions"><a class="button small" href="results/#gemma-incomplete">Result tile</a></div>
+          <h3>Gemma run discarded</h3>
+          <div class="metric">71 / 81 calls</div>
+          <p>Prompt echo and provider errors made the partial event stream unreliable.</p>
+          <div class="card-actions"><a class="button small" href="results/#gemma-incomplete">Details</a></div>
         </article>
         <article class="card">
           <div class="meta-row"><span class="chip result">negative result</span><span class="chip">30 paired repeats</span></div>
-          <h3>The fictional overlay lost</h3>
+          <h3>K-2SO persona comparison</h3>
           <div class="metric negative">−0.0425 mean F1</div>
-          <p>K-2SO wording changed behaviour but did not improve this model, kernel, and synthetic task set.</p>
-          <div class="card-actions"><a class="button small" href="results/#persona-pairs">Result tile</a></div>
+          <p>The fictional wording did not improve detection on this model and three-task calibration set.</p>
+          <div class="card-actions"><a class="button small" href="results/#persona-pairs">Details</a></div>
         </article>
       </div>
-      <div class="hero-actions"><a class="button primary" href="results/">See all five result records →</a></div>
+      <div class="hero-actions"><a class="button primary" href="results/">All result records</a></div>
+    </section>
+
+    <section class="section" id="presentations">
+      <div class="section-heading">
+        <h2>Presentations</h2>
+        <p>Four short talks cover the hypothesis, protocol, evidence, and next experimental stage.</p>
+      </div>
+      <div class="grid deck-grid">
+        <article class="card">
+          <span class="card-number">01 / Hypothesis</span>
+          <h3>The Council of Nark</h3>
+          <p>The project and the question of whether specialist reviewer roles improve review coverage.</p>
+          <div class="meta-row"><span class="chip">6 slides · 5 minutes</span></div>
+          <div class="card-actions"><a class="button primary small" href="decks/part-1/">Slides</a><a class="button small" href="downloads/council-of-nark.pdf">PDF</a><a class="button small" href="downloads/part-1-notes.html">Speaker notes</a></div>
+        </article>
+        <article class="card">
+          <span class="card-number">02 / Protocol</span>
+          <h3>Put the Council on Trial</h3>
+          <p>The controls, paired comparisons, scoring method, and limits of the protocol.</p>
+          <div class="meta-row"><span class="chip">6 slides · 5 minutes</span></div>
+          <div class="card-actions"><a class="button primary small" href="decks/part-2/">Slides</a><a class="button small" href="downloads/put-the-council-on-trial.pdf">PDF</a><a class="button small" href="downloads/part-2-notes.html">Speaker notes</a></div>
+        </article>
+        <article class="card">
+          <span class="card-number">03 / Evidence</span>
+          <h3>The Experiments Failed. A Lot.</h3>
+          <p>The calibration failures, completed smoke tests, and persona comparison.</p>
+          <div class="meta-row"><span class="chip">6 slides · 5 minutes</span></div>
+          <div class="card-actions"><a class="button primary small" href="decks/part-3/">Slides</a><a class="button small" href="downloads/the-experiments-failed-a-lot.pdf">PDF</a><a class="button small" href="downloads/part-3-notes.html">Speaker notes</a></div>
+        </article>
+        <article class="card">
+          <span class="card-number">04 / Pivot</span>
+          <h3>What Would Settle It?</h3>
+          <p>The next ecological comparison, decision rules, and work required before a conclusion.</p>
+          <div class="meta-row"><span class="chip">6 slides · 5 minutes</span><span class="chip gate">Next experiments not run</span></div>
+          <div class="card-actions"><a class="button primary small" href="decks/part-4/">Slides</a><a class="button small" href="downloads/what-would-settle-it.pdf">PDF</a><a class="button small" href="downloads/part-4-notes.html">Speaker notes</a></div>
+        </article>
+      </div>
     </section>
   </main>
 
   <footer class="site-footer">
     <div class="footer-inner">
-      <p>Open experimental work. Negative and null results stay visible.</p>
-      <p><a href="https://github.com/davehowell/council-of-nark/blob/main/experiment/LAB_NOTEBOOK.md">Lab notebook</a> · <a href="https://github.com/davehowell/council-of-nark/tree/main/experiment/results">Receipts</a></p>
+      <p>Protocol, code, and experiment records are public.</p>
+      <p><a href="https://github.com/davehowell/council-of-nark/blob/main/experiment/LAB_NOTEBOOK.md">Lab notebook</a> · <a href="https://github.com/davehowell/council-of-nark/tree/main/experiment/results">Result files</a></p>
     </div>
   </footer>
 </body>

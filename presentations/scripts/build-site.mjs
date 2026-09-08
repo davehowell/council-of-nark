@@ -31,6 +31,9 @@ for (const deck of decks) {
   );
   // Export from the same source as the web deck; never publish a stale PDF.
   execFileSync(slidev, ["export", join(presentationsRoot, deck.slug, "slides.md"), "--output", join(outputRoot, "downloads", deck.pdf)], { cwd: presentationsRoot, stdio: "inherit" });
+  for (const alias of deck.pdfAliases || []) {
+    cpSync(join(outputRoot, "downloads", deck.pdf), join(outputRoot, "downloads", alias));
+  }
 }
 writeNotes(join(outputRoot, "downloads"));
 

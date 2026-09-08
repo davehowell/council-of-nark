@@ -3,10 +3,11 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="A living visual timeline of Council of Nark experiments, failures, findings, and pivots.">
-  <meta name="theme-color" content="#070b16">
+  <meta name="description" content="Chronological record of Council of Nark experiments, failures, results, and protocol changes.">
+  <meta name="theme-color" content="#070710">
   <title>Experiment timeline — Council of Nark</title>
   <link rel="stylesheet" href="../assets/site.css">
+  <script src="../assets/site.js" defer></script>
   <script src="events.js" defer></script>
   <script src="timeline.js" defer></script>
 </head>
@@ -16,9 +17,9 @@
     <nav class="nav" aria-label="Main navigation">
       <a class="brand" href="../"><span class="brand-mark">N</span><span>Council of Nark</span></a>
       <div class="nav-links">
-        <a href="../#presentations">Presentations</a>
         <a href="../results/">Results</a>
         <a href="./" aria-current="page">Timeline</a>
+        <a href="../#presentations">Presentations</a>
         <a href="https://github.com/davehowell/council-of-nark">GitHub</a>
       </div>
     </nav>
@@ -26,14 +27,12 @@
 
   <main id="content">
     <section class="section timeline-hero">
-      <p class="eyebrow">Living experiment timeline</p>
-      <h1>The plan was linear. The evidence was not.</h1>
-      <p class="lede">Every node records what happened and why the next experiment changed. Failures remain visible; infrastructure checks never masquerade as respondent results.</p>
+      <h1>Experiment timeline</h1>
+      <p class="lede">A chronological record of runs, failures, protocol changes, results, and pending gates.</p>
       <div class="hero-actions">
-        <button class="button primary" id="present-timeline" type="button">Present this timeline →</button>
-        <a class="button" href="../decks/part-3/">Open the full evidence deck</a>
+        <button class="button primary" id="present-timeline" type="button">Presentation view</button>
+        <a class="button" href="../decks/part-3/">Evidence slides</a>
       </div>
-      <p style="margin-top:1rem;color:var(--muted);font-size:.82rem">Story mode: use ← →, Page Up/Down, Home/End, and Esc.</p>
     </section>
 
     <section class="section" style="padding-top:0">
@@ -54,7 +53,7 @@
   <dialog class="story-dialog" id="story-dialog" aria-label="Timeline story mode">
     <div class="story-shell">
       <header class="story-top">
-        <span class="brand"><span class="brand-mark">N</span><span>Experiment story</span></span>
+        <span class="brand"><span class="brand-mark">N</span><span>Timeline presentation</span></span>
         <span class="story-progress" id="story-progress"></span>
         <button class="story-close" id="story-close" type="button" aria-label="Close story mode">×</button>
       </header>
@@ -71,7 +70,7 @@
 
   <footer class="site-footer">
     <div class="footer-inner">
-      <p>Append events in <code>presentations/site/timeline/events.js</code>.</p>
+      <p>Chronology and source records remain public.</p>
       <p><a href="https://github.com/davehowell/council-of-nark/blob/main/experiment/LAB_NOTEBOOK.md">Authoritative notebook</a> · <a href="../results/">Published results</a></p>
     </div>
   </footer>

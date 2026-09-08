@@ -24,8 +24,8 @@ slides-experiment:
 slides-trials:
     cd presentations && bunx --bun slidev part-3/slides.md
 
-# Serve the part-4 conclusion and proposed final-round deck.
-slides-conclusion:
+# Serve the part-4 pivot and next-experiment deck.
+slides-pivot:
     cd presentations && bunx --bun slidev part-4/slides.md
 
 # Regenerate readable notes from the slide source comments.
@@ -44,7 +44,7 @@ slides-site-preview: slides-site-build
 slides-export: slides-site-build
     cp presentations/dist/downloads/council-of-nark.pdf presentations/part-1/council-of-nark.pdf
     cp presentations/dist/downloads/put-the-council-on-trial.pdf presentations/part-2/put-the-council-on-trial.pdf
-    cp presentations/dist/downloads/the-experiment-fought-back.pdf presentations/part-3/the-experiment-fought-back.pdf
+    cp presentations/dist/downloads/the-experiments-failed-a-lot.pdf presentations/part-3/the-experiments-failed-a-lot.pdf
     cp presentations/dist/downloads/what-would-settle-it.pdf presentations/part-4/what-would-settle-it.pdf
 
 # Render all decks to temporary PNG directories for visual inspection.

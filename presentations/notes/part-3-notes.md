@@ -1,10 +1,10 @@
-# The Experiment Fought Back — speaker notes
+# The Experiments Failed. A Lot. — speaker notes
 
-Six slides · approximately five minutes · 636 spoken words.
+Six slides · approximately five minutes · 635 spoken words.
 
 Edit the closing comment in each slide in part-3/slides.md; these notes are generated from that source.
 
-## 1. The Experiment Fought Back
+## 1. The Experiments Failed. A Lot.
 
 [Time: 0:00–0:40]
 The most useful part of this project was not a leaderboard. It was finding the ways a leaderboard could mislead us. Some runs failed before a model answered. One partial run was discarded before scoring. Completed runs exposed both easy tasks and a fuser that could lose good findings. Then a focused repetition went against the persona I was testing. The story is a series of course corrections: each failure changed the measurement or narrowed the claim. I want to show three of those lessons, and the results that survived them, without turning this into a tour of every implementation detail.
@@ -50,7 +50,7 @@ https://github.com/davehowell/council-of-nark/blob/main/experiment/CONCLUSION.md
 ## 6. Better isolation enabled the next test
 
 [Time: 4:15–5:00]
-The course correction was to move towards real pre-fix open-source tasks. That required stronger isolation: an empty respondent environment, history-free source, a narrow mediator for source access, and tests with network access denied. Gortex's frozen regression has been shown to fail before its fix and pass afterwards. Several failed exporter and process-lifecycle attempts were preserved on the way. This is valuable infrastructure evidence. It is not evidence that a reviewer found the bug: no ecological respondent call has occurred. That distinction is the bridge to the final talk. We now know what the existing results support, and can define a finite closing test without claiming it has already happened.
+The course correction was to move towards real pre-fix open-source tasks. That required stronger isolation: an empty respondent environment, history-free source, a narrow mediator for source access, and tests with network access denied. Gortex's frozen regression has been shown to fail before its fix and pass afterwards. Several failed exporter and process-lifecycle attempts were preserved on the way. This is valuable infrastructure evidence. It is not evidence that a reviewer found the bug: no ecological respondent call has occurred. That distinction is the bridge to the pivot talk. We now know what the existing results support and can define the next test without claiming it has already happened.
 
 [Sources]
 https://github.com/davehowell/council-of-nark/blob/main/experiment/CHECKPOINT.md

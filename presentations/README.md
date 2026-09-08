@@ -6,7 +6,7 @@ The [GitHub Pages hub](https://davehowell.github.io/council-of-nark/) hosts four
 |---|---|---|---|
 | 1. The Council of Nark | [slides](part-1/slides.md) | [notes](notes/part-1-notes.md) | [PDF](part-1/council-of-nark.pdf) |
 | 2. Put the Council on Trial | [slides](part-2/slides.md) | [notes](notes/part-2-notes.md) | [PDF](part-2/put-the-council-on-trial.pdf) |
-| 3. The Experiment Fought Back | [slides](part-3/slides.md) | [notes](notes/part-3-notes.md) | [PDF](part-3/the-experiment-fought-back.pdf) |
+| 3. The Experiments Failed. A Lot. | [slides](part-3/slides.md) | [notes](notes/part-3-notes.md) | [PDF](part-3/the-experiments-failed-a-lot.pdf) |
 | 4. What Would Settle It? | [slides](part-4/slides.md) | [notes](notes/part-4-notes.md) | [PDF](part-4/what-would-settle-it.pdf) |
 
 Read [all scripts together](notes/speaker-notes.md). They contain approximately 620–660 spoken words per talk: rehearse at your own pace and trim if you speak slowly. Source blocks are reference material, not part of the spoken script. On the site, each talk also has a printable notes page. Slidev presenter mode displays the same notes; press P to open it.
@@ -20,7 +20,7 @@ just slides-install
 just slides-talk            # part 1
 just slides-experiment      # part 2
 just slides-trials          # part 3
-just slides-conclusion      # part 4
+just slides-pivot           # part 4
 just slides-notes           # readable scripts from slide comments
 just slides-site-build      # four web decks + fresh PDFs + notes
 just slides-export          # refresh tracked offline PDFs from that build
@@ -33,6 +33,6 @@ The Pages workflow builds on pull requests and deploys only after changes reach 
 
 ## Evidence status
 
-Part 3 reports exploratory calibration, including scoring limitations. Part 4 presents the current conclusion and a **proposed, unrun** final round. It does not claim ecological outcomes, general persona harm, or single-agent equivalence. See [the evidence review](../experiment/CONCLUSION.md) and [closing protocol](../experiment/FINAL_ROUND.md).
+Part 3 reports exploratory calibration, including scoring limitations. Part 4 is a pivot into the **proposed, unrun** ecological comparison. It does not claim a conclusion, ecological outcomes, general persona harm, or single-agent equivalence. A conclusion talk belongs after that comparison has results. See [the evidence review](../experiment/CONCLUSION.md) and [next-stage protocol](../experiment/FINAL_ROUND.md).
 
 Prior decks and PDFs remain available in Git history. The revision immediately before this rewrite was `a76d9ad`. Revert the presentation commit to restore the earlier talks, or browse that revision without changing current work. The historical experiment results are not rewritten.
