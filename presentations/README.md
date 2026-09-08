@@ -1,34 +1,38 @@
-# Presentations
+# Four short talks
 
-The presentable GitHub Pages hub is [davehowell.github.io/council-of-nark](https://davehowell.github.io/council-of-nark/). It hosts all three Slidev decks, downloadable PDFs, published-result tiles, and the living experiment timeline.
+The [GitHub Pages hub](https://davehowell.github.io/council-of-nark/) hosts four six-slide talks, each written for approximately five minutes. All use one dark, restrained theme. Each slide has a complete spoken script, timing cue and source references in its final Markdown comment.
 
-## Part 1: The Council of Nark
+| Talk | Editable source | Speaker script | Offline slides |
+|---|---|---|---|
+| 1. The Council of Nark | [slides](part-1/slides.md) | [notes](notes/part-1-notes.md) | [PDF](part-1/council-of-nark.pdf) |
+| 2. Put the Council on Trial | [slides](part-2/slides.md) | [notes](notes/part-2-notes.md) | [PDF](part-2/put-the-council-on-trial.pdf) |
+| 3. The Experiment Fought Back | [slides](part-3/slides.md) | [notes](notes/part-3-notes.md) | [PDF](part-3/the-experiment-fought-back.pdf) |
+| 4. What Would Settle It? | [slides](part-4/slides.md) | [notes](notes/part-4-notes.md) | [PDF](part-4/what-would-settle-it.pdf) |
 
-[`part-1/slides.md`](part-1/slides.md) introduces the review roster, explains the proposed fan-out/fuse topology, and frames improved coverage and lower variance as hypotheses. The exported deck is [`part-1/council-of-nark.pdf`](part-1/council-of-nark.pdf).
+Read [all scripts together](notes/speaker-notes.md). They contain approximately 620–660 spoken words per talk: rehearse at your own pace and trim if you speak slowly. Source blocks are reference material, not part of the spoken script. On the site, each talk also has a printable notes page. Slidev presenter mode displays the same notes; press P to open it.
 
-## Part 2: Put the Council on Trial
+## Edit and reproduce
 
-[`part-2/slides.md`](part-2/slides.md) turns the idea into separate tests of role specialisation, character wrappers, fusion, providers, and fan-out versus informed chains. The exported deck is [`part-2/put-the-council-on-trial.pdf`](part-2/put-the-council-on-trial.pdf).
-
-## Part 3: The Experiment Fought Back
-
-[`part-3/slides.md`](part-3/slides.md) preserves the engineering story: instrumentation failure, ceiling effects, contamination audit, discarded runs, parser repairs, negative persona evidence, the Go/Seatbelt migration, ecological curation, repeated snapshot failures, and the sealed mediator/Pi boundary. The exported deck is [`part-3/the-experiment-fought-back.pdf`](part-3/the-experiment-fought-back.pdf).
-
-## Run and export
-
-The repository pins Slidev dependencies in this directory.
+Edit slide text and its final comment in `part-N/slides.md`. Edit `theme/styles.css` for all four talks. Keep notes in the slide source as the single authority; regenerate the standalone copies with `just slides-notes` after edits. [Slidev's notes syntax](https://sli.dev/guide/syntax#notes) documents the closing-comment convention.
 
 ```bash
 just slides-install
-just slides-talk
-just slides-experiment
-just slides-trials
-just slides-site-build
-just slides-site-preview
-just slides-export
-just slides-verify
+just slides-talk            # part 1
+just slides-experiment      # part 2
+just slides-trials          # part 3
+just slides-conclusion      # part 4
+just slides-notes           # readable scripts from slide comments
+just slides-site-build      # four web decks + fresh PDFs + notes
+just slides-export          # refresh tracked offline PDFs from that build
+just slides-verify          # inspect all 24 production slides
 ```
 
-`site/` contains the static Pages shell. `scripts/build-site.mjs` builds each deck beneath `dist/decks/`, copies the PDFs, and applies the repository base path in CI. Append timeline entries to [`site/timeline/events.js`](site/timeline/events.js), keeping each claim aligned with [`experiment/LAB_NOTEBOOK.md`](../experiment/LAB_NOTEBOOK.md). Story mode makes the timeline keyboard-presentable.
+Dependencies remain pinned in `bun.lock`. If the browser is missing, run `bunx playwright install chromium` from this directory. CI installs Chromium and its Linux dependencies before building.
 
-Slidev serves [`public/`](public/) at the site root. The PNG headshots are crops from the main council artwork. GitHub Actions deploys `presentations/dist/` from `main`; generated output remains ignored locally.
+The Pages workflow builds on pull requests and deploys only after changes reach `main`. Every build generates PDFs from the same Markdown as the web decks, preventing stale downloads. Notes are also generated during the build. The site retains published-result pages and the complete historical timeline; the short talks no longer need to carry the whole changelog.
+
+## Evidence status
+
+Part 3 reports exploratory calibration, including scoring limitations. Part 4 presents the current conclusion and a **proposed, unrun** final round. It does not claim ecological outcomes, general persona harm, or single-agent equivalence. See [the evidence review](../experiment/CONCLUSION.md) and [closing protocol](../experiment/FINAL_ROUND.md).
+
+Prior decks and PDFs remain available in Git history. The revision immediately before this rewrite was `a76d9ad`. Revert the presentation commit to restore the earlier talks, or browse that revision without changing current work. The historical experiment results are not rewritten.

@@ -50,7 +50,7 @@
           <div class="meta-row"><span class="chip complete">complete</span><span class="chip">Haiku · 81 calls</span></div>
           <h3>First Stage A plumbing smoke</h3>
           <div class="metric">S0 F1 0.812</div>
-          <p>Most fused conditions landed between 0.75 and 0.86. Functional specialists reached 0.958 raw recall but only 0.752 after fusion.</p>
+          <p>Most fused conditions landed between 0.75 and 0.86 F1. Functional specialists reached 0.958 raw recall and 0.708 fused recall; their fused F1 was 0.752.</p>
           <p class="caveat"><strong>Pivot:</strong> the packets had too little headroom. Report raw unions and issue identity, audit fusion loss, then rerun unchanged material with a cheaper model.</p>
           <div class="meta-row"><span class="chip">$4.8011</span><span class="chip">48 min</span><span class="chip">LLM triage</span></div>
           <div class="card-actions"><a class="button small" href="https://github.com/davehowell/council-of-nark/tree/main/experiment/results/2026-08-20-stage-a-smoke">Read receipt</a></div>
@@ -98,6 +98,9 @@
 
       <div class="callout" style="margin-top:1.5rem">
         <strong>Metric caution.</strong> F1 balances keyed precision and recall. It does not measure severity, remedy quality, or whether equal-scoring reviews found the same defects. Ecological scoring therefore separates localisation, consequence, correction, regression tests, and actionability.
+      </div>
+      <div class="callout" style="margin-top:1.5rem">
+        <strong>7 September evidence review.</strong> Recomputed published CSVs confirm the persona difference remains negative when any one task is removed. The fictional condition used about 2% fewer total tokens (40,182 versus 41,000), so these data do not show extra token waste. Three tasks cannot establish a general persona effect or equivalence. <a href="https://github.com/davehowell/council-of-nark/blob/main/experiment/CONCLUSION.md">Read the conclusion and reproduction command</a> · <a href="../decks/part-4/">Present the conclusion</a>.
       </div>
     </section>
   </main>

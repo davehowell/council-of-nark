@@ -216,5 +216,18 @@ window.COUNCIL_TIMELINE = [
     stat: "claim runner + mock pending",
     receipt: "highest-priority next work",
     href: "https://github.com/davehowell/council-of-nark/blob/main/experiment/CHECKPOINT.md"
+  },
+  {
+    date: "7 Sep 2026",
+    time: "evidence review",
+    kind: "pivot",
+    status: "decision",
+    title: "A finite closing question",
+    summary: "Four short talks replace the long decks. Published CSVs are rechecked; a five-arm final round adds one continuing agent reviewing its own work.",
+    finding: "The persona difference stays negative when any one task is removed, but fictional wording used about 2% fewer total tokens. Neither council advantage nor equivalence is established.",
+    pivot: "Separate feasibility from confirmation; freeze practical margins, total budgets, human ratings and a precision-based stopping rule.",
+    stat: "0 new respondent calls · final round proposed",
+    receipt: "evidence conclusion and reproduction command",
+    href: "https://github.com/davehowell/council-of-nark/blob/main/experiment/CONCLUSION.md"
   }
 ];
