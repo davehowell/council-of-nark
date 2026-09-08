@@ -136,6 +136,16 @@ This is the chronological engineering record. It preserves failed runs and the r
 - Clean Pi doctor `20260824T020121Z-gortex-pi-doctor-a93ff02e` completed from `a5972ab…`. It passed provider-child source/controller/council/evidence denial, inherited-pipe health, explicit `gemma-4-31b-it`/`minimal` state, zero-provider-turn and zero-extension-error checks, and sealed the doctor plus raw event, stderr, probe, profile, config, runtime, and transcript digests.
 - No model or rating call occurred. The next gate is still a JSON-mode claim runner with frozen prompt assembly, exactly-one-final-submission validation, mock lifecycle, and complete usage/cost/latency sealing. Compared arms and human-rating aggregation must be preregistered before the first ecological respondent call.
 
+## 2026-09-07 — close the evidence review and shorten the talks
+
+- Recomputed all three published calibration CSVs with `scripts/evidence_audit.py`, verifying their published-file manifest digests and F1 arithmetic. This checks published artifacts, not the unpublished raw seals; no new respondent or rating call occurred.
+- New descriptive persona sensitivity: every leave-one-task-out mean stays negative, from −0.03364 to −0.04892. A post-hoc whole-task sign-flip check has only eight assignments and two-sided p=0.25 under its symmetry assumption. It illustrates that three tasks do not support broad inference; it does not invalidate the historical sampling-only interval.
+- Corrected the cost narrative: fictional total tokens were 40,182 versus functional 41,000, around 2% fewer. Detection underperformed, but token waste was not demonstrated. The Haiku repeated-omnibus/S1 recorded cost ratio recomputes to 8.924 at equal mean F1, without establishing equivalence.
+- Added `CONCLUSION.md` and a proposed finite `FINAL_ROUND.md`: single review, continuing self-review, repeated independent omnibus, three functional specialists, and the same specialist kernels with character overlays. Proposed resource matching, task-level analysis, explicit equivalence margins, human aggregation, precision planning and a fixed stopping rule. No claim-bearing launch is authorized by that document alone: exact prompts, launcher, eligibility checks, human raters and final preregistration are unfinished.
+- Rewrote the talks into four six-slide presentations with one shared theme, complete timed scripts and per-slide sources. Moved engineering detail into the retained notebook/timeline. Part 4 explicitly labels the final round as proposed and unrun.
+- Corrected the Pages Haiku tile: 0.752 was fused F1, not fused recall (0.708). Historical result files remain unchanged.
+- Pages now builds on PRs and regenerates PDFs and readable notes from slide sources before publishing on main. Prior presentations remain recoverable in Git history at `a76d9ad` and earlier.
+
 ## Notebook rule
 
 Append material decisions before or immediately after their run. Record source commit/tag, config, exclusions, failures, repairs, interpretation, and next decision. Correct factual errors explicitly; do not silently rewrite earlier reasoning.
