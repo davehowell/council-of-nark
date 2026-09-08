@@ -16,7 +16,7 @@ The council is designed to widen attention, not manufacture consensus. Each revi
 | [`skills/nark-matrix/`](skills/nark-matrix/) | The orchestration skill plus standalone Bender and Holly prompt templates. |
 | [`skills/walle-ste/`](skills/walle-ste/) | An STE-derived technical-writing review kernel used by WALL-E. |
 | [`experiment/`](experiment/) | Synthetic packets, controlled prompts, answer keys, and the empirical protocol. |
-| [`presentations/`](presentations/) | Part 1 introduces the council, Part 2 specifies the trial, and Part 3 records experimental failures, repairs, and pivots. Markdown sources and exported PDFs are included. |
+| [`presentations/`](presentations/) | Four five-minute talks: the idea, fair tests, failures and findings, and a bounded conclusion. Editable Markdown, full speaker scripts and PDFs are included. |
 | [`scripts/public_audit.py`](scripts/public_audit.py) | A pre-publication scan for common secrets, private paths, private hosts, and local forbidden terms. |
 
 ## The review lenses
@@ -54,13 +54,16 @@ Pi deliberately has no built-in subagent policy. The skill therefore describes t
 
 The [GitHub Pages presentation hub](https://davehowell.github.io/council-of-nark/) hosts all decks, published-result tiles, downloadable PDFs, and the living experiment timeline.
 
-- **Part 1: The Council of Nark** introduces the roster and the fan-out/fuse hypothesis. It labels the quality and variance claims as hypotheses.
-- **Part 2: Put the Council on Trial** separates role specialisation, fictional wrappers, fusion, provider effects, and topology into falsifiable comparisons.
-- **Part 3: The Experiment Fought Back** covers instrumentation failures, ceiling effects, parser bugs, discarded runs, negative persona evidence, stricter Go/Seatbelt isolation, and the pivot to sealed ecological tasks.
+- **Part 1: The Council of Nark** asks whether independent review lenses earn their cost.
+- **Part 2: Put the Council on Trial** explains fair controls, scoring and the difference between uncertainty and equivalence.
+- **Part 3: The Experiment Fought Back** follows measurement failures, mixed council results and the negative K-2SO calibration.
+- **Part 4: What Would Settle It?** states the current limits and proposes a finite comparison with one agent reviewing its own work.
 
-Run `just slides-talk`, `just slides-experiment`, or `just slides-trials` to serve a deck. See [`presentations/README.md`](presentations/README.md) for exports and pinned dependencies.
+Each talk has six slides and a complete five-minute script. Read [all speaker notes](presentations/notes/speaker-notes.md), or run `just slides-talk`, `just slides-experiment`, `just slides-trials`, or `just slides-conclusion`. See [`presentations/README.md`](presentations/README.md) for editing and exports.
 
 ## Experiments
+
+The [7 September evidence review](experiment/CONCLUSION.md) concludes that council advantage and single-review equivalence are both unestablished. The repeated K-2SO result is negative within its narrow calibration scope, with slightly fewer total tokens. Reproduce the published arithmetic with `just experiment-evidence-audit`. The [proposed closing round](experiment/FINAL_ROUND.md) compares practical alternatives on external-project review tasks; it has not been run.
 
 The supported experiment runner targets **macOS only** and requires Go 1.22+ plus `/usr/bin/sandbox-exec`. Linux, Windows, containers, and other sandbox implementations are intentionally out of scope; adapting the protocol is left to replicators, who must document any isolation differences.
 

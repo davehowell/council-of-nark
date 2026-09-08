@@ -1,5 +1,7 @@
 # Experiment checkpoint
 
+> 7 September 2026 update: [CONCLUSION.md](CONCLUSION.md) audits the published results, and [FINAL_ROUND.md](FINAL_ROUND.md) proposes a reduced five-arm closing comparison with explicit equivalence and resource criteria. Four six-slide talks with full scripts replace the long presentation series. No new model or human-rating call occurred. The ecological launcher and second-rater gates below remain unresolved; the final-round document is a proposal, not a completed preregistration. Prefer this finite design over automatically launching the synthetic factorial.
+
 > Checkpoint: 24 August 2026, after the clean Gortex snapshot rerun and first ecological mediator/rubric implementation. Start future sessions in the `council-of-nark` repository root and read this file plus [`LAB_NOTEBOOK.md`](LAB_NOTEBOOK.md) before changing or running the experiment.
 
 ## Repository state

@@ -1,0 +1,32 @@
+/* Shared by all four talks. Keep narrative slides flat, legible and quiet. */
+.slidev-layout {
+  background: #0b1020;
+  color: #f0f3fa;
+  font-family: Arial, Helvetica, sans-serif;
+  padding: 52px 60px;
+  font-size: 24px;
+  line-height: 1.45;
+}
+.slidev-layout h1 { font-size: 44px; line-height: 1.12; font-weight: 700; letter-spacing: -1.5px; margin: 0 0 36px; color: #f0f3fa; }
+.slidev-layout h2 { font-size: 28px; color: #91d9cb; margin: 20px 0; }
+.slidev-layout p { margin: 20px 0; }
+.slidev-layout strong { color: #91d9cb; font-weight: 700; }
+.slidev-layout ul { padding-left: 26px; }
+.slidev-layout li { margin: 17px 0; padding-left: 8px; }
+.slidev-layout .eyebrow { font-size: 16px; text-transform: uppercase; letter-spacing: 3px; color: #b3a4eb; margin: 0 0 24px; }
+.slidev-layout .lead { font-size: 30px; max-width: 760px; color: #c9d2e4; opacity: 1; line-height: 1.35; }
+.slidev-layout .verdict { border-left: 4px solid #91d9cb; padding-left: 22px; margin-top: 35px; font-size: 27px; line-height: 1.35; }
+.slidev-layout .caution { color: #efc88d; font-size: 18px; margin-top: 26px; }
+.slidev-layout .foot { position: absolute; bottom: 22px; left: 60px; right: 60px; font-size: 14px; letter-spacing: 1px; color: #96a4bd; display: flex; justify-content: space-between; }
+.slidev-layout .pair { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; margin-top: 42px; }
+.slidev-layout .number { display: block; font-size: 76px; letter-spacing: -4px; line-height: 1.1; color: #91d9cb; }
+.slidev-layout .number.warm { color: #efc88d; }
+.slidev-layout .label { display: block; color: #c9d2e4; font-size: 23px; margin-top: 14px; }
+.slidev-layout table { width: 100%; border-collapse: collapse; font-size: 23px; margin-top: 24px; }
+.slidev-layout th { color: #b3a4eb; font-weight: 400; text-align: left; }
+.slidev-layout td, .slidev-layout th { padding: 13px 0; border-bottom: 1px solid #303a50; }
+.slidev-layout td:not(:last-child), .slidev-layout th:not(:last-child) { padding-right: 28px; }
+.slidev-layout.cover { display: flex; flex-direction: column; justify-content: center; }
+.slidev-layout.cover h1 { font-size: 68px; line-height: 1.04; max-width: 800px; margin-bottom: 25px; }
+.slidev-layout .cover-art { position: absolute; right: 60px; bottom: 80px; width: 260px; opacity: .85; }
+.slidev-layout a { color: #91d9cb; }

@@ -2,6 +2,8 @@
 
 This directory contains the protocol and frozen source material for a staged empirical study of the Council of Nark.
 
+The [current evidence conclusion](CONCLUSION.md) and [proposed finite closing round](FINAL_ROUND.md) were added on 7 September. The new arithmetic audit makes no model calls and does not upgrade exploratory ratings into confirmation: `python3 scripts/evidence_audit.py`.
+
 ## Platform support
 
 The maintained runner supports **macOS only**. Its isolation design uses macOS Seatbelt and is not silently weakened on another operating system. Linux, Windows, container, and VM ports are left as an exercise for replicators; publish the changed threat model and rerun the isolation probes when adapting it.
