@@ -1,6 +1,6 @@
 # A finite closing round
 
-Status: proposed 7 September 2026; **not preregistered or executable yet**. This supersedes neither historical protocols nor frozen results. It recommends deferring the 480-call synthetic factorial, provider diversity, all chain permutations, and Modular integration to keep the closing question tractable.
+Status: proposed 7 September 2026; launch gate 1 completed 15 September 2026; **not preregistered or executable yet**. This supersedes neither historical protocols nor frozen results. It recommends deferring the 480-call synthetic factorial, provider diversity, all chain permutations, and Modular integration to keep the closing question tractable.
 
 ## Question and estimand
 
@@ -28,7 +28,7 @@ Budget proposal for feasibility only: S receives 8,000 total charged input/outpu
 
 Use the four curated pilot tasks (one each from Manim, dlt, Gortex and turbovec) only after each history-free parent and offline dependency closure passes the exact before/after regression check. Gortex currently has infrastructure evidence; the other three are candidates. Symptom briefs must not give away the unsafe operation. New task selection must be performed without inspecting arm outcomes.
 
-First run the existing isolation probes and a deterministic mock lifecycle. Then one Gortex block checks completeness, time, tool consumption, rubric fit and budget feasibility; exclude it from confirmation. A four-task × two-repeat feasibility pilot uses 8 × 17 = **136 stages**, excluding the initial 17-stage block, tool-driven turns, retries and human-rating work. It can reveal a ceiling or broken arm. It cannot establish narrow equivalence. Stop after feasibility if the available time or money cannot support an adequate task sample; publish that limitation instead of multiplying repeats on easy packets.
+The isolation probes and deterministic single-stage mock lifecycle passed from committed code on 15 September 2026 with zero provider calls. Next, one Gortex block checks completeness, time, tool consumption, rubric fit and budget feasibility; exclude it from confirmation. A four-task × two-repeat feasibility pilot uses 8 × 17 = **136 stages**, excluding the initial 17-stage block, tool-driven turns, retries and human-rating work. It can reveal a ceiling or broken arm. It cannot establish narrow equivalence. Stop after feasibility if the available time or money cannot support an adequate task sample; publish that limitation instead of multiplying repeats on easy packets.
 
 The four reserve tasks are not automatic outcome-driven replacements. Substitute only for a documented pre-response eligibility failure within repository, preserving the exclusion log. Never replace a task because the baseline scored too well. Keep Modular excluded until its distinct evidence and build requirements are independently satisfied.
 
@@ -61,7 +61,7 @@ One confirmatory analysis at the frozen sample size. No repeated looks until sig
 
 ## Remaining launch gates
 
-1. Implement the JSON/print ecological launcher, exact request capture, one-final-submission validation, aggregate budget enforcement and complete sealing; pass a deterministic mock and negative boundary probes from committed code.
+1. **Complete (15 September 2026):** the JSON/print single-stage launcher captures exact requests, validates one final submission, enforces declared aggregate limits, removes ephemeral credentials, and seals the attempt. Clean snapshot, mediator, Pi doctor, deterministic mock, and negative boundary probes passed. The mock used zero provider calls and is not evidence.
 2. Validate eligible snapshots and freeze non-Gortex evidence keys and anchors.
 3. Name two available raters, agree the deadline and spend ceiling, and freeze exact arm prompts and allocation schedule.
 4. Run the excluded feasibility stage, then commit a completed preregistration with model/runtime digests, numerical budgets, sample size, seed, failure/retry rules, intervals, safety rule and stopping rule.

@@ -83,6 +83,18 @@ just experiment-sandbox-check
 just experiment-doctor experiment/config/stage-a-smoke-gemma.json
 ```
 
+The ecological snapshot, mediator, Pi doctor, and deterministic respondent mock also make no model call:
+
+```bash
+# Given a sealed snapshot made from the pinned snapshot-controller commit:
+just ecological-gortex-mediator-check experiment/ecological/work/<snapshot-attempt>
+just ecological-gortex-pi-doctor experiment/ecological/work/<snapshot-attempt>
+just ecological-gortex-respondent-mock experiment/ecological/work/<snapshot-attempt>
+just ecological-respondent-verify experiment/ecological/respondent-runs/<mock-attempt>
+```
+
+The snapshot and attempt directories are ignored local records. Read [`ecological/respondent/README.md`](ecological/respondent/README.md) before running them. The mock's fake finding is not research evidence; no live ecological configuration is committed.
+
 After the harness and assets are committed on a clean tree, verify explicit model selection and run the low-reasoning Stage A smoke:
 
 ```bash
