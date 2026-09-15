@@ -9,9 +9,12 @@ import { decks } from './decks.mjs';
 const root = new URL('../dist/', import.meta.url).pathname;
 const output = process.argv[2] || mkdtempSync(join(tmpdir(), 'council-slide-review-'));
 mkdirSync(output, { recursive: true });
-const types = { '.html': 'text/html', '.js': 'application/javascript', '.css': 'text/css', '.png': 'image/png', '.pdf': 'application/pdf' };
+const deckIndex = readFileSync(join(root, 'decks', 'part-1', 'index.html'), 'utf8');
+const sitePrefix = deckIndex.match(/src="([^"]*)\/decks\/part-1\/assets\//)?.[1] || '';
+const types = { '.html': 'text/html', '.js': 'application/javascript', '.css': 'text/css', '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.svg': 'image/svg+xml', '.pdf': 'application/pdf' };
 const server = createServer((req, res) => {
-  const pathname = decodeURIComponent(new URL(req.url, 'http://localhost').pathname).replace(/^\/council-of-nark(?=\/)/, '');
+  const requestedPath = decodeURIComponent(new URL(req.url, 'http://localhost').pathname);
+  const pathname = sitePrefix && requestedPath.startsWith(`${sitePrefix}/`) ? requestedPath.slice(sitePrefix.length) : requestedPath;
   let file = resolve(root, `.${pathname}`);
   if (!file.startsWith(resolve(root) + '/')) file = join(root, 'index.html');
   if (existsSync(file) && statSync(file).isDirectory()) file = join(file, 'index.html');
@@ -24,7 +27,7 @@ const server = createServer((req, res) => {
   res.end(readFileSync(file));
 });
 await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
-const origin = `http://127.0.0.1:${server.address().port}/council-of-nark`;
+const origin = `http://127.0.0.1:${server.address().port}${sitePrefix}`;
 const browser = await chromium.launch();
 const errors = [];
 try {
@@ -36,7 +39,7 @@ try {
   });
   page.on('response', r => { if (r.status() >= 400) errors.push(`${r.status()}: ${r.url()}`); });
   for (const deck of decks) {
-    for (let n = 1; n <= 6; n++) {
+    for (let n = 1; n <= deck.slides; n++) {
       await page.goto(`${origin}/decks/${deck.slug}/${n}`, { waitUntil: 'networkidle' });
       await page.locator('.slidev-layout:visible').first().waitFor();
       await page.evaluate(() => document.fonts.ready);
@@ -56,9 +59,10 @@ try {
       await slide.screenshot({ path: join(output, `${deck.slug}-${n}.png`) });
     }
     await page.goto(`${origin}/downloads/${deck.slug}-notes.html`, { waitUntil: 'networkidle' });
-    if (await page.locator('section').count() !== 6) errors.push(`${deck.slug}: notes not six sections`);
+    if (await page.locator('section').count() !== deck.slides) errors.push(`${deck.slug}: notes do not contain ${deck.slides} sections`);
   }
-  console.log(`Captured 24 slides: ${output}`);
+  const slideCount = decks.reduce((total, deck) => total + deck.slides, 0);
+  console.log(`Captured ${slideCount} slides: ${output}`);
   if (errors.length) throw new Error([...new Set(errors)].join('\n'));
   console.log('All slides and notes loaded; no content overflow, footer overlap, page errors or failed requests.');
 } finally {
