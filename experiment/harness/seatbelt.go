@@ -48,7 +48,7 @@ func profileText(scratch string, executables, runtimeRoots []string, localListen
 	readSubpaths = uniquePaths(readSubpaths)
 	var b strings.Builder
 	b.WriteString("(version 1)\n(deny default)\n")
-	b.WriteString("(allow file-read-metadata)\n(allow sysctl-read)\n(allow mach-lookup)\n(allow network-outbound)\n(allow system-socket)\n(allow process*)\n")
+	b.WriteString("(allow file-read-metadata)\n(allow sysctl-read)\n(allow mach-lookup)\n(allow network-outbound)\n(allow system-socket)\n(allow process-fork)\n")
 	if localListener {
 		b.WriteString("(allow network-bind (local ip))\n(allow network-inbound (local ip))\n")
 	}
@@ -184,7 +184,7 @@ func (h *Harness) sandboxProbe(verbose bool) error {
 	}
 	defer os.RemoveAll(base)
 	sentinel := filepath.Join(h.Root, "README.md")
-	sandbox, err := makeSandbox(base, Provider{Adapter: "mock"}, []string{"/bin/sh"}, nil)
+	sandbox, err := makeSandbox(base, Provider{Adapter: "mock"}, []string{"/bin/sh", "/bin/bash"}, nil)
 	if err != nil {
 		return err
 	}
@@ -204,8 +204,18 @@ exit 0`
 	if data, err := os.ReadFile(filepath.Join(sandbox.Temp, "allowed")); err != nil || string(data) != "allowed" {
 		return fmt.Errorf("Seatbelt did not permit isolated scratch write")
 	}
+	restricted, err := makeSandbox(filepath.Join(base, "restricted"), Provider{Adapter: "mock"}, []string{"/bin/echo"}, nil)
+	if err != nil {
+		return err
+	}
+	forbidden := exec.Command("/usr/bin/sandbox-exec", "-f", restricted.Profile, "--", "/bin/sh", "-c", "true")
+	forbidden.Dir = restricted.CWD
+	forbidden.Env = restricted.Environment
+	if err := forbidden.Run(); err == nil {
+		return fmt.Errorf("Seatbelt permitted an executable outside the allowlist")
+	}
 	if verbose {
-		fmt.Println("Seatbelt probe passed: scratch write allowed; repository read denied.")
+		fmt.Println("Seatbelt probe passed: scratch write allowed; repository read and unlisted executable denied.")
 	}
 	return nil
 }

@@ -63,14 +63,18 @@ func (c Config) Validate() error {
 	if c.DoctorTimeoutSeconds < 5 {
 		return fmt.Errorf("doctor timeout must be at least 5 seconds")
 	}
+	return validateActiveTools(c.ActiveTools)
+}
+
+func validateActiveTools(tools []string) error {
 	expected := map[string]bool{
 		"source_list": true, "source_read": true, "source_search": true,
 		"run_focused_test": true, "submit_ecological_review": true,
 	}
-	if len(c.ActiveTools) != len(expected) {
+	if len(tools) != len(expected) {
 		return fmt.Errorf("active_tools must contain exactly the five ecological tools")
 	}
-	for _, tool := range c.ActiveTools {
+	for _, tool := range tools {
 		if !expected[tool] {
 			return fmt.Errorf("unexpected or duplicate active tool %q", tool)
 		}

@@ -57,7 +57,7 @@ experiment-evidence-audit:
 
 # Run Go harness and ecological snapshot tests without making model calls.
 experiment-test:
-    go test ./experiment/harness/... ./experiment/ecological/snapshot ./experiment/ecological/mediator ./experiment/ecological/respondent ./experiment/ecological/cmd/ecological-snapshot ./experiment/ecological/cmd/ecological-mediator-check ./experiment/ecological/cmd/ecological-pi-doctor
+    go test ./experiment/harness/... ./experiment/ecological/snapshot ./experiment/ecological/mediator ./experiment/ecological/respondent ./experiment/ecological/cmd/ecological-snapshot ./experiment/ecological/cmd/ecological-mediator-check ./experiment/ecological/cmd/ecological-pi-doctor ./experiment/ecological/cmd/ecological-respondent
 
 # Build a fresh Gortex pilot snapshot and validate its focused regression offline.
 ecological-gortex-snapshot:
@@ -70,6 +70,14 @@ ecological-gortex-mediator-check snapshot:
 # Probe isolated Pi, inherited mediator pipes, and ecological tools without a model call.
 ecological-gortex-pi-doctor snapshot:
     go run ./experiment/ecological/cmd/ecological-pi-doctor --snapshot {{snapshot}}
+
+# Exercise request capture, mediation, final validation, budgets, and sealing without a model call.
+ecological-gortex-respondent-mock snapshot:
+    go run ./experiment/ecological/cmd/ecological-respondent --snapshot {{snapshot}}
+
+# Recompute every digest in one sealed ecological respondent attempt.
+ecological-respondent-verify run:
+    go run ./experiment/ecological/cmd/ecological-respondent --verify {{run}}
 
 # Prove Seatbelt permits scratch writes while denying repository reads.
 experiment-sandbox-check:

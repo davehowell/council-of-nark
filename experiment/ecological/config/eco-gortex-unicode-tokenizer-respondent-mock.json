@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "task_id": "eco-gortex-unicode-tokenizer",
+  "adapter": "mock",
+  "snapshot_controller_commit": "ef48b42cf044e3de68342c778617be4f6d953e94",
+  "source_tree_sha256": "41a9a14bd447791f254c79a7441d81451dd69ce6e03367dddbc20c4679c2b523",
+  "tool_policy": "experiment/ecological/tool-policy/eco-gortex-unicode-tokenizer-v1.json",
+  "pi_extension": "experiment/ecological/pi/ecological-tools.ts",
+  "system_prompt": "experiment/ecological/prompts/respondent-system.txt",
+  "brief": "experiment/ecological/briefs/eco-gortex-unicode-tokenizer.md",
+  "provider": {
+    "model": "deterministic-ecological-mock-v1",
+    "thinking": "off"
+  },
+  "active_tools": [
+    "source_list",
+    "source_read",
+    "source_search",
+    "run_focused_test",
+    "submit_ecological_review"
+  ],
+  "budgets": {
+    "timeout_seconds": 30,
+    "max_provider_turns": 2,
+    "max_total_tokens": 1000,
+    "max_final_bytes": 32768
+  },
+  "mock": {
+    "input_tokens": 120,
+    "output_tokens": 80
+  }
+}

@@ -43,7 +43,7 @@ func TestChildProfileExposesOnlyLiteralExtension(t *testing.T) {
 			t.Fatalf("profile is missing %s:\n%s", required, profile)
 		}
 	}
-	for _, forbidden := range []string{`(subpath "/repo")`, "/source", "/controller", "/bin/sh"} {
+	for _, forbidden := range []string{`(subpath "/repo")`, "/source", "/controller", "/bin/sh", "(allow process*)"} {
 		if strings.Contains(profile, forbidden) {
 			t.Fatalf("profile unexpectedly contains %s:\n%s", forbidden, profile)
 		}
@@ -96,5 +96,9 @@ func TestChildBoundaryProbe(t *testing.T) {
 	result, err := ProbeChildBoundary(sandbox, runtimeInfo, extension, []string{denied})
 	if err != nil {
 		t.Fatalf("probe failed: %#v %v", result, err)
+	}
+	executableResults, err := probeForbiddenExecutables(sandbox)
+	if err != nil || len(executableResults) != 2 {
+		t.Fatalf("forbidden executable probe failed: %#v %v", executableResults, err)
 	}
 }

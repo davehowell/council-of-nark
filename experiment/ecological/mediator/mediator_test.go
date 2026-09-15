@@ -198,7 +198,7 @@ func TestVerifySnapshotAttemptDetectsTampering(t *testing.T) {
 	writeTestJSON(t, filepath.Join(controller, "source-manifest.json"), manifest)
 	writeTestJSON(t, filepath.Join(controller, "provenance.json"), map[string]any{
 		"task_id": "task", "controller": map[string]any{"commit": "abc", "tree_dirty": false},
-		"validation": map[string]any{"closure_verified_offline": true, "network_probe_denied": true},
+		"validation": map[string]any{"closure_verified_offline": true, "network_probe_denied": true, "unlisted_executable_denied": true},
 		"isolation": map[string]any{
 			"source_read": true, "source_write_denied": true, "council_read_denied": true,
 			"controller_metadata_read_denied": true, "sibling_task_read_denied": true,
@@ -228,7 +228,7 @@ func TestVerifySnapshotAttemptDetectsTampering(t *testing.T) {
 
 func TestGortexProfileHasNoNetworkAllowanceAndSanitizesPaths(t *testing.T) {
 	profile := gortexTestProfile("/private/parent", "/private/go", "/private/mod", "/private/go/bin/go", "/private/scratch")
-	if strings.Contains(profile, "network-outbound") || !strings.Contains(profile, "(deny default)") {
+	if strings.Contains(profile, "network-outbound") || strings.Contains(profile, "(allow process*)") || !strings.Contains(profile, "(deny default)") {
 		t.Fatalf("unsafe focused-test profile:\n%s", profile)
 	}
 	runner := &GortexTestRunner{ParentRoot: "/secret/parent", Toolchain: "/secret/toolchain", Modules: "/secret/modules", Ecological: "/secret"}

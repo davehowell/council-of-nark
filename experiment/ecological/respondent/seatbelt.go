@@ -102,7 +102,7 @@ func ChildProfile(scratch string, readFiles, executables, runtimeRoots []string)
 	executables = unique(executables)
 	var builder strings.Builder
 	builder.WriteString("(version 1)\n(deny default)\n")
-	builder.WriteString("(allow file-read-metadata)\n(allow sysctl-read)\n(allow mach-lookup)\n(allow network-outbound)\n(allow system-socket)\n(allow process*)\n")
+	builder.WriteString("(allow file-read-metadata)\n(allow sysctl-read)\n(allow mach-lookup)\n(allow network-outbound)\n(allow system-socket)\n(allow process-fork)\n")
 	builder.WriteString("(allow file-read*\n  (literal \"/\")\n")
 	for _, path := range readRoots {
 		builder.WriteString("  (subpath " + strconv.Quote(path) + ")\n")
@@ -135,7 +135,7 @@ func ProbeChildBoundary(sandbox ChildSandbox, runtime PiRuntime, extension strin
 		}
 	}
 	probeProfilePath := filepath.Join(sandbox.Root, "probe-profile.sb")
-	profileText := ChildProfile(sandbox.Root, []string{extension, runtime.Script}, []string{runtime.Node, "/bin/sh"}, runtime.RuntimeRoots)
+	profileText := ChildProfile(sandbox.Root, []string{extension, runtime.Script}, []string{runtime.Node, "/bin/sh", "/bin/bash"}, runtime.RuntimeRoots)
 	if err := os.WriteFile(probeProfilePath, []byte(profileText), 0o600); err != nil {
 		return nil, err
 	}

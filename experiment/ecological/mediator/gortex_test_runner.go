@@ -130,6 +130,17 @@ func (r *GortexTestRunner) Run(target string) (string, map[string]any, error) {
 	if probe.err != nil {
 		return "", nil, probe.err
 	}
+	executableProbe := runSandboxCommand(profilePath, scratch, env, "/bin/sh", "-c", "true")
+	if err := writeJSONFile(filepath.Join(callRoot, "executable-probe.json"), map[string]any{
+		"command":   []string{"sandbox-exec", "<test-profile>", "sh", "<probe>"},
+		"exit_code": executableProbe.exitCode, "stdout": executableProbe.stdout, "stderr": executableProbe.stderr,
+		"unlisted_executable_denied": executableProbe.exitCode != 0,
+	}); err != nil {
+		return "", nil, err
+	}
+	if executableProbe.exitCode == 0 {
+		return "", nil, fmt.Errorf("focused-test sandbox executed an unlisted shell")
+	}
 
 	args := []string{"test", "-count=1", r.Package, "-run", r.RunPattern}
 	started := time.Now()
@@ -153,7 +164,7 @@ func (r *GortexTestRunner) Run(target string) (string, map[string]any, error) {
 	}
 	return "The focused regression reproduced the frozen parent failure:\n\n" + safeOutput, map[string]any{
 		"target": target, "exit_code": result.exitCode, "expected_failure_observed": true,
-		"network_probe_denied": true, "profile_sha256": profileDigest,
+		"network_probe_denied": true, "unlisted_executable_denied": true, "profile_sha256": profileDigest,
 		"duration_seconds": duration.Seconds(),
 	}, nil
 }
@@ -248,7 +259,7 @@ func gortexTestProfile(parentRoot, goroot, gomod, goBinary, scratch string) stri
 	sort.Strings(readRoots)
 	var builder strings.Builder
 	builder.WriteString("(version 1)\n(deny default)\n")
-	builder.WriteString("(allow file-read-metadata)\n(allow sysctl-read)\n(allow mach-lookup)\n(allow system-socket)\n(allow process*)\n")
+	builder.WriteString("(allow file-read-metadata)\n(allow sysctl-read)\n(allow mach-lookup)\n(allow system-socket)\n(allow process-fork)\n")
 	builder.WriteString("(allow file-read*\n  (literal \"/\")\n")
 	for _, path := range readRoots {
 		builder.WriteString("  (subpath " + strconv.Quote(path) + ")\n")
