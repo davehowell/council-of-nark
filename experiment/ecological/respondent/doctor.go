@@ -107,6 +107,7 @@ func Doctor(root, snapshotAttempt, configPath, artifacts string) (DoctorResult, 
 	if err != nil {
 		return DoctorResult{}, err
 	}
+	defer removeSandboxSecrets(sandbox)
 	sandbox.Environment = append(sandbox.Environment, "COUNCIL_ECOLOGICAL_DOCTOR=1")
 	denied := []string{
 		filepath.Join(verified.Source, "LICENSE.md"),
@@ -128,7 +129,19 @@ func Doctor(root, snapshotAttempt, configPath, artifacts string) (DoctorResult, 
 	if err != nil {
 		return DoctorResult{}, err
 	}
+	executableProbe, err := probeForbiddenExecutables(sandbox)
+	executableProbePath := filepath.Join(artifacts, "pi-executable-denials.json")
+	if writeErr := writeJSON(executableProbePath, executableProbe); writeErr != nil {
+		return DoctorResult{}, writeErr
+	}
+	if err != nil {
+		return DoctorResult{}, err
+	}
 	probeDigest, err := snapshot.FileSHA256(probePath)
+	if err != nil {
+		return DoctorResult{}, err
+	}
+	executableProbeDigest, err := snapshot.FileSHA256(executableProbePath)
 	if err != nil {
 		return DoctorResult{}, err
 	}
@@ -186,11 +199,11 @@ func Doctor(root, snapshotAttempt, configPath, artifacts string) (DoctorResult, 
 		},
 		Isolation: map[string]any{
 			"seatbelt": true, "profile_sha256": profileDigest, "probe_profile_sha256": probeProfileDigest,
-			"probe_result_sha256": probeDigest,
-			"empty_cwd":           true, "ephemeral_home": true, "provider_transport_network_only": true,
+			"probe_result_sha256": probeDigest, "executable_probe_sha256": executableProbeDigest,
+			"empty_cwd": true, "ephemeral_home": true, "provider_transport_network_only": true,
 			"provider_child_source_read_denied": true, "controller_read_denied": true,
 			"evidence_read_denied": true, "council_read_denied_except_literal_extension": true,
-			"scratch_write_allowed": true, "builtin_tools_disabled": true,
+			"scratch_write_allowed": true, "unlisted_executables_denied": true, "builtin_tools_disabled": true,
 		},
 		RPC: rpc,
 		Artifacts: map[string]any{
