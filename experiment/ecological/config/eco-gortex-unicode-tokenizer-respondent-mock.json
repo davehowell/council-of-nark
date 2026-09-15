@@ -2,7 +2,7 @@
   "schema_version": 1,
   "task_id": "eco-gortex-unicode-tokenizer",
   "adapter": "mock",
-  "snapshot_controller_commit": "ef48b42cf044e3de68342c778617be4f6d953e94",
+  "snapshot_controller_commit": "a0004597c5eb74bd4ea0697304301d06e4b8d55f",
   "source_tree_sha256": "41a9a14bd447791f254c79a7441d81451dd69ce6e03367dddbc20c4679c2b523",
   "tool_policy": "experiment/ecological/tool-policy/eco-gortex-unicode-tokenizer-v1.json",
   "pi_extension": "experiment/ecological/pi/ecological-tools.ts",
