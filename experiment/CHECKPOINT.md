@@ -45,7 +45,7 @@ just experiment-sandbox-check
 - Phase 1 maps shuffled findings independently. Phase 2 compares matched outputs with randomized left/right placement and rates supportedness, actionability, fix quality, preference, condition guess, confidence, and wording leakage.
 - Raw wording is preserved because it is part of the treatment. This is label-blinded, not guaranteed treatment-blinded.
 - `qualitative` requires two complete independent raters before unblinding and preserves opaque IDs in the derived report.
-- The project author volunteered as one disclosed-prior rater. A second independent rater is still mandatory. No claim-bearing human ratings have occurred.
+- Dave is confirmed as the disclosed-prior rater. Dan is the prospective independent rater but is not confirmed yet. A second independent rater remains mandatory. No claim-bearing human ratings have occurred.
 - The Gortex task has an anchored 1–5 quality rubric and disagreement/adjudication procedure. Equivalent anchors must be frozen separately for every later task.
 
 ### Ecological curation
@@ -76,7 +76,7 @@ The original local development export completed with source tree digest `41a9a14
 
 Launch gate 1 is complete. Clean mediator attempt `20260915T032205Z-gortex-mediator-check-8ec5ecdb`, Pi doctor `20260915T032313Z-gortex-pi-doctor-2c85ae4d`, and deterministic mock `20260915T032315Z-eco-gortex-unicode-tokenizer-respondent-mock-8006b0b4` passed from committed code. The mock sealed and independently verified 12 files with digest `ce298226…`; it used zero provider calls. See [`ecological/respondent/README.md`](ecological/respondent/README.md).
 
-Before a model call, freeze the exact prompts and deterministic schedule for S/I/R/F/P, define how continuing-session and fuser histories are represented, and add a whole-block controller rather than invoking the single-stage launcher by hand. Name two available human raters, set the deadline and spending ceiling, and document the excluded feasibility record. Do not load `pi/ecological-tools.ts` manually for a respondent.
+Before a model call, freeze the exact prompts and deterministic schedule for S/I/R/F/P, define how continuing-session and fuser histories are represented, and add a whole-block controller rather than invoking the single-stage launcher by hand. Dave is confirmed as the disclosed-author rater; confirm Dan or another independent rater, set the deadline and model-specific spending ceiling, and document the excluded feasibility record. The current no-model doctor selects `google/gemma-4-31b-it`/`minimal`, but the live comparison model is not frozen. Do not load `pi/ecological-tools.ts` manually for a respondent.
 
 ### 2. Finish ecological scoring/run design before calls
 

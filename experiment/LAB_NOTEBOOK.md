@@ -156,6 +156,12 @@ This is the chronological engineering record. It preserves failed runs and the r
 - Clean deterministic mock `20260915T032315Z-eco-gortex-unicode-tokenizer-respondent-mock-8006b0b4` completed with one fixture submission, seven mediator calls, three expected denials, 200 fixture tokens, and zero provider calls. Independent verification covered 12 files with aggregate digest `ce298226…`. The fake finding is lifecycle test data and must not enter rating or outcome analysis.
 - Decision: launch gate 1 in `FINAL_ROUND.md` is complete. Do not make the excluded Gortex block's model calls until exact five-arm prompts and scheduling are committed, a whole-block controller exists, two raters are named, and the deadline and spending ceiling are approved. Non-Gortex snapshots and anchors remain unvalidated.
 
+## 2026-09-15 — model, rater and architecture planning
+
+- Added a standalone inline-SVG overview of the experiment flow, separate Seatbelt sandboxes, one-stage lifecycle, proposed five-arm block, and sealed records. It labels implemented infrastructure separately from unrun comparative work.
+- Dave confirmed that he will be the disclosed-author rater. Dan is the prospective independent rater and remains unconfirmed.
+- Clarified the spending question: the no-model doctor currently selects `google/gemma-4-31b-it` with `minimal` thinking, while the mock makes no provider call. The live comparison model is not frozen. Capped Codex/Claude plans and low Gemini cost are available options, but a model/provider change requires a committed config and a fresh clean doctor check. No provider or rating call occurred during this update.
+
 ## Notebook rule
 
 Append material decisions before or immediately after their run. Record source commit/tag, config, exclusions, failures, repairs, interpretation, and next decision. Correct factual errors explicitly; do not silently rewrite earlier reasoning.

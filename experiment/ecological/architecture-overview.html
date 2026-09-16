@@ -1,0 +1,508 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Council of Nark | Ecological experiment architecture</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #202832;
+      --muted: #55626e;
+      --line: #c9d1d8;
+      --paper: #ffffff;
+      --wash: #f4f6f8;
+      --blue: #245b78;
+      --blue-wash: #edf4f8;
+      --teal: #1f6b67;
+      --teal-wash: #ebf6f4;
+      --amber: #946200;
+      --amber-wash: #fff7e3;
+      --red: #9b3e3e;
+      --red-wash: #fff0ef;
+      --green: #336b45;
+      --green-wash: #edf7ef;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-padding-top: 24px; }
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font: 16px/1.6 system-ui, -apple-system, "Segoe UI", sans-serif;
+    }
+    main { max-width: 1280px; margin: auto; padding: 40px 32px 64px; }
+    header { border-bottom: 1px solid var(--line); padding-bottom: 28px; }
+    .document-label { margin: 0 0 10px; color: var(--muted); font-size: 14px; }
+    h1 { margin: 0 0 16px; font-size: clamp(28px, 4vw, 40px); line-height: 1.2; font-weight: 650; }
+    h2 { margin: 0 0 12px; font-size: 26px; line-height: 1.3; font-weight: 650; }
+    h2 span { color: var(--blue); margin-right: 12px; font-size: 18px; }
+    h3 { margin: 28px 0 10px; font-size: 18px; }
+    p { margin: 0 0 16px; max-width: 88ch; }
+    a { color: var(--blue); text-underline-offset: 3px; }
+    a:hover { text-decoration-thickness: 2px; }
+    :focus-visible { outline: 2px solid var(--blue); outline-offset: 4px; }
+    nav { display: flex; flex-wrap: wrap; gap: 8px 28px; margin-top: 24px; }
+    section { padding-top: 40px; }
+    section + section { margin-top: 36px; border-top: 1px solid var(--line); }
+    figure { margin: 24px 0; }
+    .diagram { overflow-x: auto; border: 1px solid var(--line); background: var(--wash); }
+    .diagram svg { display: block; width: 100%; min-width: 1080px; height: auto; }
+    figcaption { margin-top: 10px; font-size: 14px; color: var(--muted); max-width: 105ch; }
+    .scroll-hint { display: none; color: var(--muted); font-size: 14px; }
+    code { font: 0.9em ui-monospace, SFMono-Regular, Consolas, monospace; overflow-wrap: anywhere; }
+    p code, td code, li code { background: var(--wash); padding: 2px 4px; }
+    ul, ol { padding-left: 24px; max-width: 105ch; }
+    li { margin: 6px 0; }
+    .status {
+      display: inline-block;
+      margin: 4px 0 8px;
+      padding: 4px 10px;
+      border: 1px solid #9ab5a1;
+      border-radius: 999px;
+      background: var(--green-wash);
+      color: var(--green);
+      font-size: 14px;
+      font-weight: 650;
+    }
+    .callout {
+      margin: 20px 0;
+      padding: 14px 18px;
+      border-left: 4px solid var(--amber);
+      background: var(--amber-wash);
+      max-width: 100ch;
+    }
+    .table-scroll { overflow-x: auto; }
+    table { width: 100%; min-width: 850px; border-collapse: collapse; text-align: left; font-size: 15px; }
+    th, td { padding: 12px 16px; border-bottom: 1px solid var(--line); vertical-align: top; }
+    th { background: var(--wash); font-weight: 650; }
+    td:first-child { width: 18%; font-weight: 600; }
+    .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 14px; margin: 22px 0; }
+    .card { border: 1px solid var(--line); padding: 16px; background: var(--paper); }
+    .card h3 { margin: 0 0 8px; font-size: 17px; }
+    .card p { margin: 0; font-size: 14px; color: var(--muted); }
+    .reference { color: var(--muted); font-size: 14px; margin-top: 20px; }
+    footer { margin-top: 48px; padding-top: 20px; border-top: 1px solid var(--line); font-size: 14px; color: var(--muted); }
+
+    .node { fill: var(--paper); stroke: #83919c; stroke-width: 1.3; }
+    .controller-node { fill: var(--blue); stroke: var(--blue); stroke-width: 1.5; }
+    .sandbox-node { fill: var(--teal-wash); stroke: var(--teal); stroke-width: 1.3; }
+    .artifact-node { fill: var(--blue-wash); stroke: var(--blue); stroke-width: 1.3; }
+    .hidden-node { fill: var(--red-wash); stroke: var(--red); stroke-width: 1.3; }
+    .proposed-node { fill: var(--amber-wash); stroke: var(--amber); stroke-width: 1.3; }
+    .frame { fill: none; stroke: #83919c; stroke-width: 1.2; }
+    .sandbox-frame { fill: #f4fbfa; stroke: var(--teal); stroke-width: 1.5; }
+    .remote-frame { fill: #fafafa; stroke: #83919c; stroke-width: 1.2; stroke-dasharray: 7 5; }
+    .node-title { fill: var(--ink); font-size: 17px; font-weight: 650; }
+    .node-detail { fill: var(--muted); font-size: 14px; }
+    .on-controller { fill: white; }
+    .group-label { fill: var(--blue); font-size: 14px; font-weight: 650; }
+    .boundary-label { fill: var(--teal); font-size: 14px; font-weight: 650; }
+    .edge-label { fill: var(--muted); font-size: 13px; }
+    .edge {
+      fill: none;
+      stroke: var(--muted);
+      stroke-width: 1.5;
+      marker-end: url(#arrow);
+    }
+    .both { marker-start: url(#arrow); }
+    .audit { stroke: var(--blue); stroke-dasharray: 6 4; }
+    .denied { stroke: var(--red); stroke-width: 2; }
+    .lifeline { stroke: #b4bec6; stroke-width: 1; stroke-dasharray: 4 5; }
+    .sequence .edge-label, .sequence .group-label, .overview .edge-label {
+      paint-order: stroke;
+      stroke: var(--wash);
+      stroke-width: 5px;
+      stroke-linejoin: round;
+    }
+    .definitions { position: absolute; width: 0; height: 0; overflow: hidden; }
+
+    @media (max-width: 1144px) { .scroll-hint { display: block; } }
+    @media (max-width: 640px) {
+      main { padding: 24px 16px 40px; }
+      section { padding-top: 28px; }
+      h2 { font-size: 23px; }
+      nav { gap: 10px 20px; }
+    }
+    @media print {
+      main { max-width: none; padding: 0; }
+      nav, .scroll-hint { display: none; }
+      section + section { break-before: page; border: 0; margin: 0; }
+      .diagram { overflow: visible; }
+      .diagram svg { min-width: 0; }
+      figure, tr, .card { break-inside: avoid; }
+      table { min-width: 0; }
+    }
+  </style>
+</head>
+<body>
+<svg class="definitions" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M1 1 L9 5 L1 9 Z" fill="var(--muted)"/>
+    </marker>
+  </defs>
+</svg>
+<main>
+  <header>
+    <p class="document-label">Council of Nark / Experiment documentation</p>
+    <h1>Ecological review experiment</h1>
+    <p>The experiment gives a model bounded ways to inspect a real pre-fix codebase while keeping Git history, the eventual fix, evidence keys and the controller repository out of model reach.</p>
+    <p class="status">Launch gate 1 implemented · no ecological model run yet</p>
+    <nav aria-label="Architecture sections">
+      <a href="#overview">1. Overview</a>
+      <a href="#boundaries">2. Sandboxing</a>
+      <a href="#sequence">3. One review stage</a>
+      <a href="#comparison">4. Five-arm comparison</a>
+      <a href="#records">5. Records and limits</a>
+    </nav>
+  </header>
+
+  <section id="overview" aria-labelledby="overview-heading">
+    <h2 id="overview-heading"><span>01</span>Overview</h2>
+    <p>A trusted Go controller starts an isolated Pi process. Pi can send model requests, but it cannot open the source tree. The model asks for source through four custom tools. A separate Go mediator checks each request and returns bounded text.</p>
+    <p class="scroll-hint">Scroll diagrams horizontally to see the full width.</p>
+    <figure>
+      <div class="diagram" tabindex="0" role="region" aria-label="Ecological experiment overview diagram, horizontally scrollable">
+        <svg class="overview" viewBox="0 0 1200 440" role="img" aria-labelledby="overview-title overview-desc" xmlns="http://www.w3.org/2000/svg">
+          <title id="overview-title">Ecological experiment overview</title>
+          <desc id="overview-desc">Frozen inputs enter a trusted Go controller. It starts an isolated Pi child that exchanges HTTPS requests with a remote model. Pi can inspect source only through an inherited pipe to a policy-enforcing mediator. The mediator reads a history-free source snapshot and can start one allowlisted network-denied test. Events, exact provider payloads, tool transcripts and the final review are sealed in an attempt directory.</desc>
+
+          <path class="edge" d="M210 128 H255"/>
+          <text class="edge-label" x="232" y="113" text-anchor="middle">verify</text>
+          <path class="edge" d="M445 128 H490"/>
+          <text class="edge-label" x="467" y="113" text-anchor="middle">launch</text>
+          <path class="edge both" d="M680 128 H725"/>
+          <text class="edge-label" x="702" y="48" text-anchor="middle">provider requests and responses</text>
+          <path class="edge both" d="M585 186 V257"/>
+          <text class="edge-label" x="600" y="225">custom tools</text>
+          <path class="edge both" d="M490 312 H445"/>
+          <text class="edge-label" x="350" y="235" text-anchor="middle">bounded source text</text>
+          <path class="edge" d="M680 312 H725"/>
+          <text class="edge-label" x="820" y="235" text-anchor="middle">allowlisted test</text>
+          <path class="edge audit" d="M680 170 H700 V210 H950 V285 H980"/>
+          <text class="edge-label" x="815" y="201" text-anchor="middle">events · exact requests · final submission</text>
+          <path class="edge audit" d="M680 350 V405 H950 V340 H980"/>
+          <text class="edge-label" x="815" y="423" text-anchor="middle">tool transcript · profiles · test logs · resource totals</text>
+
+          <rect class="node" x="20" y="70" width="190" height="116" rx="3"/>
+          <text class="node-title" x="115" y="104" text-anchor="middle">Frozen inputs</text>
+          <text class="node-detail" x="115" y="132" text-anchor="middle">Prompt · brief · policy</text>
+          <text class="node-detail" x="115" y="154" text-anchor="middle">Model · budgets · digests</text>
+
+          <rect class="controller-node" x="255" y="70" width="190" height="116" rx="3"/>
+          <text class="node-title on-controller" x="350" y="104" text-anchor="middle">Go controller</text>
+          <text class="node-detail on-controller" x="350" y="132" text-anchor="middle">Owns the attempt</text>
+          <text class="node-detail on-controller" x="350" y="154" text-anchor="middle">Checks limits and output</text>
+
+          <rect class="sandbox-node" x="490" y="70" width="190" height="116" rx="3"/>
+          <text class="node-title" x="585" y="104" text-anchor="middle">Isolated Pi child</text>
+          <text class="node-detail" x="585" y="132" text-anchor="middle">Model loop + extension</text>
+          <text class="node-detail" x="585" y="154" text-anchor="middle">No source mount or shell</text>
+
+          <rect class="node" x="725" y="70" width="190" height="116" rx="3"/>
+          <text class="node-title" x="820" y="104" text-anchor="middle">Remote provider</text>
+          <text class="node-detail" x="820" y="132" text-anchor="middle">Pinned model</text>
+          <text class="node-detail" x="820" y="154" text-anchor="middle">No local tool access</text>
+
+          <rect class="node" x="255" y="257" width="190" height="110" rx="3"/>
+          <text class="node-title" x="350" y="291" text-anchor="middle">Source snapshot</text>
+          <text class="node-detail" x="350" y="319" text-anchor="middle">Pre-fix · read-only</text>
+          <text class="node-detail" x="350" y="341" text-anchor="middle">No .git or evidence</text>
+
+          <rect class="controller-node" x="490" y="257" width="190" height="110" rx="3"/>
+          <text class="node-title on-controller" x="585" y="291" text-anchor="middle">Go mediator</text>
+          <text class="node-detail on-controller" x="585" y="319" text-anchor="middle">Checks paths and budgets</text>
+          <text class="node-detail on-controller" x="585" y="341" text-anchor="middle">Records each exchange</text>
+
+          <rect class="sandbox-node" x="725" y="257" width="190" height="110" rx="3"/>
+          <text class="node-title" x="820" y="291" text-anchor="middle">Focused-test sandbox</text>
+          <text class="node-detail" x="820" y="319" text-anchor="middle">Frozen dependency closure</text>
+          <text class="node-detail" x="820" y="341" text-anchor="middle">Network denied</text>
+
+          <rect class="artifact-node" x="980" y="257" width="200" height="110" rx="3"/>
+          <text class="node-title" x="1080" y="291" text-anchor="middle">Sealed attempt</text>
+          <text class="node-detail" x="1080" y="319" text-anchor="middle">Every retained file</text>
+          <text class="node-detail" x="1080" y="341" text-anchor="middle">Path · bytes · SHA-256</text>
+        </svg>
+      </div>
+      <figcaption>The provider sees only the system prompt, task brief, prior conversation and bounded tool results. It does not receive a host filesystem path or direct source access. The separate audit pipe records each serialized provider payload before transport.</figcaption>
+    </figure>
+    <div class="callout"><strong>What “trusted” means here:</strong> the Go controller and mediator are part of the experiment machinery and can read controller-owned files. The respondent model cannot. The seal detects later file changes; it does not prove that the trusted code itself was correct, so that code and its probes remain reviewable inputs.</div>
+  </section>
+
+  <section id="boundaries" aria-labelledby="boundaries-heading">
+    <h2 id="boundaries-heading"><span>02</span>Sandboxing and data boundaries</h2>
+    <p>There are two different Seatbelt sandboxes. The network-enabled Pi child cannot read the source. The source-enabled focused-test process cannot use the network. This split avoids giving the model-controlled process both source access and unrestricted transport.</p>
+    <figure>
+      <div class="diagram" tabindex="0" role="region" aria-label="Sandbox boundaries diagram, horizontally scrollable">
+        <svg viewBox="0 0 1200 670" role="img" aria-labelledby="boundaries-title boundaries-desc" xmlns="http://www.w3.org/2000/svg">
+          <title id="boundaries-title">Sandbox and data boundaries</title>
+          <desc id="boundaries-desc">The trusted host contains the controller, mediator, source snapshot, hidden evidence and sealed artifacts. A Seatbelt-confined Pi process has an empty current directory, an ephemeral home, explicit executable permissions and provider transport networking, but no source access. A separate Seatbelt-confined test process can read the source and frozen build closure but has no network. The remote provider receives messages and tool results only. Direct paths from Pi to the source, evidence, Git, shell and arbitrary tests are denied.</desc>
+
+          <rect class="frame" x="20" y="38" width="480" height="594" rx="3"/>
+          <text class="group-label" x="40" y="65">Trusted host process space</text>
+          <rect class="sandbox-frame" x="535" y="38" width="330" height="370" rx="3"/>
+          <text class="boundary-label" x="555" y="65">Seatbelt sandbox A · provider child</text>
+          <rect class="sandbox-frame" x="535" y="450" width="330" height="182" rx="3"/>
+          <text class="boundary-label" x="555" y="477">Seatbelt sandbox B · focused test</text>
+          <rect class="remote-frame" x="900" y="38" width="280" height="370" rx="3"/>
+          <text class="group-label" x="920" y="65">Remote provider boundary</text>
+
+          <rect class="controller-node" x="50" y="95" width="200" height="104" rx="3"/>
+          <text class="node-title on-controller" x="150" y="130" text-anchor="middle">Controller</text>
+          <text class="node-detail on-controller" x="150" y="157" text-anchor="middle">Config · launch · validation</text>
+          <text class="node-detail on-controller" x="150" y="179" text-anchor="middle">Timeout and token limits</text>
+
+          <rect class="controller-node" x="280" y="95" width="190" height="104" rx="3"/>
+          <text class="node-title on-controller" x="375" y="130" text-anchor="middle">Mediator</text>
+          <text class="node-detail on-controller" x="375" y="157" text-anchor="middle">List · read · search</text>
+          <text class="node-detail on-controller" x="375" y="179" text-anchor="middle">Allowlisted test request</text>
+
+          <rect class="node" x="50" y="253" width="200" height="102" rx="3"/>
+          <text class="node-title" x="150" y="287" text-anchor="middle">Sanitized source</text>
+          <text class="node-detail" x="150" y="315" text-anchor="middle">History-free and read-only</text>
+          <text class="node-detail" x="150" y="337" text-anchor="middle">Canonical tree digest</text>
+
+          <rect class="hidden-node" x="280" y="253" width="190" height="102" rx="3"/>
+          <text class="node-title" x="375" y="287" text-anchor="middle">Hidden evidence</text>
+          <text class="node-detail" x="375" y="315" text-anchor="middle">Fix · tests · scoring key</text>
+          <text class="node-detail" x="375" y="337" text-anchor="middle">Rater/controller only</text>
+
+          <rect class="artifact-node" x="50" y="514" width="420" height="88" rx="3"/>
+          <text class="node-title" x="260" y="542" text-anchor="middle">Attempt artifacts and seal</text>
+          <text class="node-detail" x="260" y="568" text-anchor="middle">Events · exact payloads · transcript · probes</text>
+          <text class="node-detail" x="260" y="590" text-anchor="middle">Mode 0600 · complete manifest · immutable by procedure</text>
+
+          <rect class="sandbox-node" x="565" y="95" width="270" height="120" rx="3"/>
+          <text class="node-title" x="700" y="128" text-anchor="middle">Pi + tracked extension</text>
+          <text class="node-detail" x="700" y="155" text-anchor="middle">Empty cwd · ephemeral home</text>
+          <text class="node-detail" x="700" y="177" text-anchor="middle">No built-ins or discovery</text>
+          <text class="node-detail" x="700" y="199" text-anchor="middle">Explicit executable list</text>
+
+          <rect class="sandbox-node" x="565" y="265" width="270" height="104" rx="3"/>
+          <text class="node-title" x="700" y="299" text-anchor="middle">Scratch only</text>
+          <text class="node-detail" x="700" y="327" text-anchor="middle">Temporary home/cache/config</text>
+          <text class="node-detail" x="700" y="349" text-anchor="middle">Removed after the run</text>
+
+          <rect class="sandbox-node" x="565" y="500" width="270" height="96" rx="3"/>
+          <text class="node-title" x="700" y="534" text-anchor="middle">Frozen Go test process</text>
+          <text class="node-detail" x="700" y="562" text-anchor="middle">Exact package and test name</text>
+          <text class="node-detail" x="700" y="584" text-anchor="middle">Offline module closure</text>
+
+          <rect class="node" x="930" y="95" width="220" height="120" rx="3"/>
+          <text class="node-title" x="1040" y="128" text-anchor="middle">Pinned model</text>
+          <text class="node-detail" x="1040" y="155" text-anchor="middle">Prompt + messages</text>
+          <text class="node-detail" x="1040" y="177" text-anchor="middle">Tool schemas + results</text>
+          <text class="node-detail" x="1040" y="199" text-anchor="middle">No local filesystem</text>
+
+          <path class="edge" d="M150 95 V78 H700 V95"/>
+          <text class="edge-label" x="420" y="89" text-anchor="middle">start with inherited audit and tool pipes</text>
+          <path class="edge both" d="M835 155 H930"/>
+          <text class="edge-label" x="882" y="140" text-anchor="middle">HTTPS</text>
+          <path class="edge both" d="M565 155 H470"/>
+          <text class="edge-label" x="518" y="235" text-anchor="middle">inherited JSON pipes</text>
+          <path class="edge both" d="M375 199 V228 H150 V253"/>
+          <text class="edge-label" x="260" y="219" text-anchor="middle">bounded reads</text>
+          <path class="edge" d="M470 180 H515 V548 H565"/>
+          <text class="edge-label" x="505" y="530" text-anchor="end">fixed test target</text>
+          <path class="edge" d="M150 355 V425 H700 V500"/>
+          <text class="edge-label" x="425" y="416" text-anchor="middle">read-only source plus frozen closure</text>
+          <path class="edge audit" d="M700 369 V435 H520 V470 H260 V514"/>
+          <path class="edge audit" d="M470 180 H485 V485 H260 V514"/>
+
+          <path class="denied" d="M645 235 l18 18 M663 235 l-18 18"/>
+          <text class="edge-label" x="682" y="249">source · evidence · controller files</text>
+          <path class="denied" d="M645 392 l18 18 M663 392 l-18 18"/>
+          <text class="edge-label" x="682" y="406">Git · shell · unlisted executable</text>
+          <path class="denied" d="M1004 478 l18 18 M1022 478 l-18 18"/>
+          <text class="edge-label" x="1036" y="492">test network</text>
+        </svg>
+      </div>
+      <figcaption>Red crosses mark paths that clean probes require to fail. The provider child may use network transport only to run the model loop; model web, shell and filesystem tools are disabled. The focused test receives source but is network-denied.</figcaption>
+    </figure>
+
+    <div class="table-scroll" tabindex="0" role="region" aria-label="Data access table, horizontally scrollable">
+      <table>
+        <thead>
+          <tr><th scope="col">Component</th><th scope="col">Can access</th><th scope="col">Cannot access</th><th scope="col">Network</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Go controller</td><td>Committed inputs, snapshot metadata, attempt directory and hidden probe sentinels.</td><td>Nothing by sandbox policy; this is trusted experiment code.</td><td>Fetches during snapshot preparation only. It does not act as a model tool.</td></tr>
+          <tr><td>Go mediator</td><td>Sanitized source through canonical relative paths; fixed test target; controller-owned transcript.</td><td>Symlinks, traversal, <code>.git</code>, unknown tools, arbitrary tests and exhausted budgets.</td><td>No network operation in list/read/search. Tests run in the separate network-denied sandbox.</td></tr>
+          <tr><td>Pi child</td><td>Prompt, brief, custom tool schemas, bounded tool results, ephemeral scratch and copied provider credentials.</td><td>Source, controller repository, evidence, real home, built-in tools, Git, shell and unlisted executables.</td><td>Provider transport is allowed. Model web tools are not.</td></tr>
+          <tr><td>Focused test</td><td>Read-only source copy, frozen Go toolchain/module closure and one configured test.</td><td>Other test targets, controller files and unlisted executables.</td><td>Denied and probed on every invocation.</td></tr>
+          <tr><td>Remote model</td><td>Serialized request, conversation, tool schemas and returned source/test excerpts.</td><td>Local paths and files unless text is deliberately returned through a tool.</td><td>Provider-side behavior is outside Seatbelt and remains a stated limitation.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="sequence" aria-labelledby="sequence-heading">
+    <h2 id="sequence-heading"><span>03</span>One review stage</h2>
+    <p>The same stage runner is used for a reviewer or a later fuser. A whole-block controller still needs to assemble continuing-session and multi-review histories for the proposed comparison.</p>
+    <figure>
+      <div class="diagram" tabindex="0" role="region" aria-label="Respondent stage sequence diagram, horizontally scrollable">
+        <svg class="sequence" viewBox="0 0 1200 860" role="img" aria-labelledby="sequence-title sequence-desc" xmlns="http://www.w3.org/2000/svg">
+          <title id="sequence-title">One ecological review stage</title>
+          <desc id="sequence-desc">The controller verifies frozen inputs, starts the mediator and isolated Pi process, and captures the provider request before transport. The provider may ask for a custom source tool. Pi sends the request over an inherited pipe, the mediator validates it and returns bounded source text or a fixed test result. The cycle repeats within budgets. The model ends with one structured submission. The controller rejects malformed or duplicate submissions, removes ephemeral state and seals the retained files.</desc>
+
+          <rect class="controller-node" x="20" y="30" width="200" height="66" rx="3"/>
+          <text class="node-title on-controller" x="120" y="70" text-anchor="middle">Controller</text>
+          <rect class="controller-node" x="270" y="30" width="200" height="66" rx="3"/>
+          <text class="node-title on-controller" x="370" y="70" text-anchor="middle">Mediator</text>
+          <rect class="sandbox-node" x="520" y="30" width="200" height="66" rx="3"/>
+          <text class="node-title" x="620" y="70" text-anchor="middle">Isolated Pi</text>
+          <rect class="node" x="770" y="30" width="200" height="66" rx="3"/>
+          <text class="node-title" x="870" y="70" text-anchor="middle">Provider + model</text>
+          <rect class="artifact-node" x="1010" y="30" width="170" height="66" rx="3"/>
+          <text class="node-title" x="1095" y="70" text-anchor="middle">Attempt files</text>
+
+          <path class="lifeline" d="M120 96 V830 M370 96 V830 M620 96 V830 M870 96 V830 M1095 96 V830"/>
+
+          <path class="edge" d="M120 145 H370"/>
+          <text class="edge-label" x="245" y="130" text-anchor="middle">verify snapshot and open transcript</text>
+          <path class="edge" d="M120 205 H620"/>
+          <text class="edge-label" x="370" y="190" text-anchor="middle">start with prompt, empty cwd/home and inherited pipes</text>
+          <path class="edge audit" d="M620 265 H1095"/>
+          <text class="edge-label" x="858" y="250" text-anchor="middle">record serialized provider payload before transport</text>
+          <path class="edge" d="M620 320 H870"/>
+          <text class="edge-label" x="745" y="305" text-anchor="middle">model request</text>
+          <path class="edge" d="M870 375 H620"/>
+          <text class="edge-label" x="745" y="360" text-anchor="middle">custom tool request</text>
+          <path class="edge" d="M620 430 H370"/>
+          <text class="edge-label" x="495" y="415" text-anchor="middle">source_list / read / search / focused_test</text>
+          <path class="edge audit" d="M370 485 H1095"/>
+          <text class="edge-label" x="732" y="470" text-anchor="middle">append request and bounded response to transcript</text>
+          <path class="edge" d="M370 540 H620"/>
+          <text class="edge-label" x="495" y="525" text-anchor="middle">result or explicit denial</text>
+
+          <rect class="frame" x="338" y="575" width="570" height="78"/>
+          <text class="group-label" x="352" y="598">Repeat while provider, token, tool, byte and time budgets remain</text>
+          <path class="edge" d="M620 628 H870"/>
+          <text class="edge-label" x="745" y="615" text-anchor="middle">next bounded turn</text>
+
+          <path class="edge" d="M870 700 H620"/>
+          <text class="edge-label" x="745" y="685" text-anchor="middle">one terminating submit_ecological_review call</text>
+          <path class="edge audit" d="M620 750 H1095"/>
+          <text class="edge-label" x="858" y="735" text-anchor="middle">events · usage · final submission</text>
+          <path class="edge" d="M120 800 H1095"/>
+          <text class="edge-label" x="607" y="785" text-anchor="middle">validate · remove credentials/caches · write result/status · seal every retained file</text>
+        </svg>
+      </div>
+      <figcaption>Infrastructure failures remain failed attempts. A substantive but malformed response is retained, sealed and assigned the protocol's declared zero utility. Neither is silently replaced.</figcaption>
+    </figure>
+  </section>
+
+  <section id="comparison" aria-labelledby="comparison-heading">
+    <h2 id="comparison-heading"><span>04</span>Proposed five-arm comparison</h2>
+    <p>These arms are the next experiment, not completed results. All use the same source capability, schema, final-length cap and pinned provider/model. The planned Gortex block has 17 review or fuser stages; tool use can create more than 17 provider requests.</p>
+    <figure>
+      <div class="diagram" tabindex="0" role="region" aria-label="Five-arm comparison diagram, horizontally scrollable">
+        <svg viewBox="0 0 1200 620" role="img" aria-labelledby="arms-title arms-desc" xmlns="http://www.w3.org/2000/svg">
+          <title id="arms-title">Five proposed experimental arms</title>
+          <desc id="arms-desc">Arm S has one omnibus review. Arm I has an initial review, two informed self-revisions and a final consolidation in one continuing session. Arm R has three independent omnibus reviews followed by one neutral fuser. Arm F has independent correctness, architecture and operational-risk reviews followed by the same neutral fuser. Arm P adds K-2SO, GLaDOS and Holly wording to those same three functional lenses, then uses the same neutral fuser.</desc>
+
+          <text class="group-label" x="30" y="35">Cheapest baseline</text>
+          <rect class="proposed-node" x="30" y="58" width="210" height="88" rx="3"/>
+          <text class="node-title" x="135" y="92" text-anchor="middle">S · single review</text>
+          <text class="node-detail" x="135" y="120" text-anchor="middle">One omnibus stage</text>
+
+          <text class="group-label" x="30" y="202">Continuing-session alternative</text>
+          <rect class="proposed-node" x="30" y="225" width="210" height="88" rx="3"/>
+          <text class="node-title" x="135" y="259" text-anchor="middle">Initial review</text>
+          <text class="node-detail" x="135" y="287" text-anchor="middle">Omnibus lens</text>
+          <path class="edge" d="M240 269 H305"/>
+          <rect class="proposed-node" x="305" y="225" width="210" height="88" rx="3"/>
+          <text class="node-title" x="410" y="259" text-anchor="middle">Revision 1</text>
+          <text class="node-detail" x="410" y="287" text-anchor="middle">Keeps prior history</text>
+          <path class="edge" d="M515 269 H580"/>
+          <rect class="proposed-node" x="580" y="225" width="210" height="88" rx="3"/>
+          <text class="node-title" x="685" y="259" text-anchor="middle">Revision 2</text>
+          <text class="node-detail" x="685" y="287" text-anchor="middle">Keeps prior history</text>
+          <path class="edge" d="M790 269 H855"/>
+          <rect class="proposed-node" x="855" y="225" width="285" height="88" rx="3"/>
+          <text class="node-title" x="997" y="259" text-anchor="middle">I · final consolidation</text>
+          <text class="node-detail" x="997" y="287" text-anchor="middle">Same session · four stages</text>
+
+          <text class="group-label" x="30" y="369">Independent panels</text>
+          <rect class="proposed-node" x="30" y="392" width="230" height="66" rx="3"/>
+          <text class="node-title" x="145" y="433" text-anchor="middle">R · 3 omnibus reviews</text>
+          <rect class="proposed-node" x="30" y="477" width="230" height="66" rx="3"/>
+          <text class="node-title" x="145" y="518" text-anchor="middle">F · 3 functional lenses</text>
+          <rect class="proposed-node" x="30" y="562" width="230" height="42" rx="3"/>
+          <text class="node-title" x="145" y="590" text-anchor="middle">P · same lenses + personas</text>
+
+          <path class="edge" d="M260 425 H565"/>
+          <path class="edge" d="M260 510 H565"/>
+          <path class="edge" d="M260 583 H565"/>
+          <text class="edge-label" x="412" y="410" text-anchor="middle">deterministically shuffled</text>
+          <text class="edge-label" x="412" y="426" text-anchor="middle">role labels removed</text>
+
+          <rect class="proposed-node" x="565" y="430" width="245" height="110" rx="3"/>
+          <text class="node-title" x="687" y="469" text-anchor="middle">Same neutral fuser</text>
+          <text class="node-detail" x="687" y="497" text-anchor="middle">Three independent reviews</text>
+          <text class="node-detail" x="687" y="519" text-anchor="middle">plus source tools and own budget</text>
+          <path class="edge" d="M810 485 H900"/>
+          <rect class="artifact-node" x="900" y="430" width="250" height="110" rx="3"/>
+          <text class="node-title" x="1025" y="469" text-anchor="middle">One final review per arm</text>
+          <text class="node-detail" x="1025" y="497" text-anchor="middle">Same schema and length cap</text>
+          <text class="node-detail" x="1025" y="519" text-anchor="middle">Blinded human scoring</text>
+        </svg>
+      </div>
+      <figcaption>S uses one stage. I uses four stages in one continuing session. R, F and P each use three independent review stages plus one fuser. F−S tests practical council benefit; F−I tests council versus self-review; F−R tests specialization; P−F tests the fictional wording package.</figcaption>
+    </figure>
+    <div class="cards" aria-label="Five arm summary">
+      <div class="card"><h3>S · Single</h3><p>One omnibus functional review. Proposed cap: 8,000 charged input/output tokens.</p></div>
+      <div class="card"><h3>I · Informed self-review</h3><p>Initial review, two revisions and consolidation in one continuing session.</p></div>
+      <div class="card"><h3>R · Repeated sampling</h3><p>Three independent omnibus reviews, then one neutral fuser.</p></div>
+      <div class="card"><h3>F · Functional council</h3><p>Correctness, architecture and operational-risk reviews, then the fuser.</p></div>
+      <div class="card"><h3>P · Persona package</h3><p>The same three functional kernels with K-2SO, GLaDOS and Holly wording.</p></div>
+    </div>
+    <p>The proposal gives I, R, F and P up to 32,000 charged tokens each, allocated as 8,000 per stage. Together with S, one block therefore has a proposed ceiling of 136,000 charged tokens. This is a ceiling, not an expected bill.</p>
+  </section>
+
+  <section id="records" aria-labelledby="records-heading">
+    <h2 id="records-heading"><span>05</span>Records, checks and current decisions</h2>
+    <p>A completed attempt is a directory with a manifest that records the path, byte count and SHA-256 digest of every other retained file. Verification recomputes all three and rejects missing, extra or changed files.</p>
+    <div class="table-scroll" tabindex="0" role="region" aria-label="Attempt artifact table, horizontally scrollable">
+      <table>
+        <thead><tr><th scope="col">Record</th><th scope="col">Purpose</th><th scope="col">Important contents</th></tr></thead>
+        <tbody>
+          <tr><td><code>request.json</code></td><td>Reconstruct the declared stage.</td><td>Exact prompt and brief text, config/policy/extension digests, snapshot identity, model state, tools and budgets.</td></tr>
+          <tr><td><code>provider-audit.jsonl</code></td><td>Show what crossed the provider boundary.</td><td>Pre-transport serialized requests, response metadata, assistant usage, budget stops and final-submission events.</td></tr>
+          <tr><td><code>pi-events.jsonl</code></td><td>Retain Pi's model and tool lifecycle.</td><td>Agent start/end, messages, tool executions, retries, errors and usage.</td></tr>
+          <tr><td><code>mediator-transcript.jsonl</code></td><td>Account for source access.</td><td>Every list/read/search/test request, bounded response, denial, sequence and byte total.</td></tr>
+          <tr><td><code>focused-tests/</code></td><td>Retain controller-side test evidence.</td><td>Exact command outcome plus network, profile and unlisted-executable probes.</td></tr>
+          <tr><td><code>final-submission.json</code></td><td>Preserve the response to score.</td><td>Exactly one schema-valid terminating review. Absent for malformed or missing output.</td></tr>
+          <tr><td><code>result.json</code> / <code>status.json</code></td><td>Separate outcome validity from infrastructure health.</td><td>Usage, resources, validation errors, completion phase and adapter provider-call count.</td></tr>
+          <tr><td><code>seal.json</code></td><td>Detect later mutation or omission.</td><td>Sorted complete file list and aggregate digest. The seal excludes only itself.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Current model and rating status</h3>
+    <ul>
+      <li><strong>Infrastructure check:</strong> Pi currently selects <code>google/gemma-4-31b-it</code> with <code>minimal</code> thinking. The deterministic mock selects no provider model and makes zero provider calls.</li>
+      <li><strong>Live comparison:</strong> the model is not frozen yet. Changing from Gemma to Gemini, Claude or Codex changes the estimand and requires a new clean doctor check and committed run configuration.</li>
+      <li><strong>Raters:</strong> Dave is the disclosed-author rater. Dan is the prospective independent rater and is not recorded as confirmed until he agrees.</li>
+      <li><strong>Next implementation:</strong> freeze the S/I/R/F/P prompts and schedule, then add a whole-block controller and deterministic block mock before a live call.</li>
+    </ul>
+
+    <h3>Limits of the boundary</h3>
+    <ul>
+      <li>Seatbelt controls local processes. It cannot inspect provider-side model code, hidden retrieval, caching, moderation or personalization.</li>
+      <li>The provider needs network access for inference. The experiment disables model web tools but cannot prove that a remote service has no undeclared retrieval.</li>
+      <li>A response that crosses a token cap has already been generated. The controller records that unavoidable last-response overrun and stops before another request.</li>
+      <li>The deterministic mock proves lifecycle handling, not review quality or isolation against a malicious kernel/provider.</li>
+    </ul>
+    <p class="reference">Protocol: <a href="../FINAL_ROUND.md">finite closing round</a> · Boundary details: <a href="../ISOLATION.md">isolation threat model</a> · Runner: <a href="respondent/README.md">respondent launcher</a> · Scoring: <a href="SCORING.md">ecological scoring</a></p>
+  </section>
+
+  <footer>
+    <p>This page uses inline SVG and system fonts. It opens locally without a server or network connection.</p>
+    <p>Implemented behavior is described separately from the proposed five-arm comparison. No mock output is research evidence.</p>
+  </footer>
+</main>
+</body>
+</html>

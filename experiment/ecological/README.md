@@ -2,6 +2,8 @@
 
 > Status: candidate set frozen for harness integration; no respondent run has occurred.
 
+See the standalone [architecture overview](architecture-overview.html) for the experiment flow, Seatbelt boundaries, one-stage lifecycle, proposed five-arm comparison, and retained records. It uses inline SVG and opens without a server.
+
 The core set uses public fixes merged from 1 June through 20 August 2026. It samples one Python graphics project, one Python data-loading project, one Go code-intelligence project, and one Rust/Python vector-index project. A separately gated Modular task tests an extreme-complexity stratum without weakening the core set's evidence rules.
 
 ## Selected set
