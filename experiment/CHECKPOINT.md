@@ -1,13 +1,13 @@
 # Experiment checkpoint
 
-> 7 September 2026 update: [CONCLUSION.md](CONCLUSION.md) audits the published results, and [FINAL_ROUND.md](FINAL_ROUND.md) proposes a reduced five-arm closing comparison with explicit equivalence and resource criteria. Four six-slide talks with full scripts replace the long presentation series. No new model or human-rating call occurred. The ecological launcher and second-rater gates below remain unresolved; the final-round document is a proposal, not a completed preregistration. Prefer this finite design over automatically launching the synthetic factorial.
+> 15 September 2026 update: launch gate 1 in [FINAL_ROUND.md](FINAL_ROUND.md) is complete. A committed JSON-mode respondent launcher now captures exact provider payloads, enforces declared resource limits, validates one terminating submission, removes ephemeral credentials, and seals the whole attempt. Clean snapshot, mediator, no-provider Pi doctor, and deterministic mock checks passed. The work found and repaired an overbroad Seatbelt process permission before any ecological respondent call. Gemma/minimal and the 136,000-token ceiling for the excluded Gortex block are now agreed, with no calendar deadline. Gates 2–4, the independent rater, exact arm inputs and the block controller remain unresolved; the closing round is still not authorized.
 
-> Checkpoint: 24 August 2026, after the clean Gortex snapshot rerun and first ecological mediator/rubric implementation. Start future sessions in the `council-of-nark` repository root and read this file plus [`LAB_NOTEBOOK.md`](LAB_NOTEBOOK.md) before changing or running the experiment.
+> Checkpoint: 15 September 2026, after the ecological launcher and repaired boundary passed from committed code. Start future sessions in the `council-of-nark` repository root and read this file plus [`LAB_NOTEBOOK.md`](LAB_NOTEBOOK.md) before changing or running the experiment.
 
 ## Repository state
 
 - The snapshot work started from clean `main` at `69638aea2c429b64a43886098fde1f3cd8bee3f9`, synchronized with `origin/main`.
-- Controller `ef48b42…` contains the Gortex exporter; `0ba767a…` adds the mediator/rubric/doctor boundary and `a5972ab…` completes raw-artifact sealing. Confirm the live commit and clean state before any further snapshot or respondent work.
+- Controller `a000459…` adds the respondent launcher and repaired executable boundary; `fc9b6d4…` pins its clean Gortex snapshot, and `d22e3c8…` extends the Pi doctor with executable-denial probes. Confirm the live commit and clean state before any further snapshot or respondent work.
 - Strict Go/Seatbelt harness tag: `experiment-harness-go-v1.0`.
 - Maintained platform: macOS, Go 1.22+, `/usr/bin/sandbox-exec`, isolated Pi adapters. Direct agy and direct Claude CLI remain fail-closed.
 - Published synthetic results remain calibration, not confirmatory evidence.
@@ -35,18 +35,21 @@ just experiment-sandbox-check
 ### Isolation and reproducibility
 
 - The active harness is standard-library Go and mandatory macOS Seatbelt.
-- Provider children use empty working directories and ephemeral homes and cannot read the council repository, prompt-assembly worktree, answer keys, or real home.
+- Provider children use empty working directories and ephemeral homes and cannot read the council repository, prompt-assembly worktree, answer keys, or real home. Seatbelt permits process creation separately from explicitly allowlisted executables; probes require an unlisted executable to fail.
 - External CLI versions/digests, retries, sealing, verification, health, blinding, judging, and scoring are implemented.
 - Current provider/model tools are disabled. Provider transport networking remains necessary; provider-side hidden search is an unobservable limitation.
 
 ### Human rating and blinding
 
 - PR #18 replaced public-seed opaque-looking IDs with private random-key HMAC-SHA-256 IDs for sets, findings, and A/B pairs.
-- Phase 1 maps shuffled findings independently. Phase 2 compares matched outputs with randomized left/right placement and rates supportedness, actionability, fix quality, preference, condition guess, confidence, and wording leakage.
+- Synthetic Phase 1 maps shuffled findings independently. Synthetic Phase 2 compares matched outputs with randomized left/right placement and rates supportedness, actionability, fix quality, preference, condition guess, confidence, and wording leakage.
+- The ecological protocol instead rates each complete review against one common panel: problem statement, original repository resolution summary, exact applied patch, and changed tests. The upstream change is a demonstrated reference, not a gold standard.
+- Ecological absolute ratings use five technical 1–5 dimensions plus four separate personal-utility 1–7 scales. Dave's personal usefulness is a declared user-centred outcome; the independent rater's taste is reported separately.
 - Raw wording is preserved because it is part of the treatment. This is label-blinded, not guaranteed treatment-blinded.
 - `qualitative` requires two complete independent raters before unblinding and preserves opaque IDs in the derived report.
-- The project author volunteered as one disclosed-prior rater. A second independent rater is still mandatory. No claim-bearing human ratings have occurred.
-- A detailed anchored 1–5 remedy-quality rubric and disagreement/adjudication procedure still need to be frozen before a claim-bearing run.
+- Dave is confirmed as the disclosed-prior rater. Dan is the prospective independent rater but is not confirmed yet. A second independent rater remains mandatory. No claim-bearing human ratings have occurred.
+- The Gortex task has an anchored 1–5 quality rubric and disagreement/adjudication procedure. `ecological/rating/index.html` is a network-free one-review-at-a-time form with strict blinded bundle and rating-record schemas. The block controller still needs to generate and seal its HMAC-shuffled input and later pairwise bundle. Equivalent anchors must be frozen separately for every later task.
+- Deterministic checks validate schema, citations, budgets and the task fixture; compilation and tests are not review-quality scores. A frozen automated assessor may repeat the blinded rubric only as a secondary analysis.
 
 ### Ecological curation
 
@@ -68,40 +71,26 @@ Reserve:
 
 PR #19 added a separately gated Modular extreme reserve: CPU split-axis `argmax`/`argmin` index corruption. It is **not eligible** until its exact external build closure is mirrored/digested and the focused test is shown failing at the parent and passing at the evidence commit. It has public commit/test evidence but no public issue or PR review, so never pool it silently with the PR-backed set.
 
-The original local development export completed with source tree digest `41a9a14b…`; the exact evidence test failed at the parent with the expected panic and passed at the evidence commit using the frozen offline Go/module closure. A clean rerun from committed controller `ef48b42…` completed on 24 August as ignored attempt `20260824T012106Z-eco-gortex-unicode-tokenizer-62e6fe45`, reproduced the same tree digest, verified its seal, and passed all configured isolation probes. It is frozen infrastructure evidence, not a respondent result. No ecological respondent call or outcome rating has occurred.
+The original local development export completed with source tree digest `41a9a14b…`; the exact evidence test failed at the parent with the expected panic and passed at the evidence commit using the frozen offline Go/module closure. After the executable-policy repair, clean attempt `20260915T032052Z-eco-gortex-unicode-tokenizer-f123f261` from controller `a000459…` reproduced that tree and closure, denied network and an unlisted executable during validation, and verified its seal. It is frozen infrastructure evidence, not a respondent result. No ecological respondent call or outcome rating has occurred.
 
 ## Highest-priority next work
 
-### 1. Complete and probe the ecological launcher
+### 1. Freeze the comparative Gortex block
 
-Do this before spending 480 calls on the synthetic persona factorial. The clean snapshot, tool policy, Go mediator/test runner, Pi extension, and no-model doctor now exist. No claim runner or ecological model call exists yet.
+Launch gate 1 is complete. Clean mediator attempt `20260915T032205Z-gortex-mediator-check-8ec5ecdb` and Pi doctor `20260915T032313Z-gortex-pi-doctor-2c85ae4d` passed from committed code. After the prompt was focused on decision-oriented code review and research, clean deterministic mock `20260916T071950Z-eco-gortex-unicode-tokenizer-respondent-mock-3acf8ca8` passed from `4968619…`. It sealed and independently verified 12 files with digest `d5f5f678…` and used zero provider calls. See [`ecological/respondent/README.md`](ecological/respondent/README.md).
 
-The controller-side test runner and `just ecological-gortex-mediator-check <snapshot>` now verify the sealed snapshot/closure, exercise bounded list/read/search, reproduce the hidden regression under network-denied Seatbelt, sanitize returned paths, and deny traversal/arbitrary targets. The first successful check (`20260824T014109Z-gortex-mediator-check-2324d548`) came from a dirty development tree and is engineering evidence only.
-
-`just ecological-gortex-pi-doctor <snapshot>` now probes the other half of the boundary without a provider call. It starts isolated Pi with no built-ins/discovered resources/session, denies source/controller/evidence reads, exercises inherited mediator pipes, explicitly verifies model/thinking state, and seals events/profiles/runtime/transcript digests. Four failed attempts exposed persistent RPC shutdown behavior and Pi clamping Gemma `off` to `minimal`; the repair pins explicit `minimal` and uses controlled post-check termination.
-
-After commits `0ba767a…` and `a5972ab…`, clean mediator attempt `20260824T020111Z-gortex-mediator-check-662f680b` and clean Pi doctor `20260824T020121Z-gortex-pi-doctor-a93ff02e` both completed from `a5972ab…`. Their summaries/raw artifacts and seals verified, the returned mediator responses contained no absolute controller path, and the doctor made zero provider turns. These are frozen infrastructure checks, not respondent results.
-
-The claim runner must:
-
-1. use the verified snapshot/policy/mediator/extension/runtime inputs and JSON/print mode, which exits after the agent settles;
-2. assemble and digest the exact system prompt, sanitized brief, tool schemas, model, thinking level, and decoding state;
-3. capture Pi events and mediator transcript, validate exactly one terminating structured submission, and seal responses, usage, cost, latency, profiles, and probes;
-4. rerun negative direct-read/Git/write/arbitrary-target/shell/pipe/test-network probes from a clean committed controller;
-5. rerun both no-model checks after committing this infrastructure, then run a deterministic mock lifecycle before any ecological model call.
-
-Do not load `pi/ecological-tools.ts` manually for a respondent.
+Before a model call, freeze the exact prompts and deterministic schedule for S/I/R/F/P, define how continuing-session and fuser histories are represented, and add a whole-block controller rather than invoking the single-stage launcher by hand. The live comparison will use `google/gemma-4-31b-it`/`minimal`; provider cost is approved within the hard 136,000-token ceiling for the excluded Gortex block. There is no calendar deadline. Each stage still needs an equal wall-clock timeout, and a started block must follow its finite schedule without outcome-driven extension. Dave is confirmed as the disclosed-author rater; confirm Dan or another independent rater and document the excluded feasibility record. Do not load `pi/ecological-tools.ts` manually for a respondent.
 
 ### 2. Finish ecological scoring/run design before calls
 
-[`ecological/SCORING.md`](ecological/SCORING.md) now freezes claim-supportedness rules, five anchored dimensions, efficiency measures, missing-output handling, and disagreement/adjudication. `ecological/evidence/eco-gortex-unicode-tokenizer.md` freezes the task-specific evidence key and acceptable equivalent remedies. Both raters must remain condition-blinded; the evidence directory is controller/rater-only.
+[`ecological/SCORING.md`](ecological/SCORING.md) now freezes claim-supportedness rules, five anchored dimensions, personal-utility separation, efficiency measures, missing-output handling, and disagreement/adjudication. [`ecological/RATING.md`](ecological/RATING.md) defines the offline presentation and locking order. `ecological/evidence/eco-gortex-unicode-tokenizer.md` freezes the task-specific evidence key, original-repository reference account, and acceptable equivalent remedies. Both raters must remain condition-blinded; the evidence directory is controller/rater-only.
 
 Still freeze:
 
 - compared arms and the exact byte-level prompt factor;
 - call count, randomisation/blocking, model/thinking level, retries, and smallest effect of interest;
-- the cross-rater aggregation and any primary endpoint derived from the five separate dimensions;
-- two available raters and the rating CSV/bundle format;
+- the confirmatory margin for Dave's personal-usefulness scale and how it enters the adoption decision;
+- the independent rater, whole-block bundle generator, paired-rating page, and automated-assessor configuration;
 - exclusions and pilot-to-reserve substitution rules.
 
 The upstream patch remains evidence, not the only acceptable solution. Preserve supported novel findings.

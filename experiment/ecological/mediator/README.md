@@ -36,7 +36,7 @@ just ecological-gortex-mediator-check \
   experiment/ecological/work/<clean-snapshot-attempt>
 ```
 
-The check verifies the snapshot seal and exact source tree, hashes policy/extension/mediator inputs, runs positive list/read/search/test probes, and requires traversal and arbitrary-test denial. The hidden parent regression runs under a separate deny-by-default, network-denied Seatbelt profile using the frozen Go/module closure. Raw test logs remain under ignored `experiment/ecological/mediator-runs/`; only sanitized output crosses the mediator response.
+The check verifies the snapshot seal and exact source tree, hashes policy/extension/mediator inputs, runs positive list/read/search/test probes, and requires traversal and arbitrary-test denial. The hidden parent regression runs under a separate deny-by-default Seatbelt profile using the frozen Go/module closure. Each test invocation proves that network access and an unlisted shell executable are denied. Raw test logs remain under ignored `experiment/ecological/mediator-runs/`; only sanitized output crosses the mediator response.
 
 This command makes no model call and does not exercise Pi. Follow it with:
 

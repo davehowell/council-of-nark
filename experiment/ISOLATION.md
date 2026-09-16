@@ -24,7 +24,9 @@ The Go controller creates and verifies a detached worktree, assembles the exact 
 - only ephemeral scratch writes;
 - no filesystem view of the worktree, repository, run directory, answer keys, or real home.
 
-The generated Seatbelt policy denies by default. Executable probes must show an allowed scratch write and denied repository read. Failure aborts doctor/freeze; there is no permissive fallback.
+The generated Seatbelt policy denies by default. Executable probes must show an allowed scratch write, a denied repository read, and denial of an executable outside the explicit allowlist. Failure aborts doctor/freeze; there is no permissive fallback.
+
+A 15 September 2026 launcher probe found that the earlier profiles used `(allow process*)`, which also permitted `process-exec` and made the later executable-path rule ineffective. The profiles now allow `process-fork` separately and list every executable path. Earlier model-call adapters exposed no model shell or discovered extension, so this finding is not evidence that a respondent read local files; it is evidence that the claimed executable restriction was not enforced. No ecological respondent had run. Future snapshots and calls must use the repaired profile and executable-denial probe.
 
 ## Network boundary
 
@@ -75,15 +77,9 @@ trusted Go mediator (policy, budgets, transcript)
 
 The no-model ecological doctor now verifies the snapshot, policy, extension and runtime digests; starts isolated Pi with only the custom tools; maps the two mediator pipes; proves source/controller/evidence reads are denied; exercises a mediated health request; explicitly verifies model/thinking state; and seals Pi events, profiles, probes, and the mediator transcript. The separate mediator check runs the allowlisted hidden test and its test-network probe. Both checks preserve attempts and make no provider call.
 
-This boundary is not complete for a respondent until a committed claim runner:
+The single-stage claim runner now implements those requirements: exact prompt/input digests, JSON-mode Pi, pre-transport provider-payload capture, event and mediator transcripts, resource accounting, final-submission validation, ephemeral-state removal, complete sealing, and negative direct-read/Git/traversal/arbitrary-test/shell/test-network probes. Its tracked configuration is a deterministic mock and makes no provider call.
 
-- assembles and digests the exact system prompt, sanitized brief, tool schemas, model, and decoding state;
-- uses JSON/print mode so Pi exits after the agent settles, rather than the doctor's persistent RPC lifecycle;
-- records and seals every request/response, Pi event, mediator transcript, profile/probe, final structured output, usage, cost, and latency;
-- rejects missing, duplicate, malformed, or non-terminating final submissions;
-- reruns negative probes for direct source/evidence/controller reads, Git/remotes, writes, arbitrary test targets, shell execution, pipe bypass, and test-network access from a clean committed controller.
-
-Until those checks pass and the compared arms are preregistered, the tracked mediator, Pi extension, and doctor are infrastructure prototypes and must not be used for a respondent call.
+The boundary is still not authorized for a respondent call until the repaired profiles and runner pass from a clean committed controller and the compared arms, resource limits, retry rule, and human rating plan are preregistered. No tracked Pi-backed run configuration exists yet.
 
 ## OS accounts
 

@@ -37,6 +37,20 @@ const pending = new Map<
 >();
 let inputBuffer = Buffer.alloc(0);
 let channelError: Error | undefined;
+let auditSequence = 0;
+let providerTurns = 0;
+let observedTokens = 0;
+let submissionCalls = 0;
+
+const auditEnabled = process.env.COUNCIL_ECOLOGICAL_AUDIT === "1";
+const maxProviderTurns = Number.parseInt(process.env.COUNCIL_ECOLOGICAL_MAX_PROVIDER_TURNS || "0", 10);
+const maxTotalTokens = Number.parseInt(process.env.COUNCIL_ECOLOGICAL_MAX_TOTAL_TOKENS || "0", 10);
+
+function audit(kind: string, data: Record<string, unknown> = {}): void {
+	if (!auditEnabled) return;
+	auditSequence += 1;
+	writeSync(5, `${JSON.stringify({ schema_version: 1, sequence: auditSequence, kind, ...data })}\n`, undefined, "utf8");
+}
 
 function failChannel(error: Error): void {
 	channelError = error;
@@ -206,7 +220,8 @@ export default function ecologicalTools(pi: ExtensionAPI): void {
 			),
 			uncertainties: Type.Array(Type.String(), { maxItems: 8 }),
 		}),
-		async execute(_toolCallId, params) {
+		async execute(toolCallId, params) {
+			audit("final_submission", { tool_call_id: toolCallId, details: params });
 			return {
 				content: [{ type: "text", text: `Submitted ${params.findings.length} finding(s).` }],
 				details: params,
@@ -229,7 +244,51 @@ export default function ecologicalTools(pi: ExtensionAPI): void {
 		});
 	}
 
+	pi.on("before_provider_request", (event, ctx) => {
+		if (
+			(maxProviderTurns > 0 && providerTurns >= maxProviderTurns) ||
+			(maxTotalTokens > 0 && observedTokens >= maxTotalTokens)
+		) {
+			audit("budget_stop", { provider_turns: providerTurns, observed_tokens: observedTokens });
+			ctx.abort();
+			throw new Error("ecological aggregate provider budget exhausted");
+		}
+		providerTurns += 1;
+		audit("provider_request", { provider_turn: providerTurns, payload: event.payload });
+	});
+
+	pi.on("after_provider_response", (event) => {
+		audit("provider_response", {
+			provider_turn: providerTurns,
+			status: event.status,
+			headers: event.headers,
+		});
+	});
+
+	pi.on("message_end", (event) => {
+		if (event.message.role !== "assistant") return;
+		const usage = event.message.usage;
+		const total = usage.totalTokens || usage.input + usage.output + usage.cacheRead + usage.cacheWrite;
+		observedTokens += total;
+		audit("assistant_usage", {
+			provider_turn: providerTurns,
+			usage,
+			observed_tokens: observedTokens,
+		});
+	});
+
+	pi.on("tool_call", (event) => {
+		if (submissionCalls > 0) {
+			audit("tool_after_submission", { tool_call_id: event.toolCallId, tool_name: event.toolName });
+			return { block: true, reason: "the final ecological submission has already been made", terminate: true };
+		}
+		if (event.toolName === "submit_ecological_review") {
+			submissionCalls += 1;
+		}
+	});
+
 	pi.on("session_start", () => {
 		pi.setActiveTools(ACTIVE_TOOLS);
+		audit("session_start", { active_tools: pi.getActiveTools() });
 	});
 }

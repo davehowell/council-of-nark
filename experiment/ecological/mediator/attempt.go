@@ -86,7 +86,7 @@ func VerifySnapshotAttempt(attempt string, requirements AttemptRequirements) (Ve
 			return VerifiedAttempt{}, fmt.Errorf("snapshot %s evidence is absent", label)
 		}
 	}
-	for _, key := range []string{"closure_verified_offline", "network_probe_denied"} {
+	for _, key := range []string{"closure_verified_offline", "network_probe_denied", "unlisted_executable_denied"} {
 		if value, ok := provenance.Validation[key].(bool); !ok || !value {
 			return VerifiedAttempt{}, fmt.Errorf("snapshot validation check %q did not pass", key)
 		}

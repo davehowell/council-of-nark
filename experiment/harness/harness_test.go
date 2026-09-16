@@ -221,4 +221,7 @@ func TestProfileDoesNotAllowRepository(t *testing.T) {
 	if !strings.Contains(profile, "(deny default)") {
 		t.Fatal("profile is not deny-by-default")
 	}
+	if strings.Contains(profile, "(allow process*)") {
+		t.Fatal("profile permits executables outside the allowlist")
+	}
 }
