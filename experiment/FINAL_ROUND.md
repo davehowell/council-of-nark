@@ -6,7 +6,7 @@ Status: proposed 7 September 2026; launch gate 1 completed 15 September 2026; **
 
 For the declared model, task set, and resource policy, does a small council produce better supported, actionable reviews than a single reviewer or sequential self-review? Does fictional wording improve, harm, or leave practical quality unchanged when the functional kernels are identical?
 
-This is diagnosis/review, not end-to-end implementation. A working patch benchmark would require a separate design. The target of generalisation must be declared before running: a fixed benchmark average can be estimated by repeats, but software engineering generally requires new tasks and repositories.
+This is diagnosis, code review and research support, not end-to-end implementation. Respondents submit decision-oriented review reports and cannot edit the source. Compilation and tests validate the fixture or support a claim; they are not an outcome score. A patch-generation or candidate-patch review benchmark would require a separate design. The target of generalisation must be declared before running: a fixed benchmark average can be estimated by repeats, but software engineering generally requires new tasks and repositories.
 
 ## Five arms
 
@@ -38,9 +38,13 @@ The four reserve tasks are not automatic outcome-driven replacements. Substitute
 
 ## Primary outcome and human aggregation
 
-Before the first comparative run, freeze task-specific anchors equivalent to [SCORING.md](ecological/SCORING.md). Do not reuse Unicode-specific anchors literally for unrelated repositories. Two humans score independently, with one permitted disclosed author prior and a second independent rater. Preserve raw wording and collect treatment guesses after scoring.
+Before the first comparative run, freeze task-specific anchors equivalent to [SCORING.md](ecological/SCORING.md). Do not reuse Unicode-specific anchors literally for unrelated repositories. Two humans score independently, with one permitted disclosed author prior and a second independent rater. Preserve raw wording and collect treatment guesses after scoring. Follow the offline presentation and locking procedure in [RATING.md](ecological/RATING.md).
 
-Define review utility Q on [0,1]: mean of the five adjudicated dimension scores, rescaled as (mean−1)/4. Set Q=0 for missing/malformed final output, an unsupported primary mechanism, or a critical unsupported remedy claim. Publish every original dimension and both raters' scores; the composite is a declared decision aid, not a substitute for correctness. Adjudicate mechanism disagreements before aggregation. Material unsupported-claim rate and critical-failure rate are safety endpoints; supported novel findings count even if absent from the eventual patch.
+Every rater sees the same ecological problem statement, original repository resolution summary, applied patch, and changed regression tests. Treat that merged change as the demonstrated reference standard, not a gold standard: supported alternative remedies, idiomatic judgments, and novel findings remain valid. Show one opaque review at a time in shuffled order, without arm or resource metadata, and lock absolute scores before paired comparisons.
+
+Define technical review quality Q on [0,1]: mean of the five adjudicated dimension scores, rescaled as (mean−1)/4. Set Q=0 for missing/malformed final output, an unsupported primary mechanism, or a critical unsupported remedy claim. Publish every original dimension and both raters' scores; the composite is a declared decision aid, not a substitute for correctness. Adjudicate mechanism disagreements before aggregation. Material unsupported-claim rate and critical-failure rate are safety endpoints; supported novel findings count even if absent from the eventual patch.
+
+Also collect the four 1–7 user-centred scales in `RATING.md`. Dave's personal-usefulness score is a declared adoption outcome because the council is intended for his workflow. Report the independent rater's utility separately; do not average away subjective differences or fold these scales into Q. Automated blinded assessors may repeat the rubric as secondary analysis, but they do not replace either human or decide Dave's personal taste. Compilation and test success validate the fixture rather than score a review report.
 
 For every comparison, average paired differences within each task before averaging across tasks. Report fixed-set results explicitly. For broader inference account for repository clustering; four repositories are insufficient for precise population inference. More repeated calls cannot repair that limitation. Report raw panel coverage and fusion retention descriptively using blinded semantic claim mapping; do not invent planted-defect F1 for ecological tasks.
 
@@ -68,6 +72,6 @@ One confirmatory analysis at the frozen sample size. No repeated looks until sig
 1. **Complete (15 September 2026):** the JSON/print single-stage launcher captures exact requests, validates one final submission, enforces declared aggregate limits, removes ephemeral credentials, and seals the attempt. Clean snapshot, mediator, Pi doctor, deterministic mock, and negative boundary probes passed. The mock used zero provider calls and is not evidence.
 2. Validate eligible snapshots and freeze non-Gortex evidence keys and anchors.
 3. **Partly complete:** Dave is confirmed as the disclosed-author rater; Gemma/minimal and the 136,000-token Gortex-block ceiling are agreed, with no calendar deadline. Confirm the independent rater (Dan is the current candidate), then freeze exact arm prompts, per-stage wall timeouts and the allocation schedule.
-4. Run the excluded feasibility stage, then commit a completed preregistration with model/runtime digests, numerical budgets, sample size, seed, failure/retry rules, intervals, safety rule and stopping rule.
+4. Run the excluded feasibility stage, then commit a completed preregistration with model/runtime digests, numerical budgets, sample size, seed, failure/retry rules, intervals, safety rule, personal-usefulness decision rule, automated-assessor configuration and stopping rule.
 
 These gates require real work and human input. This proposal does not convert infrastructure success into a council result.

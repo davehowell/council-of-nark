@@ -2,18 +2,20 @@
 
 > Status: frozen for Gortex infrastructure calibration only. Do not make a comparative claim until the arm design, sample count, two raters, aggregation rule, and smallest effect of interest are preregistered.
 
-Ecological outputs are not scored as planted-defect F1. The upstream correction and tests are evidence, not the only acceptable answer. Raters preserve supported novel findings and score each submitted finding independently before any paired preference rating.
+Ecological outputs are review and research reports, not generated patches, and are not scored as planted-defect F1. The upstream correction and tests are a demonstrated reference resolution, not the only acceptable answer. Raters first score each complete review independently, then map its claims, and only afterward see preregistered blinded pairs. Supported alternative remedies and novel findings remain eligible.
 
 ## Rater boundary
 
 Two humans rate independently while condition, provider, prompt wrapper, and output order remain hidden. One may disclose a prior preference for the council, but the other must be independent. Raters receive:
 
-- the sanitized brief;
+- the ecological problem statement;
+- the original repository's pull-request title and succinct resolution description;
+- the applied patch and changed regression tests;
 - the frozen source locations cited by the output;
 - the task-specific evidence key and regression evidence;
-- one opaque finding at a time.
+- one complete review under an opaque ID.
 
-They do not receive the condition map, prompt variants, upstream URLs, or other respondents' output. Raw wording is preserved. After scoring a matched pair, each rater records a condition guess, confidence, and whether wording revealed the likely treatment. This is label blinding, not guaranteed treatment blinding.
+The reference resolution is common to every condition. It is a baseline for technical adequacy, not a whitelist or gold standard. Raters do not receive the condition map, prompt variants, resource use, run IDs, or other respondents' output during absolute rating. Raw wording is preserved. After scoring, each rater records a condition guess, confidence, and whether wording revealed the likely treatment. This is label blinding, not guaranteed treatment blinding. The complete presentation and personal-utility scales are in [`RATING.md`](RATING.md).
 
 ## Atomic claim mapping
 
@@ -85,6 +87,12 @@ Use integer scores. Scores 2 and 4 mean the response falls between the adjacent 
 | 4 | Clear location, algorithm, edge handling, and tests; only a minor implementation choice remains. |
 | 5 | Concise, directly implementable, evidence-linked, explicit about trade-offs and uncertainty, and avoids unrelated refactoring. |
 
+## Personal review utility
+
+Technical quality Q remains the mean of the five dimensions above after the declared rescaling and failure rules. Record the four 1–7 personal-utility scales from [`RATING.md`](RATING.md) separately: personal usefulness, judgment and idiomatic fit, useful value beyond the reference, and signal to noise. Do not average them into Q.
+
+Dave's personal-usefulness score is a declared user-centred outcome because the council is intended for his workflow. The independent rater's score tests whether that preference travels. Publish them separately instead of treating taste disagreement as measurement error.
+
 ## Tool and efficiency measures
 
 The controller records these mechanically; raters do not estimate them:
@@ -97,7 +105,7 @@ The controller records these mechanically; raters do not estimate them:
 - reported cost;
 - malformed or missing final submission.
 
-Compare arms with identical tool policy and budgets. Report each quality dimension beside cost and latency. Do not create a post-hoc quality-per-dollar composite after seeing outcomes.
+Compare arms with identical tool policy and budgets. Report each quality dimension beside cost and latency. Do not create a post-hoc quality-per-dollar composite after seeing outcomes. Compilation and test success validate the frozen task fixture; they do not score a review report. Whether the respondent called the focused test is an evidence-gathering and resource-use observation, not a quality point.
 
 ## Disagreement and adjudication
 

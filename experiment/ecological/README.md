@@ -115,7 +115,7 @@ The answer evidence normally consists of the merged patch, its regression tests,
 
 ## Scoring
 
-The detailed condition-blinded 1–5 anchors, claim-supportedness rules, efficiency measures, and adjudication procedure are frozen in [`SCORING.md`](SCORING.md). Task-specific keys under `evidence/` are rater/controller-only and must never enter a respondent mount or provider child.
+The detailed condition-blinded 1–5 anchors, claim-supportedness rules, efficiency measures, and adjudication procedure are frozen in [`SCORING.md`](SCORING.md). [`RATING.md`](RATING.md) defines the human presentation: every rater sees the same problem statement, original repository resolution summary, applied patch, and changed tests before rating one opaque review at a time. The network-free page and strict bundle/record schemas live under [`rating/`](rating/). Task-specific keys under `evidence/` are rater/controller-only and must never enter a respondent mount or provider child.
 
 Score separately:
 
@@ -127,4 +127,6 @@ Score separately:
 - remedy quality/actionability;
 - token, latency, and tool-use cost.
 
-Do not reduce ecological tasks to planted-defect F1 alone. Use blinded finding-level mappings plus paired qualitative ratings. Two humans rate independently; a rater may know the council project but must not see condition labels, prompt variants, PRs, or the private unblind map.
+Do not reduce ecological tasks to planted-defect F1 alone. Use independently locked whole-review scores, blinded finding-level mappings, personal-utility scales, and then paired qualitative ratings. Two humans rate independently; a rater may know the council project but must not see condition labels, prompt variants, resource metadata, other outputs during absolute rating, or the private unblind map. Raters do see the same upstream PR summary and applied change as a reference resolution. It is evidence, not a whitelist.
+
+This is a review/research experiment, not a patch-generation benchmark. Compilation and focused-test success validate the fixture and provide evidence; they do not score the review. A frozen automated assessor may repeat the blinded rubric as secondary analysis, but it does not replace either human or decide Dave's personal usefulness score.

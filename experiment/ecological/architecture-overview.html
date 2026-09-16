@@ -154,7 +154,8 @@
       <a href="#boundaries">2. Sandboxing</a>
       <a href="#sequence">3. One review stage</a>
       <a href="#comparison">4. Five-arm comparison</a>
-      <a href="#records">5. Records and limits</a>
+      <a href="#rating">5. Blind rating</a>
+      <a href="#records">6. Records and limits</a>
     </nav>
   </header>
 
@@ -462,8 +463,92 @@
     <p>The proposal gives I, R, F and P up to 32,000 charged tokens each, allocated as 8,000 per stage. Together with S, one block therefore has a proposed ceiling of 136,000 charged tokens. This is a ceiling, not an expected bill.</p>
   </section>
 
+  <section id="rating" aria-labelledby="rating-heading">
+    <h2 id="rating-heading"><span>05</span>Blind human and automated rating</h2>
+    <p>Every output is rated as a code-review and research report. The merged upstream change is shown to every rater as a demonstrated reference resolution, not a gold standard. Supported alternatives, idiomatic trade-offs and findings beyond that patch remain eligible.</p>
+    <figure>
+      <div class="diagram" tabindex="0" role="region" aria-label="Blind rating workflow diagram, horizontally scrollable">
+        <svg viewBox="0 0 1200 500" role="img" aria-labelledby="rating-title rating-desc" xmlns="http://www.w3.org/2000/svg">
+          <title id="rating-title">Blind rating workflow</title>
+          <desc id="rating-desc">The problem statement, original repository summary, applied patch and tests combine with sealed experimental reviews. A controller assigns opaque HMAC IDs, shuffles review order and keeps the condition map private. The offline page shows one complete review at a time to Dave and an independent rater. Humans lock technical, personal-utility and qualitative ratings before pairwise comparisons. A separately frozen automated assessor receives the same blinded material as a secondary analysis. Conditions are unblinded only after ratings and adjudication are locked.</desc>
+
+          <path class="edge" d="M220 115 H300"/>
+          <path class="edge" d="M220 285 H300"/>
+          <path class="edge" d="M500 180 H555"/>
+          <path class="edge" d="M735 180 H790 V115 H835"/>
+          <path class="edge" d="M735 180 H790 V245 H835"/>
+          <path class="edge" d="M735 205 H770 V385 H835"/>
+          <path class="edge" d="M1015 115 H1025 V210 H1035"/>
+          <path class="edge" d="M1015 245 H1035"/>
+          <path class="edge" d="M1015 385 H1025 V275 H1035"/>
+          <path class="edge" d="M1107 285 V350"/>
+          <path class="edge audit" d="M400 235 V365 H555"/>
+          <path class="edge audit" d="M400 447 V465 H1107 V435"/>
+          <path class="edge" d="M645 245 V350"/>
+          <text class="edge-label" x="660" y="305">after both absolute files lock</text>
+
+          <rect class="node" x="20" y="60" width="200" height="110" rx="3"/>
+          <text class="node-title" x="120" y="88" text-anchor="middle">Common reference</text>
+          <text class="node-title" x="120" y="111" text-anchor="middle">panel</text>
+          <text class="node-detail" x="120" y="137" text-anchor="middle">Problem · PR summary</text>
+          <text class="node-detail" x="120" y="157" text-anchor="middle">Applied patch · tests</text>
+
+          <rect class="artifact-node" x="20" y="230" width="200" height="110" rx="3"/>
+          <text class="node-title" x="120" y="263" text-anchor="middle">Sealed final reviews</text>
+          <text class="node-detail" x="120" y="291" text-anchor="middle">One output per arm</text>
+          <text class="node-detail" x="120" y="313" text-anchor="middle">Raw wording retained</text>
+
+          <rect class="controller-node" x="300" y="125" width="200" height="110" rx="3"/>
+          <text class="node-title on-controller" x="400" y="158" text-anchor="middle">Bundle controller</text>
+          <text class="node-detail on-controller" x="400" y="186" text-anchor="middle">HMAC IDs · shuffled order</text>
+          <text class="node-detail on-controller" x="400" y="208" text-anchor="middle">Rejects condition metadata</text>
+
+          <rect class="hidden-node" x="300" y="365" width="200" height="82" rx="3"/>
+          <text class="node-title" x="400" y="398" text-anchor="middle">Private condition map</text>
+          <text class="node-detail" x="400" y="425" text-anchor="middle">Not in either rating file</text>
+
+          <rect class="artifact-node" x="555" y="125" width="180" height="120" rx="3"/>
+          <text class="node-title" x="645" y="158" text-anchor="middle">Offline rating page</text>
+          <text class="node-detail" x="645" y="186" text-anchor="middle">One opaque review</text>
+          <text class="node-detail" x="645" y="208" text-anchor="middle">at a time · no network</text>
+
+          <rect class="proposed-node" x="555" y="350" width="180" height="82" rx="3"/>
+          <text class="node-title" x="645" y="383" text-anchor="middle">Blinded pairs</text>
+          <text class="node-detail" x="645" y="410" text-anchor="middle">Only declared contrasts</text>
+
+          <rect class="node" x="835" y="65" width="180" height="100" rx="3"/>
+          <text class="node-title" x="925" y="100" text-anchor="middle">Dave</text>
+          <text class="node-detail" x="925" y="128" text-anchor="middle">Disclosed author prior</text>
+          <text class="node-detail" x="925" y="150" text-anchor="middle">Personal utility is valid</text>
+
+          <rect class="node" x="835" y="195" width="180" height="100" rx="3"/>
+          <text class="node-title" x="925" y="230" text-anchor="middle">Independent rater</text>
+          <text class="node-detail" x="925" y="258" text-anchor="middle">Same packet and scales</text>
+          <text class="node-detail" x="925" y="280" text-anchor="middle">No condition map</text>
+
+          <rect class="sandbox-node" x="835" y="335" width="180" height="100" rx="3"/>
+          <text class="node-title" x="925" y="370" text-anchor="middle">Automated assessor</text>
+          <text class="node-detail" x="925" y="398" text-anchor="middle">Frozen blinded rubric</text>
+          <text class="node-detail" x="925" y="420" text-anchor="middle">Secondary analysis only</text>
+
+          <rect class="artifact-node" x="1035" y="175" width="145" height="110" rx="3"/>
+          <text class="node-title" x="1107" y="210" text-anchor="middle">Locked ratings</text>
+          <text class="node-detail" x="1107" y="242" text-anchor="middle">Technical · utility</text>
+          <text class="node-detail" x="1107" y="264" text-anchor="middle">Comments · guesses</text>
+
+          <rect class="artifact-node" x="1035" y="350" width="145" height="85" rx="3"/>
+          <text class="node-title" x="1107" y="382" text-anchor="middle">Analysis</text>
+          <text class="node-detail" x="1107" y="408" text-anchor="middle">Unblind conditions</text>
+          <text class="node-detail" x="1107" y="428" text-anchor="middle">after adjudication</text>
+        </svg>
+      </div>
+      <figcaption>Absolute scores are locked before any side-by-side comparison. Technical quality Q and claim labels remain evidence-grounded. Dave's personal-usefulness score is reported as a user-centred outcome, while the independent rater's utility is reported separately. Automated ratings do not replace either person.</figcaption>
+    </figure>
+    <p class="reference">Procedure and scales: <a href="RATING.md">ecological rating protocol</a> · Offline page: <a href="rating/index.html">rating interface</a> · Technical anchors: <a href="SCORING.md">scoring protocol</a></p>
+  </section>
+
   <section id="records" aria-labelledby="records-heading">
-    <h2 id="records-heading"><span>05</span>Records, checks and current decisions</h2>
+    <h2 id="records-heading"><span>06</span>Records, checks and current decisions</h2>
     <p>A completed attempt is a directory with a manifest that records the path, byte count and SHA-256 digest of every other retained file. Verification recomputes all three and rejects missing, extra or changed files.</p>
     <div class="table-scroll" tabindex="0" role="region" aria-label="Attempt artifact table, horizontally scrollable">
       <table>
@@ -486,8 +571,9 @@
       <li><strong>Model:</strong> the live comparison will use <code>google/gemma-4-31b-it</code> with <code>minimal</code> thinking, matching the clean boundary doctor and earlier calibration. The deterministic mock selects no provider model and makes zero provider calls.</li>
       <li><strong>Spend:</strong> provider cost is approved within the hard 136,000-token ceiling for the excluded Gortex block. Usage and reported cost remain part of the result.</li>
       <li><strong>Raters:</strong> Dave is the disclosed-author rater. Dan is the prospective independent rater and is not recorded as confirmed until he agrees.</li>
+      <li><strong>Rating:</strong> the offline absolute-rating page and strict bundle/record schemas are implemented. The whole-block controller must still generate sealed HMAC-shuffled bundles and the later paired presentation.</li>
       <li><strong>Scheduling:</strong> there is no calendar deadline. Each stage retains a wall-clock timeout, and a started block follows its frozen finite schedule without outcome-driven extension.</li>
-      <li><strong>Next implementation:</strong> freeze the S/I/R/F/P prompts, stage timeouts and schedule, then add a whole-block controller and deterministic block mock before a live call.</li>
+      <li><strong>Next implementation:</strong> freeze the S/I/R/F/P prompts, stage timeouts and schedule, then add a whole-block controller, bundle generator and deterministic block mock before a live call.</li>
     </ul>
 
     <h3>Limits of the boundary</h3>

@@ -57,7 +57,7 @@ experiment-evidence-audit:
 
 # Run Go harness and ecological snapshot tests without making model calls.
 experiment-test:
-    go test ./experiment/harness/... ./experiment/ecological/snapshot ./experiment/ecological/mediator ./experiment/ecological/respondent ./experiment/ecological/cmd/ecological-snapshot ./experiment/ecological/cmd/ecological-mediator-check ./experiment/ecological/cmd/ecological-pi-doctor ./experiment/ecological/cmd/ecological-respondent
+    go test ./experiment/harness/... ./experiment/ecological/snapshot ./experiment/ecological/mediator ./experiment/ecological/respondent ./experiment/ecological/rating ./experiment/ecological/cmd/ecological-snapshot ./experiment/ecological/cmd/ecological-mediator-check ./experiment/ecological/cmd/ecological-pi-doctor ./experiment/ecological/cmd/ecological-respondent
 
 # Build a fresh Gortex pilot snapshot and validate its focused regression offline.
 ecological-gortex-snapshot:

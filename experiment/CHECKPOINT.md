@@ -42,11 +42,14 @@ just experiment-sandbox-check
 ### Human rating and blinding
 
 - PR #18 replaced public-seed opaque-looking IDs with private random-key HMAC-SHA-256 IDs for sets, findings, and A/B pairs.
-- Phase 1 maps shuffled findings independently. Phase 2 compares matched outputs with randomized left/right placement and rates supportedness, actionability, fix quality, preference, condition guess, confidence, and wording leakage.
+- Synthetic Phase 1 maps shuffled findings independently. Synthetic Phase 2 compares matched outputs with randomized left/right placement and rates supportedness, actionability, fix quality, preference, condition guess, confidence, and wording leakage.
+- The ecological protocol instead rates each complete review against one common panel: problem statement, original repository resolution summary, exact applied patch, and changed tests. The upstream change is a demonstrated reference, not a gold standard.
+- Ecological absolute ratings use five technical 1–5 dimensions plus four separate personal-utility 1–7 scales. Dave's personal usefulness is a declared user-centred outcome; the independent rater's taste is reported separately.
 - Raw wording is preserved because it is part of the treatment. This is label-blinded, not guaranteed treatment-blinded.
 - `qualitative` requires two complete independent raters before unblinding and preserves opaque IDs in the derived report.
 - Dave is confirmed as the disclosed-prior rater. Dan is the prospective independent rater but is not confirmed yet. A second independent rater remains mandatory. No claim-bearing human ratings have occurred.
-- The Gortex task has an anchored 1–5 quality rubric and disagreement/adjudication procedure. Equivalent anchors must be frozen separately for every later task.
+- The Gortex task has an anchored 1–5 quality rubric and disagreement/adjudication procedure. `ecological/rating/index.html` is a network-free one-review-at-a-time form with strict blinded bundle and rating-record schemas. The block controller still needs to generate and seal its HMAC-shuffled input and later pairwise bundle. Equivalent anchors must be frozen separately for every later task.
+- Deterministic checks validate schema, citations, budgets and the task fixture; compilation and tests are not review-quality scores. A frozen automated assessor may repeat the blinded rubric only as a secondary analysis.
 
 ### Ecological curation
 
@@ -80,14 +83,14 @@ Before a model call, freeze the exact prompts and deterministic schedule for S/I
 
 ### 2. Finish ecological scoring/run design before calls
 
-[`ecological/SCORING.md`](ecological/SCORING.md) now freezes claim-supportedness rules, five anchored dimensions, efficiency measures, missing-output handling, and disagreement/adjudication. `ecological/evidence/eco-gortex-unicode-tokenizer.md` freezes the task-specific evidence key and acceptable equivalent remedies. Both raters must remain condition-blinded; the evidence directory is controller/rater-only.
+[`ecological/SCORING.md`](ecological/SCORING.md) now freezes claim-supportedness rules, five anchored dimensions, personal-utility separation, efficiency measures, missing-output handling, and disagreement/adjudication. [`ecological/RATING.md`](ecological/RATING.md) defines the offline presentation and locking order. `ecological/evidence/eco-gortex-unicode-tokenizer.md` freezes the task-specific evidence key, original-repository reference account, and acceptable equivalent remedies. Both raters must remain condition-blinded; the evidence directory is controller/rater-only.
 
 Still freeze:
 
 - compared arms and the exact byte-level prompt factor;
 - call count, randomisation/blocking, model/thinking level, retries, and smallest effect of interest;
-- the cross-rater aggregation and any primary endpoint derived from the five separate dimensions;
-- two available raters and the rating CSV/bundle format;
+- the confirmatory margin for Dave's personal-usefulness scale and how it enters the adoption decision;
+- the independent rater, whole-block bundle generator, paired-rating page, and automated-assessor configuration;
 - exclusions and pilot-to-reserve substitution rules.
 
 The upstream patch remains evidence, not the only acceptable solution. Preserve supported novel findings.
