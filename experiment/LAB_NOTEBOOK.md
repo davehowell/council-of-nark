@@ -160,7 +160,8 @@ This is the chronological engineering record. It preserves failed runs and the r
 
 - Added a standalone inline-SVG overview of the experiment flow, separate Seatbelt sandboxes, one-stage lifecycle, proposed five-arm block, and sealed records. It labels implemented infrastructure separately from unrun comparative work.
 - Dave confirmed that he will be the disclosed-author rater. Dan is the prospective independent rater and remains unconfirmed.
-- Clarified the spending question: the no-model doctor currently selects `google/gemma-4-31b-it` with `minimal` thinking, while the mock makes no provider call. The live comparison model is not frozen. Capped Codex/Claude plans and low Gemini cost are available options, but a model/provider change requires a committed config and a fresh clean doctor check. No provider or rating call occurred during this update.
+- Clarified the spending question: the no-model doctor currently selects `google/gemma-4-31b-it` with `minimal` thinking, while the mock makes no provider call. The live comparison model was not yet frozen at this point. Capped Codex/Claude plans and low Google-provider cost were available options, but a model/provider change would require a committed config and a fresh clean doctor check. No provider or rating call occurred during this update.
+- Follow-up decision: use `google/gemma-4-31b-it`/`minimal` for the live comparison. Provider cost is approved within the hard 136,000-token ceiling for the excluded Gortex block. There is no calendar deadline because this is a personal project. This does not remove per-stage wall-clock limits or the finite block stopping rule: once launched, run the frozen schedule without outcome-driven additions and record any infrastructure pause. Dan remains a prospective, not confirmed, independent rater.
 
 ## Notebook rule
 

@@ -483,10 +483,11 @@
 
     <h3>Current model and rating status</h3>
     <ul>
-      <li><strong>Infrastructure check:</strong> Pi currently selects <code>google/gemma-4-31b-it</code> with <code>minimal</code> thinking. The deterministic mock selects no provider model and makes zero provider calls.</li>
-      <li><strong>Live comparison:</strong> the model is not frozen yet. Changing from Gemma to Gemini, Claude or Codex changes the estimand and requires a new clean doctor check and committed run configuration.</li>
+      <li><strong>Model:</strong> the live comparison will use <code>google/gemma-4-31b-it</code> with <code>minimal</code> thinking, matching the clean boundary doctor and earlier calibration. The deterministic mock selects no provider model and makes zero provider calls.</li>
+      <li><strong>Spend:</strong> provider cost is approved within the hard 136,000-token ceiling for the excluded Gortex block. Usage and reported cost remain part of the result.</li>
       <li><strong>Raters:</strong> Dave is the disclosed-author rater. Dan is the prospective independent rater and is not recorded as confirmed until he agrees.</li>
-      <li><strong>Next implementation:</strong> freeze the S/I/R/F/P prompts and schedule, then add a whole-block controller and deterministic block mock before a live call.</li>
+      <li><strong>Scheduling:</strong> there is no calendar deadline. Each stage retains a wall-clock timeout, and a started block follows its frozen finite schedule without outcome-driven extension.</li>
+      <li><strong>Next implementation:</strong> freeze the S/I/R/F/P prompts, stage timeouts and schedule, then add a whole-block controller and deterministic block mock before a live call.</li>
     </ul>
 
     <h3>Limits of the boundary</h3>

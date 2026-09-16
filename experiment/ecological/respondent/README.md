@@ -37,7 +37,7 @@ The Pi path uses JSON mode from an empty working directory and ephemeral home. B
 
 The extension records each serialized provider payload before transport, including the effective system content, conversation, and tool schemas. It records response metadata and assistant usage without changing the payload. Aggregate provider-request and token caps are checked before each later request. The response that crosses a token cap cannot be recalled, so any last-response overrun is recorded explicitly. The mediator separately enforces tool counts and returned-source bytes. A wall timeout and final-submission byte cap also apply.
 
-The launcher accepts a Pi-backed config only with `--allow-live`, from a clean committed tree. This mechanical switch is not research authorization. Before using it, freeze the five arm prompts and schedule, rerun every boundary check from the committed controller, name two human raters, set a deadline and spend ceiling, and complete the excluded feasibility preregistration required by [`../../FINAL_ROUND.md`](../../FINAL_ROUND.md).
+The launcher accepts a Pi-backed config only with `--allow-live`, from a clean committed tree. This mechanical switch is not research authorization. Before using it, freeze the five arm prompts, schedule and per-stage wall timeouts; rerun every boundary check from the committed controller; confirm two human raters; record the pinned model and token ceiling; and complete the excluded feasibility preregistration required by [`../../FINAL_ROUND.md`](../../FINAL_ROUND.md). The current plan has no calendar deadline, but a started block must still follow its finite schedule without outcome-driven additions.
 
 ## Attempt contents
 
