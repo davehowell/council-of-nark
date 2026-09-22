@@ -1,6 +1,6 @@
 # Four short talks
 
-The [GitHub Pages hub](https://davehowell.github.io/council-of-nark/) hosts four six-slide talks, each written for approximately five minutes. All use one dark, restrained theme. Each slide has a complete spoken script, timing cue and source references in its final Markdown comment.
+The [GitHub Pages hub](https://davehowell.github.io/council-of-nark/) hosts four talks in one dark, restrained theme. The visual hypothesis talk has ten slides and runs for approximately eight minutes. The other talks have six slides and run for approximately five minutes each. Every slide has a complete spoken script, timing cue and source references in its final Markdown comment.
 
 | Talk | Editable source | Speaker script | Offline slides |
 |---|---|---|---|
@@ -9,7 +9,7 @@ The [GitHub Pages hub](https://davehowell.github.io/council-of-nark/) hosts four
 | 3. The Experiments Failed. A Lot. | [slides](part-3/slides.md) | [notes](notes/part-3-notes.md) | [PDF](part-3/the-experiments-failed-a-lot.pdf) |
 | 4. What Would Settle It? | [slides](part-4/slides.md) | [notes](notes/part-4-notes.md) | [PDF](part-4/what-would-settle-it.pdf) |
 
-Read [all scripts together](notes/speaker-notes.md). They contain approximately 620–660 spoken words per talk: rehearse at your own pace and trim if you speak slowly. Source blocks are reference material, not part of the spoken script. On the site, each talk also has a printable notes page. Slidev presenter mode displays the same notes; press P to open it.
+Read [all scripts together](notes/speaker-notes.md). Part 1 contains the longer visual introduction; Parts 2–4 contain approximately 620–660 spoken words each. Rehearse at your own pace and trim if you speak slowly. Source blocks are reference material, not part of the spoken script. On the site, each talk also has a printable notes page. Slidev presenter mode displays the same notes; press P to open it.
 
 ## Edit and reproduce
 
@@ -24,7 +24,7 @@ just slides-pivot           # part 4
 just slides-notes           # readable scripts from slide comments
 just slides-site-build      # four web decks + fresh PDFs + notes
 just slides-export          # refresh tracked offline PDFs from that build
-just slides-verify          # inspect all 24 production slides
+just slides-verify          # inspect all 28 production slides
 ```
 
 Dependencies remain pinned in `bun.lock`. If the browser is missing, run `bunx playwright install chromium` from this directory. CI installs Chromium and its Linux dependencies before building.
@@ -35,4 +35,4 @@ The Pages workflow builds on pull requests and deploys only after changes reach 
 
 Part 3 reports exploratory calibration, including scoring limitations. Part 4 is a pivot into the **proposed, unrun** ecological comparison. It does not claim a conclusion, ecological outcomes, general persona harm, or single-agent equivalence. A conclusion talk belongs after that comparison has results. See [the evidence review](../experiment/CONCLUSION.md) and [next-stage protocol](../experiment/FINAL_ROUND.md).
 
-Prior decks and PDFs remain available in Git history. The revision immediately before this rewrite was `a76d9ad`. Revert the presentation commit to restore the earlier talks, or browse that revision without changing current work. The historical experiment results are not rewritten.
+Prior decks and PDFs remain available in Git history. Part 1 restores the visual narrative from `eca311a` while keeping the current shared theme and the later experimental caveats. The historical experiment results are not rewritten.

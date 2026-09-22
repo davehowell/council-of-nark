@@ -36,7 +36,7 @@ jobs:
         env:
           SITE_BASE: /${{ github.event.repository.name }}
         run: bun run site:build
-      - name: Verify all 24 rendered slides and speaker-note pages
+      - name: Verify all 28 rendered slides and speaker-note pages
         working-directory: presentations
         run: node scripts/verify-slides.mjs
       - name: Upload Pages artifact

@@ -16,7 +16,7 @@ The council is designed to widen attention, not manufacture consensus. Each revi
 | [`skills/nark-matrix/`](skills/nark-matrix/) | The orchestration skill plus standalone Bender and Holly prompt templates. |
 | [`skills/walle-ste/`](skills/walle-ste/) | An STE-derived technical-writing review kernel used by WALL-E. |
 | [`experiment/`](experiment/) | Synthetic packets, controlled prompts, answer keys, and the empirical protocol. |
-| [`presentations/`](presentations/) | Four five-minute talks: the hypothesis, protocol, failed experiments and evidence, and the next experimental stage. |
+| [`presentations/`](presentations/) | Four talks: the hypothesis, protocol, failed experiments and evidence, and the next experimental stage. |
 | [`scripts/public_audit.py`](scripts/public_audit.py) | A pre-publication scan for common secrets, private paths, private hosts, and local forbidden terms. |
 
 ## The review lenses
@@ -54,12 +54,12 @@ Pi deliberately has no built-in subagent policy. The skill therefore describes t
 
 The [GitHub Pages presentation hub](https://davehowell.github.io/council-of-nark/) hosts all decks, published-result tiles, downloadable PDFs, and the living experiment timeline.
 
-- **Part 1: The Council of Nark** asks whether independent review lenses earn their cost.
+- **Part 1: The Council of Nark** presents the original hypothesis, the reviewer roles, and the proposed fan-out-and-fuse structure.
 - **Part 2: Put the Council on Trial** explains fair controls, scoring and the difference between uncertainty and equivalence.
 - **Part 3: The Experiments Failed. A Lot.** follows measurement failures, mixed council results and the negative K-2SO calibration.
 - **Part 4: What Would Settle It?** is the pivot into an ecological comparison with one agent reviewing its own work. It is not the conclusion.
 
-Each talk has six slides and a complete five-minute script. Read [all speaker notes](presentations/notes/speaker-notes.md), or run `just slides-talk`, `just slides-experiment`, `just slides-trials`, or `just slides-pivot`. See [`presentations/README.md`](presentations/README.md) for editing and exports. A conclusion talk belongs after the ecological comparison has results.
+Part 1 has ten slides and an approximately eight-minute script. Parts 2–4 each have six slides and an approximately five-minute script. Read [all speaker notes](presentations/notes/speaker-notes.md), or run `just slides-talk`, `just slides-experiment`, `just slides-trials`, or `just slides-pivot`. See [`presentations/README.md`](presentations/README.md) for editing and exports. A conclusion talk belongs after the ecological comparison has results.
 
 ## Experiments
 

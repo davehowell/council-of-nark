@@ -1,56 +1,95 @@
 # The Council of Nark — speaker notes
 
-Six slides · approximately five minutes · 616 spoken words.
+Ten slides · approximately eight minutes · 981 spoken words.
 
 Edit the closing comment in each slide in part-1/slides.md; these notes are generated from that source.
 
 ## 1. The Council of Nark
 
-[Time: 0:00–0:45]
-I started with a familiar feeling: a second pair of eyes catches things I miss. With agents, we can ask for several pairs almost instantly. That makes a council attractive, especially when each reviewer has a different job. But another review also costs context, tokens and time, and someone has to reconcile the answers. The question is whether the extra eyes earn that cost. I wanted a test that could tell me to use fewer agents just as comfortably as it could tell me to use more. This series is the story of trying to make that answer believable.
+[Time: 0:00–0:50]
+The Council of Nark began with a workflow I was already using. Fable 5 could ask several agents to inspect the same task and combine their replies. The run was slower and used more tokens than one call. While it ran, I often stepped away from the screen and planned across projects on A3 paper. I also used Gemini for second opinions and an HK-47 reviewer for unnecessary complexity. Those tools did not prove that a panel was better. They gave me a practical question: will reviewers with different, stable responsibilities find useful problems that one general review misses? The diagrams in this talk show that original hypothesis, not measured results.
+
+[Sources]
+https://davehowell.github.io/experimental/
+https://github.com/davehowell/council-of-nark/blob/main/README.md
+
+## 2. The workflow already mixed reviewers
+
+[Time: 0:50–1:40]
+The workflow already mixed models and instructions. Gemini gave me an independent answer from another provider. HK-47 used the same underlying model as other agents but had one narrow job: challenge over-engineering. Fable showed a convenient way to run several reviews and collect the output. The council made those parts explicit. Each reviewer would have a stable checklist. The controller would choose only the reviewers relevant to the task. They would inspect the same source independently, so one review would not steer the next. Repeated findings might strengthen confidence, while a supported finding from one reviewer might expose a blind spot. Better review quality was still only a hypothesis.
+
+[Sources]
+https://github.com/davehowell/council-of-nark/blob/main/skills/nark-matrix/SKILL.md
+https://github.com/davehowell/council-of-nark/tree/main/agents
+
+## 3. Meet the council
+
+[Time: 1:40–2:05]
+The characters made the responsibilities easier to remember and made the project enjoyable to use. That was their known purpose. Whether character wording improved a model's review was a separate question. The functional instructions had to stand on their own. A reviewer needed a defined scope, evidence for each finding and a common output format. The names could remain useful labels even if an experiment found no performance benefit from the fictional wording.
 
 [Sources]
 https://github.com/davehowell/council-of-nark/blob/main/README.md
-
-## 2. One review can miss a whole lens
-
-[Time: 0:45–1:35]
-The useful part of the idea is the division of attention. A correctness reviewer follows edge cases and tests. An architecture reviewer follows interfaces and contracts. An operational reviewer asks what happens when the happy path has been running for six months and something breaks overnight. The full roster also includes simplicity, security, cost and technical language. I am showing three examples because the mechanism matters more than memorising seven robots. If independent attention helps, it should produce supported findings that a fair baseline misses. More comments alone would be a poor measure: a reviewer can manufacture work by inventing problems.
-
-[Sources]
-https://github.com/davehowell/council-of-nark/tree/main/agents
-https://github.com/davehowell/council-of-nark/blob/main/experiment/protocol.md
-
-## 3. The council has two jobs
-
-[Time: 1:35–2:25]
-The proposed workflow has two jobs. First, reviewers work independently on the same artifact. Second, a fuser combines the findings into something a person can use. Those jobs can fail separately. The panel might discover a real issue that the final answer drops. Or every reviewer might repeat the same unsupported claim and the fuser might make it sound convincing. That is why I need to inspect the raw collection as well as the final verdict. A polished answer is not enough. The council is review-only: these initial experiments measure what it says about an artifact, not whether it successfully implements a fix.
-
-[Sources]
-https://github.com/davehowell/council-of-nark/blob/main/experiment/METRICS.md
-
-## 4. The characters are another hypothesis
-
-[Time: 2:25–3:15]
-The characters make the roles memorable, and they make the project fun. But memorability for me and better performance by the model are different questions. If I add K-2SO and also improve the correctness instructions, I cannot credit the character for any gain. The controlled comparison keeps the functional job byte-identical and changes only its wrapper. Then we can ask whether the prose helps, hinders, or makes a difference too small to matter. We are measuring observable behaviour. We cannot infer which internal features of the model caused it, and we should not confuse a distinctive voice with a useful review.
-
-[Sources]
-https://github.com/davehowell/council-of-nark/blob/main/experiment/prompts/README.md
 https://github.com/davehowell/council-of-nark/blob/main/experiment/PERSONA_FACTORIAL.md
 
-## 5. The cheap alternative deserves a trial
+## 4. Who reviews what?
 
-[Time: 3:15–4:10]
-The council should face alternatives that someone might actually choose. Start with one well-instructed reviewer. Give one continuing agent a chance to revisit its work. Then compare independent repeated reviews before adding specialist roles. The last two are not the same: an agent that sees its first answer may correct it or become anchored to it. Multiple calls also reuse context and may spend far more tokens than a single call. So I want both an ordinary cheap baseline and a comparison at an equal overall resource budget. A council could be better yet not worth its price, or worth using only for particular high-risk tasks.
+[Time: 2:05–3:05]
+The roster covers seven kinds of risk. HK-47 asks whether the solution contains machinery that the problem does not require. K-2SO checks behaviour, tests and failure signals. GLaDOS follows boundaries between components. C-3PO checks sensitive data, permissions and destructive operations. Bender examines compute and cost. Holly takes the long view: manual steps, forgotten toggles, state drift and knowledge that can disappear when people leave. WALL-E checks whether technical writing will remain clear to its next reader. The controller does not run all seven by default. It chooses the smallest group that matches the code, plan or document, with at least two independent reviewers.
+
+[Sources]
+https://github.com/davehowell/council-of-nark/blob/main/skills/nark-matrix/SKILL.md
+https://github.com/davehowell/council-of-nark/blob/main/README.md
+
+## 5. Holly and WALL-E work at different points
+
+[Time: 3:05–3:55]
+Holly and WALL-E widened the design in different ways. Holly sits on the review panel when a change depends on memory, manual work or long-term operational care. WALL-E can review prose as a specialist, but also has a separate job after the arbiter finishes. The arbiter first merges duplicate findings, resolves conflicts and ranks the result. WALL-E then translates that settled review for people who do not need file-and-line details. Translation does not create another vote and does not count as a panel review. Keeping those jobs separate prevents a simpler explanation from quietly changing the technical decision.
+
+[Sources]
+https://github.com/davehowell/council-of-nark/blob/main/skills/nark-matrix/SKILL.md
+https://github.com/davehowell/council-of-nark/blob/main/skills/walle-ste/SKILL.md
+
+## 6. One review can produce different outcomes
+
+[Time: 3:55–4:45]
+This cone was a way to draw variation, not a statistical model fitted to observations. Start with the same code and prompt. A model can produce a strong review, an average one or a weak one. More reasoning does not guarantee a better answer, and a later run can miss something that an earlier run found. Better context and clearer instructions can improve the starting conditions, but they do not make every output identical. The diagram gave me language for the next question: what happens when several model calls pass work from one to another?
+
+[Sources]
+https://github.com/davehowell/council-of-nark/blob/main/experiment/protocol.md
+https://github.com/davehowell/council-of-nark/blob/main/experiment/METRICS.md
+
+## 7. A serial chain can carry mistakes forward
+
+[Time: 4:45–5:35]
+In a serial chain, the second reviewer does not begin independently. It inherits the first answer. A strong first answer can still lose a valid finding during the next rewrite. A weak first answer can lead the next reviewer towards the wrong concern. The second reviewer can also correct the first, so the diagram does not claim that chains always get worse. It shows why the order matters and why a chain needs its own test. The protocol later compared every ordering of a three-reviewer chain instead of choosing one favourable sequence.
+
+[Sources]
+https://github.com/davehowell/council-of-nark/blob/main/experiment/protocol.md
+https://github.com/davehowell/council-of-nark/blob/main/experiment/METRICS.md
+
+## 8. One arbiter combines independent reviews
+
+[Time: 5:35–6:25]
+The alternative used parallel reviews and one combining step. Each specialist receives the same source and works independently. The arbiter sees all of the findings together. It can merge duplicate reports, reject unsupported claims and preserve a useful finding that only one specialist noticed. My original expectation was that this process would raise the typical quality and reduce the weak end of the range. That expectation could be wrong. The combining step can also discard a correct finding or make repeated errors sound authoritative. The experiment therefore had to score the individual findings and the combined review separately.
+
+[Sources]
+https://github.com/davehowell/council-of-nark/blob/main/skills/nark-matrix/SKILL.md
+https://github.com/davehowell/council-of-nark/blob/main/experiment/METRICS.md
+
+## 9. Flower, not a chain
+
+[Time: 6:25–7:20]
+These diagrams show the structural difference. On the left, reviewers work from the same source and return findings to one arbiter. The arbiter can compare disagreements because no reviewer has rewritten another review first. On the right, output passes through a sequence. Later reviewers can see and change earlier work, so the path through the reviewers becomes part of the result. I called the first shape a flower because all work returns to one centre. The useful claim was not that flowers are inherently better. It was that independent review followed by one combining step should be compared with serial review under controlled conditions.
+
+[Sources]
+https://github.com/davehowell/council-of-nark/blob/main/experiment/protocol.md
+https://github.com/davehowell/council-of-nark/blob/main/skills/nark-matrix/SKILL.md
+
+## 10. A testable proposal, not a conclusion
+
+[Time: 7:20–8:00]
+The original idea produced three claims that could be tested separately. First, specialist roles might find different real defects from repeated general reviews. Second, fictional character wording might help, hinder or make no useful difference when the functional instructions stay fixed. Third, independent fan-out and one fusion step might produce a better final review than a chain. Cost, tokens and time belong beside quality in every comparison. The desired outcome was never the largest council. It was the smallest review process that produced a dependable result. The next talk explains how the protocol tried to separate those claims.
 
 [Sources]
 https://github.com/davehowell/council-of-nark/blob/main/experiment/protocol.md
 https://github.com/davehowell/council-of-nark/blob/main/experiment/FINAL_ROUND.md
-
-## 6. Let the council lose
-
-[Time: 4:10–5:00]
-That is the commitment behind the experiment. I do not need the council to win. If a simple functional prompt delivers the same useful outcome, that is a good result: I can save tokens and keep the names as convenient labels. If the council wins only under particular conditions, I want to identify those conditions. And if the experiment cannot distinguish the approaches, I need to say that rather than call it a tie. The next talk explains the controls that make those outcomes distinguishable. The interesting story then comes from discovering that the measurement system itself needed almost as much review as the agents did.
-
-[Sources]
-https://github.com/davehowell/council-of-nark/blob/main/experiment/CONCLUSION.md
