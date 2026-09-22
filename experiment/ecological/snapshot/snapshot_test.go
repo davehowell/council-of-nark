@@ -142,7 +142,7 @@ func TestRuntimeModuleBoundaryIsStable(t *testing.T) {
 
 func TestEcologicalProfileHasNoNetworkAllowance(t *testing.T) {
 	profile := ecologicalProfile([]string{"/private/tmp/source"}, []string{"/bin/sh"}, nil, "/private/tmp/scratch")
-	if strings.Contains(profile, "network-outbound") || strings.Contains(profile, "network-inbound") || !strings.Contains(profile, "(deny default)") {
+	if strings.Contains(profile, "network-outbound") || strings.Contains(profile, "network-inbound") || strings.Contains(profile, "(allow process*)") || !strings.Contains(profile, "(deny default)") {
 		t.Fatalf("unsafe profile:\n%s", profile)
 	}
 	if !bytes.Contains([]byte(profile), []byte(`(subpath "/private/tmp/source")`)) {

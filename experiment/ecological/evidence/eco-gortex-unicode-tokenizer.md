@@ -12,6 +12,16 @@
 - Observed parent result: exit 1 with `index out of range [1] with length 1`
 - Observed evidence result: exit 0
 
+## Reference resolution shown to raters
+
+- Original repository: `zzet/gortex`
+- Merged pull request: [#569](https://github.com/zzet/gortex/pull/569)
+- Title: *fix(search): stop the rerank tokenizer panicking on trailing multi-byte uppercase runes*
+
+Succinct original-repository account: the SCREAMING-to-Camel lookahead compared a byte offset with a byte length before indexing a rune slice. A trailing multi-byte uppercase rune could pass that guard even though the suffix contained only one rune. Lowercase query text could still trigger the panic because reranking tokenises retrieved candidate text. The applied fix decodes the next rune from the correct UTF-8 boundary and avoids materialising the whole suffix. The merged tests cover the panic inputs, a multi-byte acronym-to-Camel split, and established ASCII behavior.
+
+The blinded rating bundle includes the exact parent-to-evidence patch and changed test diff, generated from the two frozen commits above. Raters are told that this is an accepted baseline, not a gold standard. Equivalent idiomatic remedies and supported findings beyond PR #569 remain eligible.
+
 ## Primary mechanism
 
 A Go `range` over a string yields `i` as a **byte offset** and `r` as a rune. In the SCREAMING-to-Camel branch, the parent checks `i+1 < len(s)`, where `len(s)` is also bytes, and then evaluates:

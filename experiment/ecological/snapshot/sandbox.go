@@ -36,7 +36,7 @@ func ecologicalProfile(readRoots, executableFiles, executableRoots []string, scr
 	var builder strings.Builder
 	builder.WriteString("(version 1)\n(deny default)\n")
 	builder.WriteString("(allow file-read-metadata)\n")
-	builder.WriteString("(allow sysctl-read)\n(allow mach-lookup)\n(allow system-socket)\n(allow process*)\n")
+	builder.WriteString("(allow sysctl-read)\n(allow mach-lookup)\n(allow system-socket)\n(allow process-fork)\n")
 	builder.WriteString("(allow file-read*\n  (literal \"/\")\n")
 	for _, path := range uniquePaths(readRoots) {
 		builder.WriteString("  (subpath " + seatbeltQuote(path) + ")\n")
@@ -132,6 +132,13 @@ func (r *Runner) runOfflineRegression() error {
 	if err != nil {
 		return err
 	}
+	executableResult := runSandboxed(profilePath, scratch, env, "/bin/sh", "-c", "true")
+	if logErr := writeCommandLog(filepath.Join(r.Controller, "logs", "offline-executable-probe.json"), []string{"sandbox-exec", "<offline-profile>", "sh", "<probe>"}, executableResult); logErr != nil {
+		return logErr
+	}
+	if executableResult.ExitCode == 0 {
+		return fmt.Errorf("offline Seatbelt profile executed an unlisted shell")
+	}
 
 	evidenceRoot := filepath.Join(r.Controller, "validation", "evidence")
 	listArgs := []string{"list", "-deps", "-test", "-json", r.Config.FocusedTest.Package}
@@ -183,6 +190,7 @@ func (r *Runner) runOfflineRegression() error {
 	r.provenance.Validation["command"] = append([]string{"go"}, testArgs...)
 	r.provenance.Validation["closure_verified_offline"] = true
 	r.provenance.Validation["network_probe_denied"] = true
+	r.provenance.Validation["unlisted_executable_denied"] = true
 	r.provenance.Validation["seatbelt_profile_sha256"] = shaBytes([]byte(profileText))
 	return nil
 }
@@ -251,7 +259,7 @@ func (r *Runner) runSourceIsolationProbe() error {
 	if err != nil {
 		return err
 	}
-	profileText := ecologicalProfile([]string{r.Source}, []string{"/bin/sh", "/usr/bin/nc"}, nil, scratch)
+	profileText := ecologicalProfile([]string{r.Source}, []string{"/bin/sh", "/bin/bash", "/usr/bin/nc"}, nil, scratch)
 	profilePath := filepath.Join(probeRoot, "profile.sb")
 	if err := atomicWrite(profilePath, []byte(profileText), 0o600); err != nil {
 		return err

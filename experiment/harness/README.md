@@ -28,6 +28,7 @@ Every non-mock provider child runs through `/usr/bin/sandbox-exec` with a genera
 - `HOME`, cache, config, temporary, and current-working directories are fresh per attempt;
 - only Pi's auth and model-registry files are copied into the ephemeral home; settings, skills, conversations, histories, and sessions are never copied;
 - writes are limited to ephemeral scratch and `/dev/null`;
+- process creation and executable permission are separate: `process-fork` is allowed, while `process-exec` is restricted to explicit paths;
 - executable/runtime paths are read-only;
 - provider transport may use outbound networking;
 - model tools, sessions, context files, extensions, skills, and project trust are disabled through adapter flags;
@@ -39,7 +40,7 @@ Run the executable probe explicitly:
 just experiment-sandbox-check
 ```
 
-It must prove that a scratch write succeeds and a repository read fails. `doctor` and `freeze` rerun the same probe. There is no unsandboxed fallback and the harness refuses non-macOS hosts or root.
+It must prove that a scratch write succeeds while a repository read and an executable outside the allowlist fail. `doctor` and `freeze` rerun the same probe. There is no unsandboxed fallback and the harness refuses non-macOS hosts or root.
 
 Seatbelt is deprecated by Apple even though it remains present on supported macOS versions. If Apple removes it, the harness fails closed until a replacement threat model is implemented.
 

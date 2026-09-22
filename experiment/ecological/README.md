@@ -2,6 +2,8 @@
 
 > Status: candidate set frozen for harness integration; no respondent run has occurred.
 
+See the standalone [architecture overview](architecture-overview.html) for the experiment flow, Seatbelt boundaries, one-stage lifecycle, proposed five-arm comparison, and retained records. It uses inline SVG and opens without a server.
+
 The core set uses public fixes merged from 1 June through 20 August 2026. It samples one Python graphics project, one Python data-loading project, one Go code-intelligence project, and one Rust/Python vector-index project. A separately gated Modular task tests an extreme-complexity stratum without weakening the core set's evidence rules.
 
 ## Selected set
@@ -107,13 +109,13 @@ A controller-side Gortex test runner now verifies the snapshot and closure, runs
 
 Clean committed attempts `20260824T020111Z-gortex-mediator-check-662f680b` and `20260824T020121Z-gortex-pi-doctor-a93ff02e` completed from controller `a5972ab…`; their summary/raw-artifact digests and seals verified, and the doctor made zero provider turns. They freeze infrastructure inputs, not respondent outcomes.
 
-The mediator, extension, and doctor remain infrastructure only until a claim runner assembles the frozen brief/system prompt, captures the final structured submission and usage, and seals the complete lifecycle. Do not start a model by loading the extension manually.
+The single-stage claim launcher now lives under [`respondent/`](respondent/). Its tracked configuration is a deterministic mock: it assembles and digests the brief/system prompt, exercises positive and negative mediator requests, validates exactly one final structured submission, accounts for provider requests/tokens/tool use, removes ephemeral credentials and build caches, and seals every retained file. The Pi path captures each serialized provider payload through a separate inherited audit pipe and requires an explicit live-run switch from a clean tree. No Pi-backed run config or five-arm controller is committed yet; the mock is infrastructure, not respondent evidence. Do not start a model by loading the extension manually.
 
 The answer evidence normally consists of the merged patch, its regression tests, issue/maintainer discussion, and independent human review. The Modular watchlist task has commit/test evidence but no public review discussion; report and analyse that stratum separately. An upstream correction is evidence, not the only acceptable answer: supported novel findings remain valid and must be adjudicated.
 
 ## Scoring
 
-The detailed condition-blinded 1–5 anchors, claim-supportedness rules, efficiency measures, and adjudication procedure are frozen in [`SCORING.md`](SCORING.md). Task-specific keys under `evidence/` are rater/controller-only and must never enter a respondent mount or provider child.
+The detailed condition-blinded 1–5 anchors, claim-supportedness rules, efficiency measures, and adjudication procedure are frozen in [`SCORING.md`](SCORING.md). [`RATING.md`](RATING.md) defines the human presentation: every rater sees the same problem statement, original repository resolution summary, applied patch, and changed tests before rating one opaque review at a time. The network-free page and strict bundle/record schemas live under [`rating/`](rating/). Task-specific keys under `evidence/` are rater/controller-only and must never enter a respondent mount or provider child.
 
 Score separately:
 
@@ -125,4 +127,6 @@ Score separately:
 - remedy quality/actionability;
 - token, latency, and tool-use cost.
 
-Do not reduce ecological tasks to planted-defect F1 alone. Use blinded finding-level mappings plus paired qualitative ratings. Two humans rate independently; a rater may know the council project but must not see condition labels, prompt variants, PRs, or the private unblind map.
+Do not reduce ecological tasks to planted-defect F1 alone. Use independently locked whole-review scores, blinded finding-level mappings, personal-utility scales, and then paired qualitative ratings. Two humans rate independently; a rater may know the council project but must not see condition labels, prompt variants, resource metadata, other outputs during absolute rating, or the private unblind map. Raters do see the same upstream PR summary and applied change as a reference resolution. It is evidence, not a whitelist.
+
+This is a review/research experiment, not a patch-generation benchmark. Compilation and focused-test success validate the fixture and provide evidence; they do not score the review. A frozen automated assessor may repeat the blinded rubric as secondary analysis, but it does not replace either human or decide Dave's personal usefulness score.

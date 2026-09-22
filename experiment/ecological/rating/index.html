@@ -1,0 +1,678 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; img-src data:; form-action 'none'; base-uri 'none'">
+  <title>Council of Nark | Blinded ecological rating</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #202832;
+      --muted: #56636e;
+      --line: #c9d1d8;
+      --paper: #fff;
+      --wash: #f4f6f8;
+      --blue: #245b78;
+      --blue-wash: #edf4f8;
+      --green: #336b45;
+      --green-wash: #edf7ef;
+      --amber: #946200;
+      --amber-wash: #fff7e3;
+      --red: #9b3e3e;
+      --red-wash: #fff0ef;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font: 16px/1.55 system-ui, -apple-system, "Segoe UI", sans-serif;
+    }
+    main { max-width: 1120px; margin: auto; padding: 40px 28px 72px; }
+    header { padding-bottom: 26px; border-bottom: 1px solid var(--line); }
+    h1 { margin: 0 0 12px; font-size: clamp(28px, 4vw, 40px); line-height: 1.2; }
+    h2 { margin: 0 0 14px; font-size: 26px; }
+    h3 { margin: 0 0 10px; font-size: 19px; }
+    h4 { margin: 20px 0 8px; font-size: 16px; }
+    p { max-width: 88ch; }
+    code, pre { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; }
+    code { background: var(--wash); padding: 2px 4px; }
+    pre {
+      margin: 10px 0;
+      padding: 14px;
+      max-height: 480px;
+      overflow: auto;
+      border: 1px solid var(--line);
+      background: #fafbfc;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+      font-size: 14px;
+      line-height: 1.45;
+    }
+    section { padding-top: 34px; }
+    section + section { margin-top: 34px; border-top: 1px solid var(--line); }
+    label { font-weight: 600; }
+    input[type="text"], select, textarea {
+      width: 100%;
+      margin-top: 6px;
+      padding: 10px 12px;
+      border: 1px solid #93a1ac;
+      border-radius: 3px;
+      background: var(--paper);
+      color: var(--ink);
+      font: inherit;
+    }
+    textarea { min-height: 100px; resize: vertical; }
+    input[type="file"] { display: block; margin-top: 8px; font: inherit; }
+    button {
+      padding: 10px 16px;
+      border: 1px solid var(--blue);
+      border-radius: 3px;
+      background: var(--blue);
+      color: white;
+      font: inherit;
+      font-weight: 650;
+      cursor: pointer;
+    }
+    button.secondary { background: var(--paper); color: var(--blue); }
+    button:disabled { cursor: not-allowed; opacity: 0.45; }
+    :focus-visible { outline: 2px solid var(--blue); outline-offset: 3px; }
+    .label { margin: 0 0 8px; color: var(--muted); font-size: 14px; }
+    .notice {
+      margin: 18px 0;
+      padding: 14px 18px;
+      border-left: 4px solid var(--amber);
+      background: var(--amber-wash);
+      max-width: 95ch;
+    }
+    .success { border-left-color: var(--green); background: var(--green-wash); }
+    .error { border-left-color: var(--red); background: var(--red-wash); color: #6f2525; }
+    .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+    .stack { display: grid; gap: 18px; }
+    .panel { padding: 20px; border: 1px solid var(--line); background: var(--paper); }
+    .reference { border-color: #d6b86b; background: #fffdfa; }
+    .review { border-color: #8faebe; }
+    .finding { margin-top: 18px; padding: 18px; border: 1px solid var(--line); background: var(--wash); }
+    .finding dl { display: grid; grid-template-columns: 150px 1fr; gap: 7px 14px; margin: 0; }
+    .finding dt { font-weight: 650; }
+    .finding dd { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; }
+    .finding ul { margin: 4px 0 0; padding-left: 20px; }
+    details { margin-top: 14px; }
+    summary { cursor: pointer; font-weight: 650; color: var(--blue); }
+    fieldset { margin: 0; padding: 16px; border: 1px solid var(--line); }
+    legend { padding: 0 6px; font-weight: 650; }
+    .scale-description { margin: 0 0 12px; color: var(--muted); font-size: 14px; }
+    .scale {
+      display: grid;
+      grid-template-columns: repeat(7, minmax(44px, 1fr));
+      gap: 8px;
+      max-width: 620px;
+    }
+    .scale.max-5 { grid-template-columns: repeat(5, minmax(50px, 1fr)); max-width: 470px; }
+    .scale label {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 8px 5px;
+      border: 1px solid var(--line);
+      background: var(--paper);
+      font-weight: 500;
+    }
+    .scale label:has(input:checked) { border-color: var(--blue); background: var(--blue-wash); }
+    .scale-anchors { display: flex; justify-content: space-between; gap: 20px; margin-top: 8px; max-width: 760px; color: var(--muted); font-size: 13px; }
+    .form-section { margin-top: 28px; }
+    .form-section > h3 { padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+    .question { margin-top: 18px; }
+    .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+    .progress { color: var(--muted); font-size: 14px; }
+    .opaque-id { font: 14px ui-monospace, SFMono-Regular, Consolas, monospace; color: var(--blue); }
+    .hidden { display: none !important; }
+    footer { margin-top: 50px; padding-top: 20px; border-top: 1px solid var(--line); color: var(--muted); font-size: 14px; }
+    @media (max-width: 720px) {
+      main { padding: 24px 16px 48px; }
+      .grid { grid-template-columns: 1fr; }
+      .scale { grid-template-columns: repeat(4, minmax(44px, 1fr)); }
+      .scale.max-5 { grid-template-columns: repeat(5, minmax(42px, 1fr)); }
+      .finding dl { grid-template-columns: 1fr; }
+      .finding dt { margin-top: 8px; }
+    }
+    @media print {
+      #setup, #rating-form, .actions { display: none !important; }
+      main { max-width: none; padding: 0; }
+      pre { max-height: none; }
+    }
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <p class="label">Council of Nark / Offline human rating</p>
+    <h1>Blinded ecological review rating</h1>
+    <p>Rate one review at a time against the same problem and reference resolution. The reference is an accepted baseline, not a gold standard. Give credit to supported alternatives, useful disagreement, and novel findings.</p>
+    <div class="notice"><strong>Blind boundary:</strong> this page must not receive arm labels, provider metadata, token use, latency, run IDs, or the private condition map. Raw wording remains visible and may reveal a treatment; record that only after scoring.</div>
+  </header>
+
+  <section id="setup" aria-labelledby="setup-heading">
+    <h2 id="setup-heading">Load a sealed rating bundle</h2>
+    <div class="grid">
+      <label>Rater ID
+        <input id="rater-id" type="text" maxlength="100" autocomplete="off" placeholder="Dave or assigned opaque rater ID">
+      </label>
+      <label>Disclosed role
+        <select id="rater-role">
+          <option value="">Select…</option>
+          <option value="disclosed_author">Project author / council advocate</option>
+          <option value="independent">Independent rater</option>
+        </select>
+      </label>
+    </div>
+    <label class="question">Prior disclosure
+      <textarea id="prior-disclosure" maxlength="1000" placeholder="For example: I designed the council and want it to be useful, but will rate the opaque outputs on their merits."></textarea>
+    </label>
+    <label class="question">Rating bundle JSON
+      <input id="bundle-file" type="file" accept="application/json,.json">
+    </label>
+    <div id="bundle-status" class="notice hidden" role="status"></div>
+    <div class="actions">
+      <button id="start" type="button" disabled>Start blinded rating</button>
+    </div>
+  </section>
+
+  <section id="task-panel" class="hidden" aria-labelledby="task-heading">
+    <p id="study-label" class="label"></p>
+    <h2 id="task-heading"></h2>
+    <div class="panel">
+      <h3>Problem statement</h3>
+      <pre id="problem"></pre>
+    </div>
+    <div class="panel reference">
+      <p class="label" id="reference-label"></p>
+      <h3 id="reference-title"></h3>
+      <p><strong>Source:</strong> <span id="reference-source"></span></p>
+      <div class="notice"><strong>Interpretation:</strong> this merged resolution establishes a credible baseline. Do not reject a review merely because it recommends a different supported, idiomatic solution.</div>
+      <h4>Original repository summary</h4>
+      <pre id="reference-summary"></pre>
+      <details>
+        <summary>Applied patch</summary>
+        <pre id="reference-patch"></pre>
+      </details>
+      <details>
+        <summary>Changed regression tests</summary>
+        <pre id="reference-tests"></pre>
+      </details>
+    </div>
+  </section>
+
+  <section id="review-panel" class="hidden" aria-labelledby="review-heading">
+    <p id="progress" class="progress"></p>
+    <h2 id="review-heading">Opaque experimental review <span id="output-id" class="opaque-id"></span></h2>
+    <div id="review" class="panel review"></div>
+  </section>
+
+  <section id="rating-panel" class="hidden" aria-labelledby="rating-heading">
+    <h2 id="rating-heading">Your rating</h2>
+    <form id="rating-form">
+      <div class="form-section">
+        <h3>A. Evidence-grounded technical review</h3>
+        <div id="technical-scales" class="stack"></div>
+      </div>
+      <div class="form-section">
+        <h3>B. Personal review utility</h3>
+        <p>These scores are subjective by design. They remain separate from technical quality Q.</p>
+        <div id="utility-scales" class="stack"></div>
+      </div>
+      <div id="comment-section" class="form-section">
+        <h3>C. Reference relation and commentary</h3>
+        <label>Relation to the accepted reference resolution
+          <select name="reference_relation" required>
+            <option value="">Select…</option>
+            <option value="worse">Worse</option>
+            <option value="roughly_equivalent">Roughly equivalent</option>
+            <option value="better_in_useful_ways">Better in useful ways</option>
+            <option value="different_not_comparable">Different / not directly comparable</option>
+          </select>
+        </label>
+        <label class="question">Most useful point
+          <textarea name="most_useful_point" maxlength="10000" required></textarea>
+        </label>
+        <label class="question">Main weakness or misleading claim
+          <textarea name="main_weakness" maxlength="10000" required></textarea>
+        </label>
+        <label class="question">What, if anything, would you act on?
+          <textarea name="would_act_on" maxlength="10000" required></textarea>
+        </label>
+        <label class="question">Additional commentary (optional)
+          <textarea name="commentary" maxlength="20000"></textarea>
+        </label>
+        <div class="actions">
+          <button id="reveal-guess" type="button">Lock scores and continue to treatment guess</button>
+        </div>
+      </div>
+      <div id="guess-section" class="form-section hidden">
+        <h3>D. Treatment guess</h3>
+        <p>Your technical, utility, and commentary fields are now locked.</p>
+        <div class="grid">
+          <label>Which procedure do you think produced this review?
+            <select name="treatment_guess" required>
+              <option value="">Select…</option>
+              <option value="unknown">Unable to tell</option>
+              <option value="S">S · single review</option>
+              <option value="I">I · informed self-review</option>
+              <option value="R">R · repeated omnibus panel</option>
+              <option value="F">F · functional specialist panel</option>
+              <option value="P">P · persona specialist panel</option>
+            </select>
+          </label>
+          <label>Guess confidence (1 low, 5 high)
+            <select name="guess_confidence" required>
+              <option value="">Select…</option>
+              <option>1</option><option>2</option><option>3</option><option>4</option><option>5</option>
+            </select>
+          </label>
+        </div>
+        <label class="question">Did the wording appear to reveal the treatment?
+          <select name="wording_revealed" required>
+            <option value="">Select…</option>
+            <option value="false">No</option>
+            <option value="true">Yes</option>
+          </select>
+        </label>
+        <div class="actions">
+          <button type="submit">Lock this rating and continue</button>
+          <button id="checkpoint" class="secondary" type="button">Export checkpoint</button>
+        </div>
+      </div>
+    </form>
+  </section>
+
+  <section id="complete" class="hidden" aria-labelledby="complete-heading">
+    <h2 id="complete-heading">Absolute rating complete</h2>
+    <div class="notice success">All opaque reviews in this bundle have locked absolute ratings. Export the file and do not inspect the private condition map. Pairwise rating starts only after both raters' absolute files are locked.</div>
+    <div class="actions">
+      <button id="export-final" type="button">Export completed ratings</button>
+    </div>
+  </section>
+
+  <footer>
+    <p>This page uses no network resources and sends no data. Closing or refreshing the page discards in-memory progress, so export checkpoints during a long session.</p>
+  </footer>
+</main>
+<script>
+(() => {
+  "use strict";
+
+  const technical = [
+    ["root_cause", "Root-cause localisation", "1: wrong or absent", "3: plausible but incomplete", "5: exact and causally complete"],
+    ["consequence", "Material consequence", "1: unrelated or absent", "3: principal failure with gaps", "5: precise impact and scope"],
+    ["correction", "Correction correctness and scope", "1: ineffective or harmful", "3: works with material gaps", "5: correct, scoped, idiomatic"],
+    ["regression_tests", "Regression-test discrimination", "1: no pre-fix discriminator", "3: one valid failing case", "5: compact boundary matrix"],
+    ["actionability", "Remedy quality and actionability", "1: cannot implement safely", "3: usable with missing detail", "5: concise and directly actionable"]
+  ];
+  const utility = [
+    ["personal_usefulness", "Personal usefulness", "1: harmful or wastes time", "4: mixed / neutral", "7: materially improves my decision"],
+    ["judgment_fit", "Judgment and idiomatic fit", "1: conflicts with sound practice", "4: reasonable different trade-off", "7: trusted-reviewer judgment"],
+    ["value_beyond_reference", "Useful value beyond the reference", "1: unsupported distraction", "4: accurate restatement only", "7: important supported addition"],
+    ["signal_to_noise", "Signal to noise", "1: priorities obscured", "4: usable but could improve", "7: concise and well prioritised"]
+  ];
+
+  const forbiddenKeys = new Set(["arm", "condition", "provider", "model", "tokens", "token_usage", "latency", "cost", "run_id", "attempt_id", "source_set_id"]);
+  let bundle = null;
+  let bundleDigest = "";
+  let rawBundle = "";
+  let index = 0;
+  let startedAt = "";
+  let pendingRating = null;
+  const ratings = [];
+
+  const byId = id => document.getElementById(id);
+  const fail = message => { throw new Error(message); };
+  const object = (value, path) => {
+    if (!value || typeof value !== "object" || Array.isArray(value)) fail(`${path} must be an object`);
+    return value;
+  };
+  const exactKeys = (value, keys, path) => {
+    object(value, path);
+    const actual = Object.keys(value).sort();
+    const expected = [...keys].sort();
+    if (actual.length !== expected.length || actual.some((key, i) => key !== expected[i])) {
+      fail(`${path} has unexpected or missing fields: ${actual.join(", ")}`);
+    }
+  };
+  const string = (value, path, max = 200000) => {
+    if (typeof value !== "string" || value.trim() === "" || value.length > max) fail(`${path} must be non-empty text`);
+  };
+  const array = (value, path, min = 0, max = Infinity) => {
+    if (!Array.isArray(value) || value.length < min || value.length > max) fail(`${path} has an invalid item count`);
+  };
+  const integer = (value, path, min = 1) => {
+    if (!Number.isInteger(value) || value < min) fail(`${path} must be an integer of at least ${min}`);
+  };
+
+  function rejectForbiddenKeys(value, path = "bundle") {
+    if (Array.isArray(value)) return value.forEach((item, i) => rejectForbiddenKeys(item, `${path}[${i}]`));
+    if (!value || typeof value !== "object") return;
+    for (const [key, child] of Object.entries(value)) {
+      if (forbiddenKeys.has(key.toLowerCase())) fail(`${path}.${key} is forbidden in a blinded bundle`);
+      rejectForbiddenKeys(child, `${path}.${key}`);
+    }
+  }
+
+  function validateLocation(value, path) {
+    exactKeys(value, ["path", "line_start", "line_end"], path);
+    string(value.path, `${path}.path`, 1000);
+    integer(value.line_start, `${path}.line_start`);
+    integer(value.line_end, `${path}.line_end`);
+    if (value.line_end < value.line_start) fail(`${path} line range is reversed`);
+  }
+
+  function validateTest(value, path) {
+    exactKeys(value, ["case", "expected", "why_discriminating"], path);
+    string(value.case, `${path}.case`, 5000);
+    string(value.expected, `${path}.expected`, 5000);
+    string(value.why_discriminating, `${path}.why_discriminating`, 5000);
+  }
+
+  function validateFinding(value, path) {
+    exactKeys(value, ["title", "locations", "claim", "mechanism", "consequence", "correction", "allocation_and_scope", "regression_tests", "evidence", "confidence"], path);
+    for (const key of ["title", "claim", "mechanism", "consequence", "correction", "allocation_and_scope"]) string(value[key], `${path}.${key}`, 20000);
+    array(value.locations, `${path}.locations`, 1, 4);
+    value.locations.forEach((item, i) => validateLocation(item, `${path}.locations[${i}]`));
+    array(value.regression_tests, `${path}.regression_tests`, 0, 12);
+    value.regression_tests.forEach((item, i) => validateTest(item, `${path}.regression_tests[${i}]`));
+    array(value.evidence, `${path}.evidence`, 1, 12);
+    value.evidence.forEach((item, i) => string(item, `${path}.evidence[${i}]`, 5000));
+    if (!new Set(["high", "medium", "low"]).has(value.confidence)) fail(`${path}.confidence is invalid`);
+  }
+
+  function validateReview(value, path) {
+    exactKeys(value, ["review_summary", "findings", "uncertainties"], path);
+    string(value.review_summary, `${path}.review_summary`, 20000);
+    array(value.findings, `${path}.findings`, 1, 8);
+    value.findings.forEach((item, i) => validateFinding(item, `${path}.findings[${i}]`));
+    array(value.uncertainties, `${path}.uncertainties`, 0, 8);
+    value.uncertainties.forEach((item, i) => string(item, `${path}.uncertainties[${i}]`, 5000));
+  }
+
+  function validateBundle(value) {
+    exactKeys(value, ["schema_version", "bundle_id", "study_label", "task", "outputs"], "bundle");
+    if (value.schema_version !== 1) fail("bundle.schema_version must be 1");
+    if (!/^rb-[a-f0-9]{16,64}$/.test(value.bundle_id)) fail("bundle.bundle_id is not opaque");
+    string(value.study_label, "bundle.study_label", 120);
+    exactKeys(value.task, ["title", "problem_statement", "reference"], "bundle.task");
+    string(value.task.title, "bundle.task.title", 200);
+    string(value.task.problem_statement, "bundle.task.problem_statement", 20000);
+    exactKeys(value.task.reference, ["label", "title", "source", "summary", "patch", "tests"], "bundle.task.reference");
+    for (const key of ["label", "title", "source", "summary", "patch", "tests"]) string(value.task.reference[key], `bundle.task.reference.${key}`);
+    array(value.outputs, "bundle.outputs", 1);
+    const ids = new Set();
+    value.outputs.forEach((output, i) => {
+      const path = `bundle.outputs[${i}]`;
+      exactKeys(output, ["output_id", "review"], path);
+      if (!/^rv-[a-f0-9]{16,64}$/.test(output.output_id)) fail(`${path}.output_id is not opaque`);
+      if (ids.has(output.output_id)) fail(`${path}.output_id is duplicated`);
+      ids.add(output.output_id);
+      validateReview(output.review, `${path}.review`);
+    });
+    rejectForbiddenKeys(value);
+  }
+
+  async function sha256(text) {
+    if (!globalThis.crypto || !crypto.subtle) fail("This browser does not provide Web Crypto for bundle hashing");
+    const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(text));
+    return [...new Uint8Array(digest)].map(byte => byte.toString(16).padStart(2, "0")).join("");
+  }
+
+  function setText(id, value) { byId(id).textContent = value; }
+  function element(name, text, className = "") {
+    const node = document.createElement(name);
+    if (text !== undefined) node.textContent = text;
+    if (className) node.className = className;
+    return node;
+  }
+
+  function renderScale(container, prefix, definition, max) {
+    const [key, title, low, middle, high] = definition;
+    const fieldset = element("fieldset");
+    fieldset.append(element("legend", title));
+    fieldset.append(element("p", `${low} · ${middle} · ${high}`, "scale-description"));
+    const row = element("div", undefined, `scale ${max === 5 ? "max-5" : ""}`);
+    for (let score = 1; score <= max; score++) {
+      const label = element("label");
+      const input = document.createElement("input");
+      input.type = "radio";
+      input.name = `${prefix}.${key}`;
+      input.value = String(score);
+      input.required = true;
+      label.append(input, document.createTextNode(String(score)));
+      row.append(label);
+    }
+    fieldset.append(row);
+    container.append(fieldset);
+  }
+
+  function renderTask() {
+    setText("study-label", `${bundle.study_label} · bundle ${bundle.bundle_id} · SHA-256 ${bundleDigest}`);
+    setText("task-heading", bundle.task.title);
+    setText("problem", bundle.task.problem_statement);
+    const reference = bundle.task.reference;
+    setText("reference-label", reference.label);
+    setText("reference-title", reference.title);
+    setText("reference-source", reference.source);
+    setText("reference-summary", reference.summary);
+    setText("reference-patch", reference.patch);
+    setText("reference-tests", reference.tests);
+    byId("task-panel").classList.remove("hidden");
+  }
+
+  function addDefinitionList(parent, rows) {
+    const list = element("dl");
+    for (const [term, value] of rows) {
+      list.append(element("dt", term));
+      const detail = element("dd");
+      if (Array.isArray(value)) {
+        const ul = element("ul");
+        value.forEach(item => ul.append(element("li", item)));
+        detail.append(ul);
+      } else {
+        detail.textContent = value;
+      }
+      list.append(detail);
+    }
+    parent.append(list);
+  }
+
+  function renderReview() {
+    const output = bundle.outputs[index];
+    setText("progress", `Review ${index + 1} of ${bundle.outputs.length}. Previous ratings are locked in this page session.`);
+    setText("output-id", output.output_id);
+    const target = byId("review");
+    target.replaceChildren();
+    target.append(element("h3", "Review summary"));
+    target.append(element("p", output.review.review_summary));
+    output.review.findings.forEach((finding, findingIndex) => {
+      const card = element("article", undefined, "finding");
+      card.append(element("p", `Finding ${findingIndex + 1} · confidence ${finding.confidence}`, "label"));
+      card.append(element("h3", finding.title));
+      const locations = finding.locations.map(location => `${location.path}:${location.line_start}-${location.line_end}`);
+      const tests = finding.regression_tests.length
+        ? finding.regression_tests.map(test => `${test.case} → ${test.expected} — ${test.why_discriminating}`)
+        : ["No regression case proposed"];
+      addDefinitionList(card, [
+        ["Locations", locations],
+        ["Claim", finding.claim],
+        ["Mechanism", finding.mechanism],
+        ["Consequence", finding.consequence],
+        ["Correction", finding.correction],
+        ["Allocation / scope", finding.allocation_and_scope],
+        ["Regression cases", tests],
+        ["Evidence", finding.evidence]
+      ]);
+      target.append(card);
+    });
+    target.append(element("h3", "Uncertainties"));
+    const uncertaintyList = element("ul");
+    if (output.review.uncertainties.length) output.review.uncertainties.forEach(item => uncertaintyList.append(element("li", item)));
+    else uncertaintyList.append(element("li", "None stated"));
+    target.append(uncertaintyList);
+    byId("review-panel").classList.remove("hidden");
+    byId("rating-panel").classList.remove("hidden");
+    const form = byId("rating-form");
+    form.querySelectorAll(":disabled").forEach(control => control.disabled = false);
+    form.reset();
+    byId("guess-section").classList.add("hidden");
+    pendingRating = null;
+    byId("review-panel").scrollIntoView({behavior: "auto", block: "start"});
+  }
+
+  function score(data, name) {
+    const value = Number(data.get(name));
+    if (!Number.isInteger(value)) fail(`Missing score ${name}`);
+    return value;
+  }
+
+  function currentRecord() {
+    return {
+      schema_version: 1,
+      bundle_id: bundle.bundle_id,
+      bundle_sha256: bundleDigest,
+      rater: {
+        rater_id: byId("rater-id").value.trim(),
+        role: byId("rater-role").value,
+        prior_disclosure: byId("prior-disclosure").value.trim()
+      },
+      started_at: startedAt,
+      exported_at: new Date().toISOString(),
+      complete: ratings.length === bundle.outputs.length,
+      ratings
+    };
+  }
+
+  function exportRatings() {
+    if (!bundle || !startedAt) return;
+    const record = currentRecord();
+    const blob = new Blob([JSON.stringify(record, null, 2) + "\n"], {type: "application/json"});
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    const safeRater = record.rater.rater_id.replace(/[^A-Za-z0-9._-]+/g, "-");
+    link.download = `${bundle.bundle_id}-${safeRater}-${record.complete ? "complete" : `checkpoint-${ratings.length}`}.json`;
+    document.body.append(link);
+    link.click();
+    link.remove();
+    setTimeout(() => URL.revokeObjectURL(link.href), 0);
+  }
+
+  byId("bundle-file").addEventListener("change", async event => {
+    const status = byId("bundle-status");
+    byId("start").disabled = true;
+    bundle = null;
+    try {
+      const file = event.target.files[0];
+      if (!file) return;
+      rawBundle = await file.text();
+      const parsed = JSON.parse(rawBundle);
+      validateBundle(parsed);
+      bundleDigest = await sha256(rawBundle);
+      bundle = parsed;
+      status.className = "notice success";
+      status.textContent = `Valid blinded bundle: ${bundle.outputs.length} review(s), SHA-256 ${bundleDigest}.`;
+      byId("start").disabled = false;
+    } catch (error) {
+      status.className = "notice error";
+      status.textContent = `Bundle rejected: ${error.message}`;
+    }
+  });
+
+  byId("start").addEventListener("click", () => {
+    const raterID = byId("rater-id").value.trim();
+    const role = byId("rater-role").value;
+    const prior = byId("prior-disclosure").value.trim();
+    if (!bundle) return;
+    if (!raterID || !role || !prior) {
+      const status = byId("bundle-status");
+      status.className = "notice error";
+      status.textContent = "Rater ID, disclosed role, and prior disclosure are required.";
+      return;
+    }
+    startedAt = new Date().toISOString();
+    byId("setup").querySelectorAll("input, select, textarea, button").forEach(control => control.disabled = true);
+    byId("setup").classList.add("hidden");
+    renderTask();
+    renderReview();
+  });
+
+  byId("reveal-guess").addEventListener("click", () => {
+    const form = byId("rating-form");
+    const requiredNames = [
+      ...technical.map(([key]) => `technical.${key}`),
+      ...utility.map(([key]) => `utility.${key}`),
+      "reference_relation", "most_useful_point", "main_weakness", "would_act_on"
+    ];
+    for (const name of requiredNames) {
+      const fields = [...form.querySelectorAll(`[name="${name}"]`)];
+      const populated = fields.some(field => field.type === "radio" ? field.checked : field.value.trim() !== "");
+      if (!populated) {
+        fields[0].reportValidity();
+        return;
+      }
+    }
+    const data = new FormData(form);
+    const text = name => String(data.get(name) || "").trim();
+    pendingRating = {
+      technical: {
+        root_cause: score(data, "technical.root_cause"),
+        consequence: score(data, "technical.consequence"),
+        correction: score(data, "technical.correction"),
+        regression_tests: score(data, "technical.regression_tests"),
+        actionability: score(data, "technical.actionability")
+      },
+      utility: {
+        personal_usefulness: score(data, "utility.personal_usefulness"),
+        judgment_fit: score(data, "utility.judgment_fit"),
+        value_beyond_reference: score(data, "utility.value_beyond_reference"),
+        signal_to_noise: score(data, "utility.signal_to_noise")
+      },
+      reference_relation: text("reference_relation"),
+      most_useful_point: text("most_useful_point"),
+      main_weakness: text("main_weakness"),
+      would_act_on: text("would_act_on"),
+      commentary: text("commentary")
+    };
+    form.querySelectorAll("#technical-scales input, #utility-scales input, #comment-section select, #comment-section textarea, #comment-section button").forEach(control => control.disabled = true);
+    byId("guess-section").classList.remove("hidden");
+    byId("guess-section").scrollIntoView({behavior: "auto", block: "start"});
+  });
+
+  byId("rating-form").addEventListener("submit", event => {
+    event.preventDefault();
+    if (!pendingRating || !event.currentTarget.reportValidity()) return;
+    const data = new FormData(event.currentTarget);
+    const text = name => String(data.get(name) || "").trim();
+    ratings.push({
+      output_id: bundle.outputs[index].output_id,
+      rated_at: new Date().toISOString(),
+      ...pendingRating,
+      treatment_guess: text("treatment_guess"),
+      guess_confidence: Number(text("guess_confidence")),
+      wording_revealed: text("wording_revealed") === "true"
+    });
+    index++;
+    if (index < bundle.outputs.length) {
+      renderReview();
+    } else {
+      byId("review-panel").classList.add("hidden");
+      byId("rating-panel").classList.add("hidden");
+      byId("complete").classList.remove("hidden");
+      byId("complete").scrollIntoView({behavior: "auto", block: "start"});
+    }
+  });
+
+  byId("checkpoint").addEventListener("click", exportRatings);
+  byId("export-final").addEventListener("click", exportRatings);
+  technical.forEach(definition => renderScale(byId("technical-scales"), "technical", definition, 5));
+  utility.forEach(definition => renderScale(byId("utility-scales"), "utility", definition, 7));
+})();
+</script>
+</body>
+</html>

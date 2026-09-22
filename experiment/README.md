@@ -31,6 +31,7 @@ The study measures model output. It cannot infer which internal features, activa
 - [`METRICS.md`](METRICS.md): F1, semantic union, overlap, and comparability definitions.
 - [`PERSONA_FACTORIAL.md`](PERSONA_FACTORIAL.md): balanced eight-role functional/fictional follow-up, estimands, multiplicity, and decision rule.
 - [`ecological/`](ecological/): eight PR-backed post–June 2026 tasks across Manim, dlt, Gortex, and turbovec, plus one blocked Modular extreme-reserve candidate.
+- [`ecological/RATING.md`](ecological/RATING.md): blinded human presentation, technical and personal-utility scales, reference-resolution rules, and secondary automated assessment.
 - [`CONTAMINATION_REVIEW.md`](CONTAMINATION_REVIEW.md): post-smoke review of context boundaries, scoring, scheduling, and remaining threats.
 - [`ISOLATION.md`](ISOLATION.md): macOS Seatbelt, network, dedicated-account, and real-project threat model.
 - [`LAB_NOTEBOOK.md`](LAB_NOTEBOOK.md): chronological engineering decisions, failures, repairs, results, and pivots.
@@ -82,6 +83,18 @@ just experiment-test
 just experiment-sandbox-check
 just experiment-doctor experiment/config/stage-a-smoke-gemma.json
 ```
+
+The ecological snapshot, mediator, Pi doctor, and deterministic respondent mock also make no model call:
+
+```bash
+# Given a sealed snapshot made from the pinned snapshot-controller commit:
+just ecological-gortex-mediator-check experiment/ecological/work/<snapshot-attempt>
+just ecological-gortex-pi-doctor experiment/ecological/work/<snapshot-attempt>
+just ecological-gortex-respondent-mock experiment/ecological/work/<snapshot-attempt>
+just ecological-respondent-verify experiment/ecological/respondent-runs/<mock-attempt>
+```
+
+The snapshot and attempt directories are ignored local records. Read [`ecological/respondent/README.md`](ecological/respondent/README.md) before running them. The mock's fake finding is not research evidence; no live ecological configuration is committed.
 
 After the harness and assets are committed on a clean tree, verify explicit model selection and run the low-reasoning Stage A smoke:
 

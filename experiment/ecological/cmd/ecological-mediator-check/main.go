@@ -18,7 +18,7 @@ import (
 
 const (
 	taskID           = "eco-gortex-unicode-tokenizer"
-	controllerCommit = "ef48b42cf044e3de68342c778617be4f6d953e94"
+	controllerCommit = "a0004597c5eb74bd4ea0697304301d06e4b8d55f"
 	sourceTreeSHA256 = "41a9a14bd447791f254c79a7441d81451dd69ce6e03367dddbc20c4679c2b523"
 )
 

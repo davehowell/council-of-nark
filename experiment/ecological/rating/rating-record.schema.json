@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://davehowell.github.io/council-of-nark/schema/ecological-rating-record-v1.json",
+  "title": "Blinded ecological absolute ratings",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "bundle_id", "bundle_sha256", "rater", "started_at", "exported_at", "complete", "ratings"],
+  "properties": {
+    "schema_version": { "const": 1 },
+    "bundle_id": { "type": "string", "pattern": "^rb-[a-f0-9]{16,64}$" },
+    "bundle_sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "rater": { "$ref": "#/$defs/rater" },
+    "started_at": { "type": "string", "format": "date-time" },
+    "exported_at": { "type": "string", "format": "date-time" },
+    "complete": { "type": "boolean" },
+    "ratings": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/rating" }
+    }
+  },
+  "$defs": {
+    "rater": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["rater_id", "role", "prior_disclosure"],
+      "properties": {
+        "rater_id": { "type": "string", "minLength": 1, "maxLength": 100 },
+        "role": { "enum": ["disclosed_author", "independent"] },
+        "prior_disclosure": { "type": "string", "minLength": 1, "maxLength": 1000 }
+      }
+    },
+    "rating": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["output_id", "rated_at", "technical", "utility", "reference_relation", "most_useful_point", "main_weakness", "would_act_on", "commentary", "treatment_guess", "guess_confidence", "wording_revealed"],
+      "properties": {
+        "output_id": { "type": "string", "pattern": "^rv-[a-f0-9]{16,64}$" },
+        "rated_at": { "type": "string", "format": "date-time" },
+        "technical": { "$ref": "#/$defs/technical" },
+        "utility": { "$ref": "#/$defs/utility" },
+        "reference_relation": { "enum": ["worse", "roughly_equivalent", "better_in_useful_ways", "different_not_comparable"] },
+        "most_useful_point": { "type": "string", "minLength": 1, "maxLength": 10000 },
+        "main_weakness": { "type": "string", "minLength": 1, "maxLength": 10000 },
+        "would_act_on": { "type": "string", "minLength": 1, "maxLength": 10000 },
+        "commentary": { "type": "string", "maxLength": 20000 },
+        "treatment_guess": { "enum": ["unknown", "S", "I", "R", "F", "P"] },
+        "guess_confidence": { "type": "integer", "minimum": 1, "maximum": 5 },
+        "wording_revealed": { "type": "boolean" }
+      }
+    },
+    "technical": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["root_cause", "consequence", "correction", "regression_tests", "actionability"],
+      "properties": {
+        "root_cause": { "$ref": "#/$defs/score5" },
+        "consequence": { "$ref": "#/$defs/score5" },
+        "correction": { "$ref": "#/$defs/score5" },
+        "regression_tests": { "$ref": "#/$defs/score5" },
+        "actionability": { "$ref": "#/$defs/score5" }
+      }
+    },
+    "utility": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["personal_usefulness", "judgment_fit", "value_beyond_reference", "signal_to_noise"],
+      "properties": {
+        "personal_usefulness": { "$ref": "#/$defs/score7" },
+        "judgment_fit": { "$ref": "#/$defs/score7" },
+        "value_beyond_reference": { "$ref": "#/$defs/score7" },
+        "signal_to_noise": { "$ref": "#/$defs/score7" }
+      }
+    },
+    "score5": { "type": "integer", "minimum": 1, "maximum": 5 },
+    "score7": { "type": "integer", "minimum": 1, "maximum": 7 }
+  }
+}

@@ -62,6 +62,14 @@ A project author or council advocate may be one rater if they disclose that prio
 
 Output language is part of the treatment and is not rewritten. Therefore condition labels and IDs are blinded, but treatment blinding can fail. Report guess accuracy and self-reported reveal rate rather than claiming perfect blindness.
 
+### Ecological review rating
+
+Ecological outputs use [`ecological/RATING.md`](ecological/RATING.md), not the planted-defect CSV workflow above. The sealed bundle shows every rater the same problem statement, original repository resolution summary, exact applied patch, and changed regression tests. It then presents one opaque review at a time in shuffled order through [`ecological/rating/index.html`](ecological/rating/index.html).
+
+The upstream change is a demonstrated reference resolution, not a gold standard. Credit supported alternatives, idiomatic trade-offs, and useful novel findings. Lock the five technical scores and four personal-utility scores for every review before opening pairwise comparisons. Compilation and tests validate the fixture; they do not score a review report.
+
+Dave records his disclosed council-author prior. The independent rater records their role separately. Neither rating file contains the condition map. Automated assessors may use the same blinded packet only as a secondary analysis.
+
 For smoke-test triage only, an arm-blinded LLM rater is available:
 
 ```bash
